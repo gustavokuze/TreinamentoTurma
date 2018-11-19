@@ -1,0 +1,39 @@
+﻿@model TreinamentoTurma.Models.Turma
+
+@{
+    ViewBag.Title = "Cadastrar";
+}
+
+<h2>Cadastrar</h2>
+
+<div class="row">
+    @using (Html.BeginForm("Cadastrar", "Turma", FormMethod.Post, new { })) 
+    {
+        <div class="col-md-12">
+
+            <div class="form-group">
+                @Html.LabelFor(m => m.Descricao)
+                @Html.TextBoxFor(m => m.Descricao, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.Descricao, "", new { @class = "text-danger" })
+            </div>
+
+        </div>
+
+        <div class="col-md-12">
+
+            <div class="form-group">
+                @Html.LabelFor(m => m.LimiteAlunos)
+                @Html.TextBoxFor(m => m.LimiteAlunos, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m=>m.LimiteAlunos, "", new { @class = "text-danger" })
+            </div>
+
+        </div>
+
+
+        <button class="btn btn-default" type="submit">Cadastrar</button>
+    }
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

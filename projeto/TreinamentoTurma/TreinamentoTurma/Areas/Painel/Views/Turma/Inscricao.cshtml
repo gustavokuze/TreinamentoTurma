@@ -1,0 +1,26 @@
+﻿@model TreinamentoTurma.Models.Inscricao
+
+@{
+    ViewBag.Title = "Inscricao";
+}
+
+<h2>Inscrição</h2>
+<div class="row">
+    <div class="col">
+        <div class="container">
+            @using (Html.BeginForm("Inscricao", "Turma", FormMethod.Post, new { }))
+            {
+                <div class="col-md-12">
+                    <div class="form-group">
+                        @Html.HiddenFor(m => m.AlunoId)
+                        @Html.Label("Turmas")
+                        @Html.DropDownListFor(m => m.TurmaId, ViewBag.Turmas as List<SelectListItem>, "Selecione", new { @class = "form-control" })
+
+                    </div>
+                </div>
+                <button class="btn btn-default" type="submit">Inscrever</button>
+            }
+        </div>
+
+    </div>
+</div>
