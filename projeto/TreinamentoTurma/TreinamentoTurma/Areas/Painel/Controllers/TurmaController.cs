@@ -26,12 +26,19 @@ namespace TreinamentoTurma.Areas.Painel.Controllers
             
             if (id.HasValue)
             {
+                //TODO: passar a chamada abaixo para um método na própria ViewModel chamado 
+                //"Selecionar(int id)", pra torná-la reutilizável
                 viewModel.Turma = viewModel.ListaTurmas.FirstOrDefault(x => x.Id == id.Value);
-                return View(viewModel);
             }
             
             return View(viewModel);
         }
+
+        #region Action Edit
+        /*
+         A Action edit foi substituída pela própria action cadastrar, 
+         que agora pode ou não receber um parâmetro
+             */
 
         //public ActionResult Editar(int id = 0)
         //{
@@ -50,6 +57,8 @@ namespace TreinamentoTurma.Areas.Painel.Controllers
 
         //    return RedirectToAction("Cadastrar");
         //}
+        #endregion
+
 
         [HttpPost]
         public ActionResult Cadastrar(TurmaViewModel viewModel)

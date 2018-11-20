@@ -12,11 +12,19 @@ namespace TreinamentoTurma.Infra
     {
         public int Inserir(Turma turma)
         {
-            string query = "INSERT INTO turma (Descricao,LimiteAlunos) VALUES (@Descricao, @LimiteAlunos); SELECT SCOPE_IDENTITY();";
+            /*
+             O "SELECT SCOPE_IDENTITY();" na query abaixo, previne que quando formos editar uma turma, 
+             o link contenha um parâmetro id, uma vez que esse select retorna null
+             */
 
+
+            string query = "INSERT INTO turma (Descricao,LimiteAlunos) VALUES (@Descricao, @LimiteAlunos); SELECT SCOPE_IDENTITY();";
+            
             using (var conexao = new SqlConnection(ObterConnectionString))
             {
-                return conexao.QueryFirst<int>(query, turma);
+                //queryfirst faz a consulta para o primeira registro, ao contrário do query
+                //que busca por TODOS os registro e então devolve apenas o primeiro
+                return conexao.QueryFirst<int>(query, turma); 
             }
         }
 
