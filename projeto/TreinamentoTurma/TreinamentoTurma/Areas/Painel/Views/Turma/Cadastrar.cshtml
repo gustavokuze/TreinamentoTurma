@@ -7,24 +7,25 @@
 <h2>Cadastrar</h2>
 
 <div class="row">
-    @using (Html.BeginForm("Cadastrar", "Turma", FormMethod.Post, new { })) 
+    @using (Html.BeginForm("Cadastrar", "Turma", FormMethod.Post, new { }))
     {
         <div class="col-md-12">
 
             <div class="form-group">
+                @Html.HiddenFor(m => m.Id)
                 @Html.LabelFor(m => m.Descricao)
                 @Html.TextBoxFor(m => m.Descricao, new { @class = "form-control" })
                 @Html.ValidationMessageFor(m => m.Descricao, "", new { @class = "text-danger" })
             </div>
 
-        </div>
+        </div> 
 
         <div class="col-md-12">
 
             <div class="form-group">
                 @Html.LabelFor(m => m.LimiteAlunos)
                 @Html.TextBoxFor(m => m.LimiteAlunos, new { @class = "form-control" })
-                @Html.ValidationMessageFor(m=>m.LimiteAlunos, "", new { @class = "text-danger" })
+                @Html.ValidationMessageFor(m => m.LimiteAlunos, "", new { @class = "text-danger" })
             </div>
 
         </div>
@@ -32,6 +33,30 @@
 
         <button class="btn btn-default" type="submit">Cadastrar</button>
     }
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <ul class="list-group">
+
+            @foreach (var turma in ViewBag.Turmas)
+            {
+                <li class="list-group-item ">
+                    <div class="row">
+                        <div class="col-sm-10">
+                            <p>@turma.Descricao</p>
+                        </div>
+                        <div class="col-sm-2">
+                            @Html.ActionLink(" Editar", "Cadastrar", "Turma", new { Area = "Painel" }, new { @class = "btn btn-block btn-info glyphicon-pencil" })
+                            @Html.ActionLink(" Excluir", "Cadastrar", "Turma", new { Area = "Painel" }, new { @class = "btn btn-block btn-danger glyphicon glyphicon-trash" })
+
+                        </div>
+                    </div>
+                </li>
+            }
+        </ul>
+    </div>
+
 </div>
 
 @section Scripts {

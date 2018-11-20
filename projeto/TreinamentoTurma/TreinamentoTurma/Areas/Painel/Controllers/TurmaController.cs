@@ -18,23 +18,27 @@ namespace TreinamentoTurma.Areas.Painel.Controllers
 
         public ActionResult Cadastrar()
         {
+            var turmas = new TurmaRepositorio().ListarTurmas();
+
+            ViewBag.Turmas = turmas;
+
+
             return View();
         }
 
         [HttpPost]
         public ActionResult Cadastrar(Turma turma)
-    {
-
-            if (!ModelState.IsValid)
-            {
-                return View(turma);
-            }
-
+        {
             TurmaRepositorio turmaRepositorio = new TurmaRepositorio();
-            turmaRepositorio.Novo(turma);
+
+            turmaRepositorio.Inserir(turma);
+
+
+            ViewBag.Turmas = turmaRepositorio.ListarTurmas();
 
             return View();
         }
+
 
 
         public ActionResult Inscricao()
@@ -43,7 +47,7 @@ namespace TreinamentoTurma.Areas.Painel.Controllers
             turmas.Add(new SelectListItem()
             {
                 Text = "Turma de programação .Net",
-                Value = "1" 
+                Value = "1"
             });
 
             turmas.Add(new SelectListItem()
@@ -66,9 +70,14 @@ namespace TreinamentoTurma.Areas.Painel.Controllers
         [HttpPost]
         public ActionResult Inscricao(Inscricao inscricao)
         {
-            
-
             return View();
         }
     }
 }
+
+
+           
+            //if (!ModelState.IsValid)
+            //{
+            //    return View(turma);
+            //}
