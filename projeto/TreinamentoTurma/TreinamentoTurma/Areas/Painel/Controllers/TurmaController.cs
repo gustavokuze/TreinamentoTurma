@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using TreinamentoTurma.Areas.Painel.ViewModel;
 using TreinamentoTurma.Infra;
 using TreinamentoTurma.Models;
 
@@ -15,31 +16,80 @@ namespace TreinamentoTurma.Areas.Painel.Controllers
         {
             return View();
         }
-
-        public ActionResult Cadastrar()
+          
+        public ActionResult Cadastrar(int? id = null)
         {
-            var turmas = new TurmaRepositorio().ListarTurmas();
-
-            ViewBag.Turmas = turmas;
-
-
-            return View();
+            TurmaViewModel viewModel = new TurmaViewModel();
+            TurmaRepositorio repositorio = new TurmaRepositorio();
+            
+            viewModel.ListaTurmas = repositorio.ListarTurmas();
+            
+            if (id.HasValue)
+            {
+                viewModel.Turma = viewModel.ListaTurmas.FirstOrDefault(x => x.Id == id.Value);
+                return View(viewModel);
+            }
+            
+            return View(viewModel);
         }
 
+        //public ActionResult Editar(int id = 0)
+        //{
+        //    TurmaRepositorio repositorio = new TurmaRepositorio();
+        //    Turma turmaEdit = null;
+
+        //    var turmas = repositorio.ListarTurmas();
+        //    ViewBag.Turmas = turmas;
+        //    if (id > 0)
+        //    {
+        //        turmaEdit = repositorio.BuscarTurmaPorId(id);
+        //        ViewBag.TurmaEdit = turmaEdit;
+        //        return View("Cadastrar", turmaEdit);
+        //    }
+
+
+        //    return RedirectToAction("Cadastrar");
+        //}
+
         [HttpPost]
-        public ActionResult Cadastrar(Turma turma)
+        public ActionResult Cadastrar(TurmaViewModel viewModel)
         {
             TurmaRepositorio turmaRepositorio = new TurmaRepositorio();
 
-            turmaRepositorio.Inserir(turma);
+            if (viewModel.Turma.Id > 0)
+            {
+                turmaRepositorio.Atualizar(viewModel.Turma);
 
+                viewModel.ListaTurmas.ForEach((x) => 
+                {
+                    if (x.Id == viewModel.Turma.Id)
+                    {
+                        x.Descricao = viewModel.Turma.Descricao;
+                        x.LimiteAlunos = viewModel.Turma.LimiteAlunos;
+                    }
+                });
+            }
+            else
+            {
+                viewModel.Turma.Id = turmaRepositorio.Inserir(viewModel.Turma);
+                viewModel.ListaTurmas.Add(viewModel.Turma);
+            }
 
-            ViewBag.Turmas = turmaRepositorio.ListarTurmas();
-
-            return View();
+            return View(viewModel);
         }
 
 
+        public ActionResult Excluir(int id = 0) 
+        {
+            TurmaRepositorio repositorio = new TurmaRepositorio();
+
+            if(id > 0)
+            {
+                repositorio.Excluir(id);
+            }
+            
+            return RedirectToAction("Cadastrar");
+        }
 
         public ActionResult Inscricao()
         {
@@ -76,8 +126,8 @@ namespace TreinamentoTurma.Areas.Painel.Controllers
 }
 
 
-           
-            //if (!ModelState.IsValid)
-            //{
-            //    return View(turma);
-            //}
+
+//if (!ModelState.IsValid)
+//{
+//    return View(turma);
+//}

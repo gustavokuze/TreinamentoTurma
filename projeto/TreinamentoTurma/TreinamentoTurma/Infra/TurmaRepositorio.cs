@@ -4,19 +4,19 @@ using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
-using TreinamentoTurma.Models;  
+using TreinamentoTurma.Models;
 
 namespace TreinamentoTurma.Infra
 {
-    public class TurmaRepositorio : Repositorio 
+    public class TurmaRepositorio : Repositorio
     {
-        public void Inserir(Turma turma)
+        public int Inserir(Turma turma)
         {
-            string query = "INSERT INTO turma (Descricao,LimiteAlunos) VALUES (@Descricao, @LimiteAlunos)";
+            string query = "INSERT INTO turma (Descricao,LimiteAlunos) VALUES (@Descricao, @LimiteAlunos); SELECT SCOPE_IDENTITY();";
 
             using (var conexao = new SqlConnection(ObterConnectionString))
             {
-                var queryResult = conexao.Execute(query, turma);
+                return conexao.QueryFirst<int>(query, turma);
             }
         }
 
@@ -27,11 +27,9 @@ namespace TreinamentoTurma.Infra
 
             using (var conexao = new SqlConnection(ObterConnectionString))
             {
-                var queryResult = conexao.Query<Turma>(query);
-                turmas = queryResult.ToList();
+                return conexao.Query<Turma>(query)
+                    .ToList();
             }
-
-            return turmas;
         }
 
         public Turma BuscarTurmaPorId(int id)
@@ -40,10 +38,9 @@ namespace TreinamentoTurma.Infra
 
             using (var conexao = new SqlConnection(ObterConnectionString))
             {
-                var queryResult = conexao.Query<Turma>(query, new {Id = id } );
-                return queryResult.SingleOrDefault();
+                return conexao.QueryFirst<Turma>(query, new { id });
             }
-            
+
         }
 
         public void Atualizar(Turma turma)
@@ -56,13 +53,13 @@ namespace TreinamentoTurma.Infra
             }
         }
 
-        public void Excluir(Turma turma)
+        public void Excluir(int turmaId)
         {
             string query = "DELETE FROM turma WHERE Id = @Id";
 
             using (var conexao = new SqlConnection(ObterConnectionString))
             {
-                var queryResult = conexao.Execute(query, turma);
+                var queryResult = conexao.Execute(query, new { Id = turmaId });
             }
         }
     }

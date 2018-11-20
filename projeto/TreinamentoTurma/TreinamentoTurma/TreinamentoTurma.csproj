@@ -133,6 +133,7 @@
     <Compile Include="Areas\Painel\Controllers\DashboardController.cs" />
     <Compile Include="Areas\Painel\Controllers\TurmaController.cs" />
     <Compile Include="Areas\Painel\PainelAreaRegistration.cs" />
+    <Compile Include="Areas\Painel\ViewModel\TurmaViewModel.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
