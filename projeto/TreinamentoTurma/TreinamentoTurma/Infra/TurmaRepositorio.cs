@@ -16,8 +16,7 @@ namespace TreinamentoTurma.Infra
              O "SELECT SCOPE_IDENTITY();" na query abaixo, previne que quando formos editar uma turma, 
              o link contenha um parâmetro id, uma vez que esse select retorna null
              */
-
-
+             
             string query = "INSERT INTO turma (Descricao,LimiteAlunos) VALUES (@Descricao, @LimiteAlunos); SELECT SCOPE_IDENTITY();";
             
             using (var conexao = new SqlConnection(ObterConnectionString))
@@ -70,5 +69,36 @@ namespace TreinamentoTurma.Infra
                 var queryResult = conexao.Execute(query, new { Id = turmaId });
             }
         }
+        
+        public void Inserir(Inscricao inscricao)
+        {
+            string query = "INSERT INTO inscricao (AlunoId, TurmaId, InscritoEm) VALUES (@AlunoId, @TurmaId, @InscritoEm)";
+            using(var conexao = new SqlConnection(ObterConnectionString))
+            {
+                var queryResult = conexao.Execute(query, inscricao); 
+            }
+        }
+
+        public void ExcluirInscricao(int inscricaoId)
+        {
+            string query = "DELETE FROM inscricao WHERE Id = @Id";
+
+            using (var conexao = new SqlConnection(ObterConnectionString))
+            {
+                var queryResult = conexao.Execute(query, new { Id = inscricaoId });
+            }
+        }
+
+
+        public Inscricao BuscarInscricao(int alunoId, int turmaId)
+        {
+            string query = "SELECT * FROM inscricao WHERE AlunoId = @AlunoId AND TurmaId = @TurmaId";
+
+            using (var conexao = new SqlConnection(ObterConnectionString))
+            {
+                return conexao.QueryFirstOrDefault<Inscricao>(query, new { alunoId, turmaId});
+            }
+        }
+
     }
 }

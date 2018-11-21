@@ -103,32 +103,71 @@ namespace TreinamentoTurma.Areas.Painel.Controllers
         public ActionResult Inscricao()
         {
             List<SelectListItem> turmas = new List<SelectListItem>();
-            turmas.Add(new SelectListItem()
-            {
-                Text = "Turma de programação .Net",
-                Value = "1"
-            });
+            //turmas.Add(new SelectListItem()
+            //{
+            //    Text = "Turma de programação .Net",
+            //    Value = "1"
+            //});
 
-            turmas.Add(new SelectListItem()
-            {
-                Text = "Turma de programação Java",
-                Value = "2"
-            });
+            //turmas.Add(new SelectListItem()
+            //{
+            //    Text = "Turma de programação Java",
+            //    Value = "2"
+            //});
 
-            turmas.Add(new SelectListItem()
-            {
-                Text = "Turma de programação PHP",
-                Value = "3"
-            });
+            //turmas.Add(new SelectListItem()
+            //{
+            //    Text = "Turma de programação PHP",
+            //    Value = "3"
+            //});
+
+            TurmaRepositorio repositorio = new TurmaRepositorio();
+            var listaDeTurmas = repositorio.ListarTurmas();
+            //for (int i = 0; i < listaDeTurmas.Count; i++)
+            //{
+            //    turmas.Add(new SelectListItem()
+            //    {
+            //        Text = listaDeTurmas[i].Descricao,
+            //        Value = listaDeTurmas[i].Id.ToString()
+            //    });
+            //}
+
+            turmas = ListarTurmas(repositorio);
 
             ViewBag.Turmas = turmas;
 
             return View();
         }
 
+        private List<SelectListItem> ListarTurmas(TurmaRepositorio repositorio)
+        {
+            return repositorio
+                .ListarTurmas()
+                .Select(x => new SelectListItem
+                {
+                    Text = x.Descricao,
+                    Value = x.Id.ToString()
+                }).ToList();
+        }
+
         [HttpPost]
         public ActionResult Inscricao(Inscricao inscricao)
         {
+            inscricao.AlunoId = 1;
+            inscricao.InscritoEm = DateTime.Now;
+            TurmaRepositorio repositorio = new TurmaRepositorio();
+
+            if(repositorio.BuscarInscricao(inscricao.AlunoId, inscricao.TurmaId) == null)
+            {
+                repositorio.Inserir(inscricao);
+            }
+            else
+            {
+                ModelState.AddModelError("", "Este aluno já está inscrito nesta turma");
+            }
+
+            ViewBag.Turmas = ListarTurmas(repositorio);
+
             return View();
         }
     }

@@ -1,0 +1,31 @@
+﻿@model TreinamentoTurma.Models.Usuario
+
+@{
+    ViewBag.Title = "Login";
+}
+
+<h2>Cadastrar</h2>
+<div class="jumbotron">
+    <div class="row">
+        <div class="col-12">
+            @using (Html.BeginForm("Login", "Usuario", FormMethod.Post, new { }))
+            {
+                <div class="col-12">
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.Codigo)
+                        @Html.TextBoxFor(m => m.Codigo, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.Codigo, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="col-12">
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.Senha)
+                        @Html.TextBoxFor(m => m.Senha, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.Senha, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <button class="btn btn-default" type="submit">Entrar</button>
+            }
+        </div>
+    </div>
+</div>

@@ -132,6 +132,7 @@
     <Compile Include="Areas\Painel\Controllers\AlunoController.cs" />
     <Compile Include="Areas\Painel\Controllers\DashboardController.cs" />
     <Compile Include="Areas\Painel\Controllers\TurmaController.cs" />
+    <Compile Include="Areas\Painel\Controllers\UsuarioController.cs" />
     <Compile Include="Areas\Painel\PainelAreaRegistration.cs" />
     <Compile Include="Areas\Painel\ViewModel\TurmaViewModel.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -144,6 +145,7 @@
     <Compile Include="Models\Aluno.cs" />
     <Compile Include="Models\Inscricao.cs" />
     <Compile Include="Models\Turma.cs" />
+    <Compile Include="Models\Usuario.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -164,6 +166,7 @@
     <Content Include="Areas\Painel\Views\Turma\Cadastrar.cshtml" />
     <Content Include="Areas\Painel\Views\Aluno\Cadastrar.cshtml" />
     <Content Include="Areas\Painel\Views\Turma\Inscricao.cshtml" />
+    <Content Include="Areas\Painel\Views\Usuario\Login.cshtml" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\inputmask\bindings\inputmask.binding.js" />
     <Content Include="Scripts\inputmask\dependencyLibs\inputmask.dependencyLib.jqlite.js" />

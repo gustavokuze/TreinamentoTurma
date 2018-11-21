@@ -25,13 +25,13 @@ namespace TreinamentoTurma.Areas.Painel.Controllers
         public ActionResult Cadastrar(Aluno aluno)
         {
             AlunoRepositorio repositorio = new AlunoRepositorio();
-            if (repositorio.BuscarAluno(aluno.Email) != null)
+            if (repositorio.BuscarAluno(aluno.Email) == null)
             {
-                ModelState.AddModelError("", $"O email {aluno.Email} já está cadastrado");
+                repositorio.Inserir(aluno);
             }
             else
             {
-                repositorio.Inserir(aluno);
+                ModelState.AddModelError("", $"O email {aluno.Email} já está cadastrado");
             }
             
             return View(new Aluno());
