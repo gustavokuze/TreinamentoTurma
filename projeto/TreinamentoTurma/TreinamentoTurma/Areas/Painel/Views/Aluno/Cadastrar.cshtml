@@ -5,6 +5,8 @@
 }
 
 <h2>Cadastrar</h2>
+@Html.ValidationSummary(false, "", new { @class = "text-danger" })
+
 <div class="row">
     <div class="col-12">
         @using (Html.BeginForm("Cadastrar", "Aluno", FormMethod.Post, new { }))
@@ -28,7 +30,8 @@
             <div class="col-md-12">
                 <div class="form-group">
                     @Html.LabelFor(m => m.DataNascimento)
-                    @Html.TextBoxFor(m => m.DataNascimento, new { @class = "form-control input-nascimento"})
+                    @*@Html.TextBoxFor(m => m.DataNascimento, "{0:dd/MM/yyyy}", new { @class = "form-control input-nascimento" })*@
+                    @Html.EditorFor(m=>m.DataNascimento, new { @class = "form-control" })
                     @Html.ValidationMessageFor(m => m.DataNascimento, "", new { @class = "text-danger" })
                 </div>
             </div>
@@ -43,6 +46,6 @@
     @Scripts.Render("~/bundles/inputmask")
     @Scripts.Render("~/bundles/jqueryval")
 
-    
+
 
 }

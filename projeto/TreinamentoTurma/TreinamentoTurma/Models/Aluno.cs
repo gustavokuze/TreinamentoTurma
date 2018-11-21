@@ -21,8 +21,10 @@ namespace TreinamentoTurma.Models
         
         public string Email { get; set; }
 
-        [DataType(DataType.Date)]
+        [Editable(true)]
+        [DataType(DataType.Date, ErrorMessage = "Data em formato inválido")]
         [Display(Name = "Data de nascimento")]
+        //[DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
         public DateTime DataNascimento { get; set; }
     }
 }

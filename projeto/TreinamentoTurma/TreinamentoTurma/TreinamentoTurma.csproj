@@ -138,6 +138,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Infra\AlunoRepositorio.cs" />
     <Compile Include="Infra\Repositorio.cs" />
     <Compile Include="Infra\TurmaRepositorio.cs" />
     <Compile Include="Models\Aluno.cs" />

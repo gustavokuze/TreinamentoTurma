@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using TreinamentoTurma.Infra;
 using TreinamentoTurma.Models;
 
 namespace TreinamentoTurma.Areas.Painel.Controllers
@@ -23,7 +24,18 @@ namespace TreinamentoTurma.Areas.Painel.Controllers
         [HttpPost]
         public ActionResult Cadastrar(Aluno aluno)
         {
-            return View();
+            AlunoRepositorio repositorio = new AlunoRepositorio();
+            if (repositorio.BuscarAluno(aluno.Email) != null)
+            {
+                ModelState.AddModelError("", $"O email {aluno.Email} já está cadastrado");
+            }
+            else
+            {
+                repositorio.Inserir(aluno);
+            }
+            
+            return View(new Aluno());
         }
+        
     }
 }
