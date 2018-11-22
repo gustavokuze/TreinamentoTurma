@@ -27,6 +27,11 @@ namespace TreinamentoTurma.Areas.Painel.Controllers
             AlunoRepositorio repositorio = new AlunoRepositorio();
             if (repositorio.BuscarAluno(aluno.Email) == null)
             {
+                var codigoUsuario = GerarCodigoValido();
+                var senhaUsuario = GerarSenha();
+                aluno.Codigo = codigoUsuario;
+                aluno.Senha = senhaUsuario;
+
                 repositorio.Inserir(aluno);
             }
             else
@@ -36,6 +41,29 @@ namespace TreinamentoTurma.Areas.Painel.Controllers
             
             return View(new Aluno());
         }
-        
+
+
+        private int GerarCodigoValido(Random random = null)
+        {
+            UsuarioRepositorio repositorio = new UsuarioRepositorio();
+
+
+            var rand = (random == null) ? new Random() : random;
+            int randNum = rand.Next(100000, 999999);
+
+            return (repositorio.ValidarCodigo(randNum) == null) ? randNum : GerarCodigoValido(rand);
+        }
+
+        private string GerarSenha()
+        {
+            Guid g = Guid.NewGuid();
+            string GuidString = Convert.ToBase64String(g.ToByteArray());
+            GuidString = GuidString.Replace("=", "");
+            GuidString = GuidString.Replace("+", "");
+            GuidString = GuidString.Replace("/", "");
+            GuidString = GuidString.Replace("\\", "");
+            return GuidString;
+        }
+
     }
 }

@@ -10,16 +10,21 @@ namespace TreinamentoTurma.Infra
 {
     public class AlunoRepositorio : Repositorio
     {
+      
+
         public int Inserir(Aluno aluno)
         {
-            string query = "INSERT INTO aluno (Nome, Email, DataNascimento) VALUES (@Nome, @Email, @DataNascimento); SELECT SCOPE_IDENTITY();";
+            
+            int idUsuario = new UsuarioRepositorio().Inserir(aluno as Usuario);
+
+            var query = "INSERT INTO aluno (IdUsuario, Nome, Email, DataNascimento) VALUES (@IdUsuario, @Nome, @Email, @DataNascimento) ;"; //precisamos criar uma variável aqui
 
             using (var conexao = new SqlConnection(ObterConnectionString))
             {
-                return conexao.QueryFirst<int>(query, aluno);
+                return conexao.QueryFirstOrDefault<int>(query, new { idUsuario, aluno.Nome, aluno.Email, aluno.DataNascimento }); 
             }
         }
-         
+
         public void Atualizar(Aluno aluno)
         {
             string query = "UPDATE aluno SET Nome = @Nome, Email = @Email, DataNascimento = @DataNascimento WHERE Id = @Id";
@@ -63,7 +68,6 @@ namespace TreinamentoTurma.Infra
 
         }
 
-
         public Aluno BuscarAluno(string email)
         {
             string query = "SELECT * FROM aluno WHERE Email = @Email";
@@ -75,5 +79,15 @@ namespace TreinamentoTurma.Infra
 
         }
 
+        public Aluno BuscarAlunoPorCodigoDeUsuario(int codigo)
+        {
+            string query = "SELECT * FROM aluno WHERE IdUsuario = @IdUsuario";
+
+            using (var conexao = new SqlConnection(ObterConnectionString))
+            {
+                return conexao.QueryFirstOrDefault<Aluno>(query, new { codigo });
+            }
+
+        }
     }
 }

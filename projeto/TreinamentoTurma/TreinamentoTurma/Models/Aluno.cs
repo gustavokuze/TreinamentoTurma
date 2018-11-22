@@ -6,7 +6,7 @@ using System.Web;
 
 namespace TreinamentoTurma.Models
 {
-    public class Aluno
+    public class Aluno : Usuario
     {
         public int Id { get; set; }
 

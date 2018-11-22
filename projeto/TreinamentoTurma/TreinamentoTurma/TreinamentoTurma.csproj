@@ -142,6 +142,7 @@
     <Compile Include="Infra\AlunoRepositorio.cs" />
     <Compile Include="Infra\Repositorio.cs" />
     <Compile Include="Infra\TurmaRepositorio.cs" />
+    <Compile Include="Infra\UsuarioRepositorio.cs" />
     <Compile Include="Models\Aluno.cs" />
     <Compile Include="Models\Inscricao.cs" />
     <Compile Include="Models\Turma.cs" />

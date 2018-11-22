@@ -12,6 +12,7 @@
             {
                 <div class="col-12">
                     <div class="form-group">
+                        @Html.HiddenFor(m=>m.Id)
                         @Html.LabelFor(m => m.Codigo)
                         @Html.TextBoxFor(m => m.Codigo, new { @class = "form-control" })
                         @Html.ValidationMessageFor(m => m.Codigo, "", new { @class = "text-danger" })
