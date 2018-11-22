@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.Linq; 
 using System.Web;
 using System.Web.Mvc;
+using TreinamentoTurma.Areas.Painel.ViewModel;
 using TreinamentoTurma.Infra;
 using TreinamentoTurma.Models;
 
@@ -22,10 +23,10 @@ namespace TreinamentoTurma.Areas.Painel.Controllers
         }
 
         [HttpPost]
-        public ActionResult Login(Usuario usuario)
+        public ActionResult Login(UsuarioViewModel viewModel)
         {
             UsuarioRepositorio repositorio = new UsuarioRepositorio();
-            var usuarioCadastrado = repositorio.VerificarUsuario(usuario.Codigo, usuario.Senha);
+            var usuarioCadastrado = repositorio.VerificarUsuario(viewModel.Usuario.Codigo, viewModel.Usuario.Senha); 
 
             if(usuarioCadastrado == null)
             {
@@ -33,15 +34,32 @@ namespace TreinamentoTurma.Areas.Painel.Controllers
             }
             else
             {
-                var alunoUsuario = new AlunoRepositorio().BuscarAlunoPorCodigoDeUsuario(usuario.Codigo);
-                if (alunoUsuario == null)
+                if (viewModel.SouProfessor)
                 {
-                    return Content("O aluno com o codigo passado não foi encontrado");
+                    var professorUsuario = new ProfessorRepositorio().BuscarProfessorPorIdDeUsuario(usuarioCadastrado.Id);
+                    if (professorUsuario == null)
+                    {
+                        return Content("O professor com o codigo passado não foi encontrado.");
+                    }
+                    else
+                    {
+                        return Content(professorUsuario.Cpf);
+                    } 
                 }
                 else
                 {
-                    return Content(alunoUsuario.Email);
+                    var alunoUsuario = new AlunoRepositorio().BuscarAlunoPorIdDeUsuario(usuarioCadastrado.Id);
+                    if (alunoUsuario == null)
+                    {
+                        return Content("O aluno com o codigo passado não foi encontrado.");
+                    }
+                    else
+                    {
+                        return Content(alunoUsuario.Email);
+                    }
                 }
+
+                
             }
 
             //return View();

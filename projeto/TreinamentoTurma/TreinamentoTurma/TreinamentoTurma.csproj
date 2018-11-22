@@ -131,20 +131,24 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Areas\Painel\Controllers\AlunoController.cs" />
     <Compile Include="Areas\Painel\Controllers\DashboardController.cs" />
+    <Compile Include="Areas\Painel\Controllers\ProfessorController.cs" />
     <Compile Include="Areas\Painel\Controllers\TurmaController.cs" />
     <Compile Include="Areas\Painel\Controllers\UsuarioController.cs" />
     <Compile Include="Areas\Painel\PainelAreaRegistration.cs" />
     <Compile Include="Areas\Painel\ViewModel\TurmaViewModel.cs" />
+    <Compile Include="Areas\Painel\ViewModel\UsuarioViewModel.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Infra\AlunoRepositorio.cs" />
+    <Compile Include="Infra\ProfessorRepositorio.cs" />
     <Compile Include="Infra\Repositorio.cs" />
     <Compile Include="Infra\TurmaRepositorio.cs" />
     <Compile Include="Infra\UsuarioRepositorio.cs" />
     <Compile Include="Models\Aluno.cs" />
     <Compile Include="Models\Inscricao.cs" />
+    <Compile Include="Models\Professor.cs" />
     <Compile Include="Models\Turma.cs" />
     <Compile Include="Models\Usuario.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -168,6 +172,7 @@
     <Content Include="Areas\Painel\Views\Aluno\Cadastrar.cshtml" />
     <Content Include="Areas\Painel\Views\Turma\Inscricao.cshtml" />
     <Content Include="Areas\Painel\Views\Usuario\Login.cshtml" />
+    <Content Include="Areas\Painel\Views\Professor\Cadastrar.cshtml" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\inputmask\bindings\inputmask.binding.js" />
     <Content Include="Scripts\inputmask\dependencyLibs\inputmask.dependencyLib.jqlite.js" />
@@ -200,6 +205,7 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\mascaras.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
+    <Content Include="TODOs.txt" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>

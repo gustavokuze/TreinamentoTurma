@@ -37,7 +37,7 @@ namespace TreinamentoTurma.Infra
             }
         }
 
-        public Usuario ValidarCodigo(int codigo)
+        public Usuario ValidarCodigo(int codigo) 
         {
             string query = "SELECT * FROM usuario where Codigo = @Codigo";
             using (var conexao = new SqlConnection(ObterConnectionString))

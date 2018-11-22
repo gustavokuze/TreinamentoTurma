@@ -39,10 +39,9 @@ namespace TreinamentoTurma.Areas.Painel.Controllers
                 ModelState.AddModelError("", $"O email {aluno.Email} já está cadastrado");
             }
             
-            return View(new Aluno());
+            return RedirectToAction("Cadastrar");
         }
-
-
+        
         private int GerarCodigoValido(Random random = null)
         {
             UsuarioRepositorio repositorio = new UsuarioRepositorio();
@@ -62,7 +61,8 @@ namespace TreinamentoTurma.Areas.Painel.Controllers
             GuidString = GuidString.Replace("+", "");
             GuidString = GuidString.Replace("/", "");
             GuidString = GuidString.Replace("\\", "");
-            return GuidString;
+            
+            return GuidString.Substring(0, 6);
         }
 
     }
