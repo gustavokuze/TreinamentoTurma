@@ -4,11 +4,13 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using TreinamentoTurma.Areas.Painel.ViewModel;
+using TreinamentoTurma.Filters;
 using TreinamentoTurma.Infra;
 using TreinamentoTurma.Models;
 
-namespace TreinamentoTurma.Areas.Painel.Controllers
+namespace TreinamentoTurma.Areas.Painel.Controllers 
 {
+    [Autenticacao(Roles = "_PROFESSOR_")]
     public class TurmaController : Controller
     {
         // GET: Painel/Turma

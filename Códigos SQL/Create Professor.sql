@@ -1,0 +1,6 @@
+CREATE TABLE professor(
+	IdUsuario INT PRIMARY KEY NOT NULL,
+	Nome NVARCHAR(30) NOT NULL,
+	Cpf VARCHAR(15) NOT NULL,
+	CONSTRAINT fk_usuario_professor FOREIGN KEY (IdUsuario) REFERENCES usuario(Id)
+);

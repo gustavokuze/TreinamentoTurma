@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using TreinamentoTurma.Filters;
 using TreinamentoTurma.Helpers;
 using TreinamentoTurma.Infra;
 using TreinamentoTurma.Models;
 
 namespace TreinamentoTurma.Areas.Painel.Controllers
 {
+    [Autenticacao(Roles = "_PROFESSOR_")]
     public class ProfessorController : Controller
     {
         // GET: Painel/Professor

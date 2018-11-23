@@ -13,7 +13,7 @@ namespace TreinamentoTurma.Areas.Painel.Controllers
         [Autenticacao]
         public ActionResult Index()
         {
-            return View();
+            return View();  
         }
     }
 }

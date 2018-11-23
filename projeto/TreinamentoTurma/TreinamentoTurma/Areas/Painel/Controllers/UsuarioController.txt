@@ -1,0 +1,25 @@
+﻿//using System;
+//using System.Collections.Generic;
+//using System.Linq;
+//using System.Web;
+//using System.Web.Mvc;
+//using TreinamentoTurma.Areas.Painel.ViewModel;
+//using TreinamentoTurma.Filters;
+//using TreinamentoTurma.Helpers;
+//using TreinamentoTurma.Infra;
+//using TreinamentoTurma.Models;
+
+//namespace TreinamentoTurma.Areas.Painel.Controllers
+//{
+//    [Autenticacao]
+//    public class UsuarioController : Controller
+//    {
+//        // GET: Painel/Usuario
+//        public ActionResult Index()
+//        {
+//            return View();
+//        }
+
+        
+//    }
+//}

@@ -8,6 +8,17 @@ namespace TreinamentoTurma.Models
 {
     public class Aluno : Usuario
     {
+
+        //public Aluno(string nome, string email, DateTime dataNascimento, string telefone, string endereco, int id = 0)
+        //{
+        //    Id = id;
+        //    Nome = nome;
+        //    Email = email;
+        //    DataNascimento = dataNascimento;
+        //    Telefone = telefone;
+        //    Endereco = endereco;
+        //}
+
         public int Id { get; set; }
 
         [Required]
@@ -18,7 +29,6 @@ namespace TreinamentoTurma.Models
         // 
         //[DataType(DataType.EmailAddress)]
         [Required]
-        
         public string Email { get; set; }
 
         [Editable(true)]
@@ -26,5 +36,11 @@ namespace TreinamentoTurma.Models
         [Display(Name = "Data de nascimento")]
         //[DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
         public DateTime DataNascimento { get; set; }
+
+        //[Required]
+        //public string Telefone { get; set; }
+
+        //[Required]
+        //public string Endereco { get; set; }
     }
 }
