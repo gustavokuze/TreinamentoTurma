@@ -8,6 +8,17 @@ namespace TreinamentoTurma.Models
 {
     public class Usuario
     {
+        internal Usuario()
+        {
+
+        }
+
+        public Usuario(int codigo, string senha)
+        {
+            Codigo = codigo;
+            Senha = senha;
+        }
+
         public int Id { get; set; }
         [Required]
         public int Codigo { get; set; }

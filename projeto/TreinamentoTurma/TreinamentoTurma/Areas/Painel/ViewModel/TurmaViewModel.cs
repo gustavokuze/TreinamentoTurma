@@ -10,7 +10,7 @@ namespace TreinamentoTurma.Areas.Painel.ViewModel
     {
         public TurmaViewModel()
         {
-            Turma = new Turma(); // Garante que Turma sempre estará instanciada
+            Turma = new Turma("", 0, 0); // Garante que Turma sempre estará instanciada
         }
 
         public Turma Turma { get; set; }

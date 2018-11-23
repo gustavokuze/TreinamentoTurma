@@ -8,6 +8,17 @@ namespace TreinamentoTurma.Models
 {
     public class Turma
     {
+        internal Turma()
+        {
+
+        }
+
+        public Turma(string descricao, int limiteAlunos)
+        {
+            Descricao = descricao;
+            LimiteAlunos = limiteAlunos;
+        }
+
         public int Id { get; set; }
 
         [Required(ErrorMessage = "O campo {0} é obrigatório!")]
@@ -17,5 +28,7 @@ namespace TreinamentoTurma.Models
         [Required]
         [Display(Name = "Limite de alunos")]
         public int LimiteAlunos { get; set; }
+
+
     }
 }

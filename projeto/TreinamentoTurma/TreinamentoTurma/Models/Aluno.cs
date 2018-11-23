@@ -8,16 +8,19 @@ namespace TreinamentoTurma.Models
 {
     public class Aluno : Usuario
     {
+        internal Aluno()
+        {
 
-        //public Aluno(string nome, string email, DateTime dataNascimento, string telefone, string endereco, int id = 0)
-        //{
-        //    Id = id;
-        //    Nome = nome;
-        //    Email = email;
-        //    DataNascimento = dataNascimento;
-        //    Telefone = telefone;
-        //    Endereco = endereco;
-        //}
+        }
+
+        public Aluno(string nome, string email, DateTime dataNascimento, string telefone, string endereco, int codigo, string senha) : base(codigo, senha)
+        {
+            Nome = nome;
+            Email = email;
+            DataNascimento = dataNascimento;
+            Telefone = telefone;
+            Endereco = endereco;
+        }
 
         public int Id { get; set; }
 
@@ -37,10 +40,10 @@ namespace TreinamentoTurma.Models
         //[DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
         public DateTime DataNascimento { get; set; }
 
-        //[Required]
-        //public string Telefone { get; set; }
+        [Required]
+        public string Telefone { get; set; }
 
-        //[Required]
-        //public string Endereco { get; set; }
+        [Required]
+        public string Endereco { get; set; }
     }
 }
