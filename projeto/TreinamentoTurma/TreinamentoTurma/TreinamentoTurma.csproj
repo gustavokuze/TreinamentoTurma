@@ -136,11 +136,14 @@
     <Compile Include="Areas\Painel\Controllers\UsuarioController.cs" />
     <Compile Include="Areas\Painel\PainelAreaRegistration.cs" />
     <Compile Include="Areas\Painel\ViewModel\TurmaViewModel.cs" />
-    <Compile Include="Areas\Painel\ViewModel\UsuarioViewModel.cs" />
+    <Content Include="Areas\Painel\ViewModel\UsuarioViewModel.txt" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Filters\AutenticacaoAttribute.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\Base64.cs" />
+    <Compile Include="Helpers\Geradores.cs" />
     <Compile Include="Infra\AlunoRepositorio.cs" />
     <Compile Include="Infra\ProfessorRepositorio.cs" />
     <Compile Include="Infra\Repositorio.cs" />

@@ -19,7 +19,7 @@ namespace TreinamentoTurma.Infra
             }
         }
          
-        public Usuario VerificarUsuario(int codigo, string senha)
+        public Usuario ValidarUsuario(int codigo, string senha)
         {
             string query = "SELECT * FROM usuario where Codigo = @Codigo AND Senha = @Senha";
             using (var conexao = new SqlConnection(ObterConnectionString))

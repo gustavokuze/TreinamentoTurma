@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using TreinamentoTurma.Helpers;
 using TreinamentoTurma.Infra;
 using TreinamentoTurma.Models;
 
@@ -22,17 +23,18 @@ namespace TreinamentoTurma.Areas.Painel.Controllers
         }
 
         [HttpPost]
-        public ActionResult Cadastrar(Professor professor)
+        public ActionResult Cadastrar(Professor professor) 
         {
             ProfessorRepositorio repositorio = new ProfessorRepositorio(); 
             if (repositorio.BuscarProfessor(professor.Cpf) == null)
             {
-                var codigoUsuario = GerarCodigoValido();
-                var senhaUsuario = GerarSenha();
+                var codigoUsuario = Geradores.GerarCodigoValido();
+                var senhaUsuario = Geradores.GerarSenha();
                 professor.Codigo = codigoUsuario;
                 professor.Senha = senhaUsuario;
 
                 repositorio.Inserir(professor);
+                TempData["Sucesso"] = $"Professor cadastrado com sucesso. Anote sua senha: {senhaUsuario}.";
             }
             else
             {
@@ -42,27 +44,6 @@ namespace TreinamentoTurma.Areas.Painel.Controllers
             return RedirectToAction("Cadastrar");
         }
 
-        private int GerarCodigoValido(Random random = null)
-        {
-            UsuarioRepositorio repositorio = new UsuarioRepositorio();
-
-
-            var rand = (random == null) ? new Random() : random;
-            int randNum = rand.Next(100000, 999999);
-
-            return (repositorio.ValidarCodigo(randNum) == null) ? randNum : GerarCodigoValido(rand);
-        }
-
-        private string GerarSenha()
-        {
-            Guid g = Guid.NewGuid();
-            string GuidString = Convert.ToBase64String(g.ToByteArray());
-            GuidString = GuidString.Replace("=", "");
-            GuidString = GuidString.Replace("+", "");
-            GuidString = GuidString.Replace("/", "");
-            GuidString = GuidString.Replace("\\", "");
-
-            return GuidString.Substring(0, 6);
-        }
+        
     }
 }

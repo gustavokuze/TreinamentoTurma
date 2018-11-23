@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
+using TreinamentoTurma.Helpers;
 using TreinamentoTurma.Models;
 
 namespace TreinamentoTurma.Infra
@@ -12,6 +13,9 @@ namespace TreinamentoTurma.Infra
     {
         public void Inserir(Professor professor)
         {
+            string senhaPraBase64 = Base64.ParaBase64(professor.Senha);
+            professor.Senha = senhaPraBase64;
+
             int idUsuario = new UsuarioRepositorio().Inserir(professor as Usuario);
 
             var query = @"INSERT INTO professor (IdUsuario, Nome, Cpf)
