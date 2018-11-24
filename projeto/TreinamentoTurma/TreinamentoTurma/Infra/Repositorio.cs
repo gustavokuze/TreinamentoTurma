@@ -11,3 +11,16 @@ namespace TreinamentoTurma.Infra
         protected string ObterConnectionString { get { return ConfigurationManager.ConnectionStrings["treinamento"].ConnectionString; } }
     }
 }
+
+/*
+    ConnectionString da RCA:
+    <connectionStrings>
+        <add name="treinamento" connectionString="Database=treinamento; Data Source=RCA179;Integrated Security=True"/>
+    </connectionStrings>
+
+    Minha:
+    <connectionStrings>
+    <add name="treinamento" connectionString="Data Source=DESKTOP-DPFR0A0;Initial Catalog=treinamento;User ID=sa"/>
+  </connectionStrings>
+     
+*/

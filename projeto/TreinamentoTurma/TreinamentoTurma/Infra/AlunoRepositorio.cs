@@ -19,18 +19,18 @@ namespace TreinamentoTurma.Infra
 
             int idUsuario = new UsuarioRepositorio().Inserir(aluno as Usuario);
 
-            var query = @"INSERT INTO aluno (IdUsuario, Nome, Email, DataNascimento)
-                        VALUES (@IdUsuario, @Nome, @Email, @DataNascimento);";
+            var query = @"INSERT INTO aluno (IdUsuario, Nome, Email, DataNascimento, Telefone, Endereco)
+                        VALUES (@IdUsuario, @Nome, @Email, @DataNascimento, @Telefone, @Endereco);";
 
             using (var conexao = new SqlConnection(ObterConnectionString))
             {
-                conexao.Execute(query, new { idUsuario, aluno.Nome, aluno.Email, aluno.DataNascimento }); 
+                conexao.Execute(query, new { idUsuario, aluno.Nome, aluno.Email, aluno.DataNascimento, aluno.Telefone, aluno.Endereco }); 
             }
         }
 
         public void Atualizar(Aluno aluno)
         {
-            string query = "UPDATE aluno SET Nome = @Nome, Email = @Email, DataNascimento = @DataNascimento WHERE Id = @Id";
+            string query = "UPDATE aluno SET Nome = @Nome, Email = @Email, DataNascimento = @DataNascimento, Telefone = @Telefone, Endereco = @Endereco WHERE Id = @Id";
 
             using (var conexao = new SqlConnection(ObterConnectionString))
             {

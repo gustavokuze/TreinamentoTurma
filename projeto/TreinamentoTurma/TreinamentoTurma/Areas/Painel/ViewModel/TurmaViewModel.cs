@@ -10,11 +10,11 @@ namespace TreinamentoTurma.Areas.Painel.ViewModel
     {
         public TurmaViewModel()
         {
-            Turma = new Turma("", 0, 0); // Garante que Turma sempre estará instanciada
+            
         }
 
-        public Turma Turma { get; set; }
-        public List<Turma> ListaTurmas { get; set; }
+        public Turma Turma { get; set; } = new Turma();
+        public List<Turma> ListaTurmas { get; set; } = new List<Turma>();
     }
 }
 

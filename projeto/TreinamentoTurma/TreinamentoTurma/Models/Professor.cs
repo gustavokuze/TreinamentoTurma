@@ -9,7 +9,7 @@ namespace TreinamentoTurma.Models
     public class Professor : Usuario
     {
 
-        internal Professor()
+        public Professor()
         {
 
         }
@@ -31,9 +31,11 @@ namespace TreinamentoTurma.Models
         public string Cpf { get; set; }
 
         [Required]
+        [DataType(DataType.PhoneNumber)]
         public string Telefone { get; set; }
 
         [Required]
+        [Display(Name = "Endereço")]
         public string Endereco { get; set; }
     }
 }
