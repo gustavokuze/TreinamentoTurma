@@ -16,6 +16,7 @@ namespace TreinamentoTurma
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
+            //criar aqui a chama para o método estático RegisterMappers que será criado na pasta Mappers (pesquisar na internet)
         }
     }
 }

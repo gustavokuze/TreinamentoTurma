@@ -22,7 +22,7 @@ namespace TreinamentoTurma.Areas.Painel.Controllers
         public ActionResult Cadastrar(int? id = null)
         {
             TurmaViewModel viewModel = new TurmaViewModel();
-            TurmaRepositorio repositorio = new TurmaRepositorio();
+            TurmaRepositorio repositorio = new TurmaRepositorio(); 
             
             viewModel.ListaTurmas = repositorio.ListarTurmas();
             

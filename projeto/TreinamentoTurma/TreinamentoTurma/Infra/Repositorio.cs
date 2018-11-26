@@ -13,9 +13,6 @@ namespace TreinamentoTurma.Infra
 }
 
 /*
-    
-
-
     ConnectionString da RCA:
     <connectionStrings>
         <add name="treinamento" connectionString="Database=treinamento; Data Source=RCA179;Integrated Security=True"/>

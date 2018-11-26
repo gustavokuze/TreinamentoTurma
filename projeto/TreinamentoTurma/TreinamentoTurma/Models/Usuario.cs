@@ -8,7 +8,7 @@ namespace TreinamentoTurma.Models
 {
     public class Usuario
     {
-        public Usuario()
+        internal Usuario()
         {
 
         }

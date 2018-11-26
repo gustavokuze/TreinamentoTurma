@@ -9,7 +9,7 @@ namespace TreinamentoTurma.Models
     public class Professor : Usuario
     {
 
-        public Professor()
+        internal Professor()
         {
 
         }

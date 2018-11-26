@@ -8,7 +8,7 @@ namespace TreinamentoTurma.Models
 {
     public class Inscricao
     {
-        public Inscricao()
+        internal Inscricao()
         {
 
         }
