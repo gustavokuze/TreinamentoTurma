@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
-using TreinamentoTurma.Helpers;
+using TreinamentoTurma.Helpers; 
 using TreinamentoTurma.Models;
 
 namespace TreinamentoTurma.Infra
@@ -17,19 +17,19 @@ namespace TreinamentoTurma.Infra
             professor.Senha = senhaPraBase64;
 
             int idUsuario = new UsuarioRepositorio().Inserir(professor as Usuario);
-
-            var query = @"INSERT INTO professor (IdUsuario, Nome, Cpf)
-                        VALUES (@IdUsuario, @Nome, @Cpf);";
+             
+            var query = @"INSERT INTO professor (IdUsuario, Nome, Cpf, Telefone, Endereco)
+                        VALUES (@IdUsuario, @Nome, @Cpf, @Telefone, @Endereco);";
 
             using (var conexao = new SqlConnection(ObterConnectionString))
             {
-                conexao.Execute(query, new { idUsuario, professor.Nome, professor.Cpf});
+                conexao.Execute(query, new { idUsuario, professor.Nome, professor.Cpf, professor.Telefone, professor.Endereco});
             }
         }
 
         public void Atualizar(Professor professor)
         {
-            string query = "UPDATE professor SET Nome = @Nome, Cpf=@Cpf WHERE Id = @Id";
+            string query = "UPDATE professor SET Nome = @Nome, Cpf=@Cpf, Telefone = @Telefone, Endereco = @Endereco WHERE Id = @Id";
 
             using (var conexao = new SqlConnection(ObterConnectionString))
             {

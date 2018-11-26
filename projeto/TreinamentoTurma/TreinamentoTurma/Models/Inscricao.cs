@@ -8,7 +8,7 @@ namespace TreinamentoTurma.Models
 {
     public class Inscricao
     {
-        internal Inscricao()
+        public Inscricao()
         {
 
         }
@@ -21,6 +21,7 @@ namespace TreinamentoTurma.Models
         }
 
         public int Id { get; set; }
+        [Required] //talvez não seja necessário
         public int AlunoId { get; set; }
         [Required]
         public int TurmaId { get; set; }

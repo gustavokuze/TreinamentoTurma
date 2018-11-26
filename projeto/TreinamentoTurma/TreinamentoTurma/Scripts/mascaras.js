@@ -10,6 +10,11 @@ $(document).ready(() => {
     //});
     
     $("#Cpf").inputmask("mask", { mask: "999.999.999-99" });
+    $("#Telefone").inputmask("mask", {
+        mask: ["(99) 9999-9999", "(99) 99999-9999",],
+        keepStatic: true 
+    });
+    
 
 });
 

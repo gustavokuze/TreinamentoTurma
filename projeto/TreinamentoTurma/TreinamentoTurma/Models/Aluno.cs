@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
+using System.Linq; 
 using System.Web;
 
 namespace TreinamentoTurma.Models
 {
     public class Aluno : Usuario
     {
-        internal Aluno()
+        public Aluno()
         {
 
         }
@@ -30,7 +30,7 @@ namespace TreinamentoTurma.Models
         [RegularExpression(@"^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$", ErrorMessage = "Entre com um email válido")]
         // ou
         // 
-        //[DataType(DataType.EmailAddress)]
+        //[DataType(DataType.EmailAddress)] 
         [Required]
         public string Email { get; set; }
 
@@ -41,9 +41,11 @@ namespace TreinamentoTurma.Models
         public DateTime DataNascimento { get; set; }
 
         [Required]
+        [DataType(DataType.PhoneNumber)]
         public string Telefone { get; set; }
 
         [Required]
+        [Display(Name = "Endereço")]
         public string Endereco { get; set; }
     }
 }
