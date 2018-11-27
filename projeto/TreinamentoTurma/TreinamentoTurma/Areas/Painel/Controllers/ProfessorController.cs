@@ -1,8 +1,10 @@
-﻿using System;
+﻿using AutoMapper;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using TreinamentoTurma.Areas.Painel.ViewModel;
 using TreinamentoTurma.Filters;
 using TreinamentoTurma.Helpers;
 using TreinamentoTurma.Infra;
@@ -25,18 +27,19 @@ namespace TreinamentoTurma.Areas.Painel.Controllers
         }
 
         [HttpPost]
-        public ActionResult Cadastrar(Professor professor) 
+        public ActionResult Cadastrar(ProfessorViewModel professorViewModel) 
         {
             ProfessorRepositorio repositorio = new ProfessorRepositorio(); 
-            if (repositorio.ProfessorJaCadastrado(professor.Cpf))
+            if (repositorio.BuscarProfessor(professorViewModel.Cpf) is var retorno && retorno.EstaValido)
             {
-                ModelState.AddModelError("", $"O CPF {professor.Cpf} já está cadastrado");
+                ModelState.AddModelError("", $"O CPF {professorViewModel.Cpf} já está cadastrado");
                 return View();
             }
             else
             {
+                Professor professor = Mapper.Map<Professor>(professorViewModel);
                 repositorio.Inserir(professor);
-                TempData["Sucesso"] = $"Professor cadastrado com sucesso. Anote sua senha: {professor.Senha}.";
+                TempData["Sucesso"] = $"Professor cadastrado com sucesso. Anote sua senha: {Base64.ParaString(professor.Senha)}.";
             }
 
             return RedirectToAction("Cadastrar");

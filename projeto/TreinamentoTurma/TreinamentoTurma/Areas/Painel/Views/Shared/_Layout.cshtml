@@ -19,7 +19,9 @@
                 @Html.ActionLink("Treinamento Turma", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
             </div>
             <div class="navbar-collapse collapse">
+               @Html.Partial("UsuarioAtualPartialView")
                 <ul class="nav navbar-nav">
+                    <li>@Html.ActionLink("Início", "Index", new { Area="", Controller="Home"})</li>
                 </ul>
             </div>
         </div>

@@ -30,18 +30,18 @@ namespace TreinamentoTurma.Models
         }
 
         public int Id { get; set; }
-        [Required]
+        //[Required]
         public string Nome { get; set; }
-        [Required] 
-        [RegularExpression(@"^\d{3}\.\d{3}\.\d{3}-\d{2}$", ErrorMessage = "Digite um CPF válido")]
+        //[Required] 
+        //[RegularExpression(@"^\d{3}\.\d{3}\.\d{3}-\d{2}$", ErrorMessage = "Digite um CPF válido")]
         public string Cpf { get; set; }
 
-        [Required]
-        [DataType(DataType.PhoneNumber)]
+        //[Required]
+        //[DataType(DataType.PhoneNumber)]
         public string Telefone { get; set; }
 
-        [Required]
-        [Display(Name = "Endereço")]
+        //[Required]
+        //[Display(Name = "Endereço")]
         public string Endereco { get; set; }
     }
 }

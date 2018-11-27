@@ -9,6 +9,8 @@ namespace TreinamentoTurma.Mappers
         public DomainToViewModelMappingProfile()
         {
             CreateMap<Turma, TurmaViewModel>();
+            CreateMap<Aluno, AlunoViewModel>();
+            CreateMap<Professor, ProfessorViewModel>();
         }
     }
 }

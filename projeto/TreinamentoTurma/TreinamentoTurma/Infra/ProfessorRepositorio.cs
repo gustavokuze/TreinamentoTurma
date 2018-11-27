@@ -59,13 +59,16 @@ namespace TreinamentoTurma.Infra
             }
         }
         
-        public bool ProfessorJaCadastrado(string cpf)
+        public Resultado<Professor, Falha> BuscarProfessor(string cpf)
         {
-            string query = "SELECT ProfessorId FROM professor WHERE Cpf = @Cpf";
+            string query = "SELECT IdUsuario FROM professor WHERE Cpf = @Cpf";
 
             using (var conexao = new SqlConnection(ObterConnectionString))
             {
-                return conexao.ExecuteScalar<bool>(query, new { cpf });
+                 var retorno = conexao.QueryFirstOrDefault<Professor>(query, new { cpf });
+                if (retorno == null)
+                    return new Falha("Usuário não encontrado");
+                return retorno;
             }
 
         }

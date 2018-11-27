@@ -1,0 +1,31 @@
+﻿
+
+@if (Session["TreinamentoTurmaUsuarioAtual"] is TreinamentoTurma.Models.Aluno)
+{
+    <li>
+        @Html.ActionLink(
+        $"Olá, {((Session["TreinamentoTurmaUsuarioAtual"] as TreinamentoTurma.Models.Aluno).Nome)}"
+        , "Sair","Login", new { Area = ""},
+        new { @class = "pull-right" })
+    </li>
+
+
+}
+else if (Session["TreinamentoTurmaUsuarioAtual"] is TreinamentoTurma.Models.Professor)
+{
+    <li>
+        @Html.ActionLink(
+        $"Olá, Prof. {((Session["TreinamentoTurmaUsuarioAtual"] as TreinamentoTurma.Models.Professor).Nome)}"
+        , "Sair", "Login", new { Area = "" },
+        new { @class = "pull-right" })
+    </li>
+}
+else
+{
+    <li>
+        @Html.ActionLink(
+          $"Entrar"
+          , "Index", "Login", new { Area = "" },
+          new { @class = "pull-right" })
+    </li>
+}

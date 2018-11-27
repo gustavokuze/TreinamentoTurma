@@ -141,6 +141,8 @@
     <Compile Include="Areas\Painel\Controllers\TurmaController.cs" />
     <Content Include="Areas\Painel\Controllers\UsuarioController.txt" />
     <Compile Include="Areas\Painel\PainelAreaRegistration.cs" />
+    <Compile Include="Areas\Painel\ViewModel\AlunoViewModel.cs" />
+    <Compile Include="Areas\Painel\ViewModel\ProfessorViewModel.cs" />
     <Compile Include="Areas\Painel\ViewModel\TurmaViewModel.cs" />
     <Content Include="Areas\Painel\ViewModel\UsuarioViewModel.txt" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -236,6 +238,7 @@
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Shared\UsuarioAtualPartialView.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
