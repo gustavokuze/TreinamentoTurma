@@ -59,13 +59,13 @@ namespace TreinamentoTurma.Infra
             }
         }
         
-        public Professor BuscarProfessor(string cpf)
+        public bool ProfessorJaCadastrado(string cpf)
         {
-            string query = "SELECT * FROM professor WHERE Cpf = @Cpf";
+            string query = "SELECT ProfessorId FROM professor WHERE Cpf = @Cpf";
 
             using (var conexao = new SqlConnection(ObterConnectionString))
             {
-                return conexao.QueryFirstOrDefault<Professor>(query, new { cpf });
+                return conexao.ExecuteScalar<bool>(query, new { cpf });
             }
 
         }

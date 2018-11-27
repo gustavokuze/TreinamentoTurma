@@ -19,10 +19,10 @@
         <div class="col-md-12">
 
             <div class="form-group">
-                @Html.HiddenFor(m => m.Turma.Id)
-                @Html.LabelFor(m => m.Turma.Descricao)
-                @Html.TextBoxFor(m => m.Turma.Descricao, new { @class = "form-control" })
-                @Html.ValidationMessageFor(m => m.Turma.Descricao, "", new { @class = "text-danger" })
+                @Html.HiddenFor(m => m.Id)
+                @Html.LabelFor(m => m.Descricao)
+                @Html.TextBoxFor(m => m.Descricao, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.Descricao, "", new { @class = "text-danger" })
             </div>
 
         </div>
@@ -30,9 +30,9 @@
         <div class="col-md-12">
 
             <div class="form-group">
-                @Html.LabelFor(m => m.Turma.LimiteAlunos)
-                @Html.TextBoxFor(m => m.Turma.LimiteAlunos, new { @class = "form-control" })
-                @Html.ValidationMessageFor(m => m.Turma.LimiteAlunos, "", new { @class = "text-danger" })
+                @Html.LabelFor(m => m.LimiteAlunos)
+                @Html.TextBoxFor(m => m.LimiteAlunos, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.LimiteAlunos, "", new { @class = "text-danger" })
             </div>
 
         </div>
@@ -54,7 +54,7 @@
     <div class="col-md-12">
         <ul class="list-group">
 
-            @foreach (TreinamentoTurma.Models.Turma turma in Model.ListaTurmas)
+            @foreach (var turma in Model.ListaTurmas)
             {
                 <li class="list-group-item ">
                     <div class="row">

@@ -9,11 +9,6 @@ namespace TreinamentoTurma.Areas.Painel.ViewModel
 {
     public class TurmaViewModel
     {
-        public TurmaViewModel()
-        {
-            
-        }
-
         public int Id { get; set; }
 
         [Required(ErrorMessage = "O campo {0} é obrigatório!")]
@@ -24,7 +19,7 @@ namespace TreinamentoTurma.Areas.Painel.ViewModel
         [Display(Name = "Limite de alunos")]
         public int LimiteAlunos { get; set; }
 
-        public List<Turma> ListaTurmas { get; set; } = new List<Turma>();
+        public List<TurmaViewModel> ListaTurmas { get; set; }
     }
 }
 

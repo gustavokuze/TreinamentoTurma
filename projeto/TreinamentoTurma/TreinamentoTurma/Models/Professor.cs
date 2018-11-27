@@ -2,26 +2,32 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Web;
 
 namespace TreinamentoTurma.Models
 {
     public class Professor : Usuario
     {
-
         internal Professor()
-        {
+            : this(string.Empty,
+                  string.Empty,
+                  string.Empty,
+                  string.Empty) { }
 
-        }
-
-        public Professor(string nome, string cpf, string telefone, string endereco, int codigo, string senha) : base(codigo, senha)
+        public Professor(
+            string nome, 
+            string cpf, 
+            string telefone, 
+            string endereco)
         {
+            base.GerarCodigoESenha();
+
             Nome = nome;
             Cpf = cpf;
             Telefone = telefone;
             Endereco = endereco;
         }
-
 
         public int Id { get; set; }
         [Required]

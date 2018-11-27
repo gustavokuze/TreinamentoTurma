@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
+using TreinamentoTurma.Mappers;
 
 namespace TreinamentoTurma
 {
@@ -16,7 +17,7 @@ namespace TreinamentoTurma
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
-            //criar aqui a chama para o método estático RegisterMappers que será criado na pasta Mappers (pesquisar na internet)
+            AutoMapperConfig.RegisterMapping();
         }
     }
 }

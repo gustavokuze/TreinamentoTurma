@@ -61,27 +61,33 @@ namespace TreinamentoTurma.Infra
         }
 
         //não está sendo usado no momento
-        //public Aluno BuscarAluno(int id)
-        //{
-        //    string query = "SELECT * FROM aluno WHERE Id = @Id";
-
-        //    using (var conexao = new SqlConnection(ObterConnectionString))
-        //    {
-        //        return conexao.QueryFirstOrDefault<Aluno>(query, new { id });
-        //    }
-
-        //}
-
-        public Aluno BuscarAluno(string email)
+        public Resultado<Aluno, Falha> BuscarAluno(int id)
         {
-            string query = "SELECT * FROM aluno WHERE Email = @Email";
+            string query = "SELECT * FROM aluno WHERE IdUsuario = @Id";
 
             using (var conexao = new SqlConnection(ObterConnectionString))
             {
-                return conexao.QueryFirstOrDefault<Aluno>(query, new { email });
+                var retorno = conexao.QueryFirstOrDefault<Aluno>(query, new { id });
+
+                if (retorno == null)
+                    return new Falha("Usuário não encontrado");
+
+                return retorno;
+            }
+        }
+
+        public bool AlunoJaCadastrado(string email)
+        {
+            string query = "SELECT AlunoId FROM aluno WHERE Email = @Email";
+
+            using (var conexao = new SqlConnection(ObterConnectionString))
+            {
+                return conexao.ExecuteScalar<bool>(query, new { email });
             }
 
         } 
+
+
 
         public Aluno BuscarAlunoPorIdDeUsuario(int idUsuario)
         {

@@ -4,17 +4,28 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq; 
 using System.Web;
 
+
 namespace TreinamentoTurma.Models
 {
     public class Aluno : Usuario
     {
-        internal Aluno()
-        {
+        public Aluno() 
+            : this(
+                  string.Empty,
+                  string.Empty,
+                  DateTime.Now,
+                  string.Empty, 
+                  string.Empty){ }
 
-        }
-
-        public Aluno(string nome, string email, DateTime dataNascimento, string telefone, string endereco, int codigo, string senha) : base(codigo, senha)
+        public Aluno(
+            string nome,
+            string email, 
+            DateTime dataNascimento, 
+            string telefone, 
+            string endereco
+        )
         {
+            base.GerarCodigoESenha();
             Nome = nome;
             Email = email;
             DataNascimento = dataNascimento;

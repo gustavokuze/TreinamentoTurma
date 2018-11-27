@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AutoMapper;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -24,13 +25,15 @@ namespace TreinamentoTurma.Areas.Painel.Controllers
             TurmaViewModel viewModel = new TurmaViewModel();
             TurmaRepositorio repositorio = new TurmaRepositorio(); 
             
-            viewModel.ListaTurmas = repositorio.ListarTurmas();
+            viewModel.ListaTurmas = Mapper.Map<List<TurmaViewModel>>(repositorio.ListarTurmas());
             
             if (id.HasValue)
             {
                 //TODO: passar a chamada abaixo para um método na própria ViewModel chamado 
                 //"Selecionar(int id)", pra torná-la reutilizável
-                viewModel.Turma = viewModel.ListaTurmas.FirstOrDefault(x => x.Id == id.Value);
+
+                //antes do Mapper era viewModel.Turma
+                viewModel =  Mapper.Map<TurmaViewModel>( viewModel.ListaTurmas.FirstOrDefault(x => x.Id == id.Value) );
             }
             
             return View(viewModel);
@@ -66,24 +69,25 @@ namespace TreinamentoTurma.Areas.Painel.Controllers
         public ActionResult Cadastrar(TurmaViewModel viewModel)
         {
             TurmaRepositorio turmaRepositorio = new TurmaRepositorio();
+            Turma mappedTurma = Mapper.Map<Turma>(viewModel);
 
-            if (viewModel.Turma.Id > 0)
+            if (viewModel.Id > 0)
             {
-                turmaRepositorio.Atualizar(viewModel.Turma);
+                turmaRepositorio.Atualizar(mappedTurma);
 
                 viewModel.ListaTurmas.ForEach((x) => 
                 {
-                    if (x.Id == viewModel.Turma.Id)
+                    if (x.Id == viewModel.Id)
                     {
-                        x.Descricao = viewModel.Turma.Descricao;
-                        x.LimiteAlunos = viewModel.Turma.LimiteAlunos;
+                        x.Descricao = viewModel.Descricao;
+                        x.LimiteAlunos = viewModel.LimiteAlunos;
                     }
                 });
             }
             else
             {
-                viewModel.Turma.Id = turmaRepositorio.Inserir(viewModel.Turma);
-                viewModel.ListaTurmas.Add(viewModel.Turma);
+                viewModel.Id = turmaRepositorio.Inserir(mappedTurma);
+                viewModel.ListaTurmas.Add(viewModel);
             }
 
             return View(viewModel);
@@ -141,9 +145,9 @@ namespace TreinamentoTurma.Areas.Painel.Controllers
             return View();
         }
 
-        private List<SelectListItem> ListarTurmas(TurmaRepositorio repositorio)
+        private List<SelectListItem> ListarTurmas(TurmaRepositorio repositorio) 
         {
-            return repositorio
+            return repositorio 
                 .ListarTurmas()
                 .Select(x => new SelectListItem
                 {

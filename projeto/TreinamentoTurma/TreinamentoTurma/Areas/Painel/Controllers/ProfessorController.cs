@@ -28,19 +28,15 @@ namespace TreinamentoTurma.Areas.Painel.Controllers
         public ActionResult Cadastrar(Professor professor) 
         {
             ProfessorRepositorio repositorio = new ProfessorRepositorio(); 
-            if (repositorio.BuscarProfessor(professor.Cpf) == null)
+            if (repositorio.ProfessorJaCadastrado(professor.Cpf))
             {
-                var codigoUsuario = Geradores.GerarCodigoValido();
-                var senhaUsuario = Geradores.GerarSenha();
-                professor.Codigo = codigoUsuario;
-                professor.Senha = senhaUsuario;
-
-                repositorio.Inserir(professor);
-                TempData["Sucesso"] = $"Professor cadastrado com sucesso. Anote sua senha: {senhaUsuario}.";
+                ModelState.AddModelError("", $"O CPF {professor.Cpf} já está cadastrado");
+                return View();
             }
             else
             {
-                ModelState.AddModelError("", $"O CPF {professor.Cpf} já está cadastrado");
+                repositorio.Inserir(professor);
+                TempData["Sucesso"] = $"Professor cadastrado com sucesso. Anote sua senha: {professor.Senha}.";
             }
 
             return RedirectToAction("Cadastrar");

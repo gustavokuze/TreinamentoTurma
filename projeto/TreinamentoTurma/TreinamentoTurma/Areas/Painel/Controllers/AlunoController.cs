@@ -20,7 +20,7 @@ namespace TreinamentoTurma.Areas.Painel.Controllers
         }
 
         public ActionResult Cadastrar()
-        {
+        { 
             return View();
         }
 
@@ -28,25 +28,19 @@ namespace TreinamentoTurma.Areas.Painel.Controllers
         public ActionResult Cadastrar(Aluno aluno)
         {
             AlunoRepositorio repositorio = new AlunoRepositorio();
-            if (repositorio.BuscarAluno(aluno.Email) == null)
+            if (repositorio.BuscarAluno(aluno.Id) is var retorno && retorno.EstaValido)
             {
-                var codigoUsuario = Geradores.GerarCodigoValido();
-                var senhaUsuario = Geradores.GerarSenha();
-                aluno.Codigo = codigoUsuario;
-                aluno.Senha = senhaUsuario;
-
-                repositorio.Inserir(aluno);
-                TempData["Sucesso"] = $"Aluno cadastrado com sucesso. Anote sua senha: {senhaUsuario}.";
+                ModelState.AddModelError("", $"O email {aluno.Email} já está cadastrado");
+                return View();
             }
             else
             {
-                ModelState.AddModelError("", $"O email {aluno.Email} já está cadastrado");
+                repositorio.Inserir(aluno);
+                TempData["Sucesso"] = $"Aluno cadastrado com sucesso. Anote sua senha: {aluno.Senha}.";
             }
             
             return RedirectToAction("Cadastrar");
         }
         
-        
-
     }
 }

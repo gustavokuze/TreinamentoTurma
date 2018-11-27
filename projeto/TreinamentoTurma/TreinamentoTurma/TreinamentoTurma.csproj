@@ -150,12 +150,17 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helpers\Base64.cs" />
+    <Compile Include="Helpers\Falha.cs" />
     <Compile Include="Helpers\Geradores.cs" />
+    <Compile Include="Helpers\Resultado.cs" />
     <Compile Include="Infra\AlunoRepositorio.cs" />
     <Compile Include="Infra\ProfessorRepositorio.cs" />
     <Compile Include="Infra\Repositorio.cs" />
     <Compile Include="Infra\TurmaRepositorio.cs" />
     <Compile Include="Infra\UsuarioRepositorio.cs" />
+    <Compile Include="Mappers\AutoMapperConfig.cs" />
+    <Compile Include="Mappers\DomainToViewModelMappingProfile.cs" />
+    <Compile Include="Mappers\ViewModelToDomainMappingProfile.cs" />
     <Compile Include="Models\Aluno.cs" />
     <Compile Include="Models\Inscricao.cs" />
     <Compile Include="Models\Professor.cs" />
