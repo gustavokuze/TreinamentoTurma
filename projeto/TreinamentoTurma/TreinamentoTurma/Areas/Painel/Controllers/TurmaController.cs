@@ -173,7 +173,7 @@ namespace TreinamentoTurma.Areas.Painel.Controllers
                 ModelState.AddModelError("", "Este aluno já está inscrito nesta turma");
             }
 
-            ViewBag.Turmas = ListarTurmas(repositorio);
+            ViewBag.Turmas = ListarTurmas(repositorio); 
 
             return View();
         }
