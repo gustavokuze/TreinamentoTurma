@@ -18,7 +18,7 @@ namespace TreinamentoTurma.Infra
             aluno.Senha = senhaPraBase64;
 
             int idUsuario = new UsuarioRepositorio().Inserir(aluno as Usuario);
-
+             
             var query = @"INSERT INTO aluno (IdUsuario, Nome, Email, DataNascimento, Telefone, Endereco)
                         VALUES (@IdUsuario, @Nome, @Email, @DataNascimento, @Telefone, @Endereco);";
 

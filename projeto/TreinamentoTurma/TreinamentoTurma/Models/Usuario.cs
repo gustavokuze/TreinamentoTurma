@@ -9,10 +9,11 @@ namespace TreinamentoTurma.Models
 {
     public class Usuario
     {
-        public Usuario()
-        {
+        /*
+         Ainda falta criar a ViewModel
+             */
 
-        }
+        internal Usuario():this(0, string.Empty){}
 
         public Usuario(int codigo, string senha)
         {

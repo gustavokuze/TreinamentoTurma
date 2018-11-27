@@ -9,7 +9,7 @@ using TreinamentoTurma.Filters;
 using TreinamentoTurma.Helpers;
 using TreinamentoTurma.Infra;
 using TreinamentoTurma.Models;
-
+ 
 namespace TreinamentoTurma.Areas.Painel.Controllers
 {
     [Autenticacao]

@@ -159,12 +159,13 @@ namespace TreinamentoTurma.Areas.Painel.Controllers
         [HttpPost]
         public ActionResult Inscricao(Inscricao inscricao)
         {
-            inscricao.AlunoId = 1;
+            Aluno alunoAtual = (Aluno)Session["TreinamentoTurmaUsuarioAtual"];
+            inscricao.AlunoId = alunoAtual.Id;
             inscricao.InscritoEm = DateTime.Now;
             TurmaRepositorio repositorio = new TurmaRepositorio();
-
+             
             if(repositorio.BuscarInscricao(inscricao.AlunoId, inscricao.TurmaId) == null)
-            {
+            { 
                 repositorio.Inserir(inscricao);
             }
             else

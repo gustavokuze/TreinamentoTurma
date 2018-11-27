@@ -142,6 +142,7 @@
     <Content Include="Areas\Painel\Controllers\UsuarioController.txt" />
     <Compile Include="Areas\Painel\PainelAreaRegistration.cs" />
     <Compile Include="Areas\Painel\ViewModel\AlunoViewModel.cs" />
+    <Compile Include="Areas\Painel\ViewModel\InscricaoViewModel.cs" />
     <Compile Include="Areas\Painel\ViewModel\ProfessorViewModel.cs" />
     <Compile Include="Areas\Painel\ViewModel\TurmaViewModel.cs" />
     <Content Include="Areas\Painel\ViewModel\UsuarioViewModel.txt" />

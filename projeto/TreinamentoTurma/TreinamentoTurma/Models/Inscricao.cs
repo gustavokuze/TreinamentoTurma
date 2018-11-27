@@ -7,11 +7,13 @@ using System.Web;
 namespace TreinamentoTurma.Models
 {
     public class Inscricao
-    {
-        internal Inscricao()
-        {
+    {  
 
-        }
+        /*
+         Ainda falta criar a ViewModel
+             */
+
+        internal Inscricao():this(0, 0, DateTime.Now){}
 
         public Inscricao(int alunoId, int turmaId, DateTime inscritoEm)
         {
@@ -21,11 +23,11 @@ namespace TreinamentoTurma.Models
         }
 
         public int Id { get; set; }
-        [Required] //talvez não seja necessário
+        //[Required] //talvez não seja necessário
         public int AlunoId { get; set; }
-        [Required]
+        //[Required]
         public int TurmaId { get; set; }
-        [DataType(DataType.Date)]
+        //[DataType(DataType.Date)]
         public DateTime InscritoEm { get; set; }
     }
 }
