@@ -21,7 +21,6 @@ namespace TreinamentoTurma.Models
             string telefone, 
             string endereco)
         {
-            base.GerarCodigoESenha();
 
             Nome = nome;
             Cpf = cpf;

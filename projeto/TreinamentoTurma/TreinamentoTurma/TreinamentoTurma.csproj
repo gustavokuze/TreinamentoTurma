@@ -146,6 +146,7 @@
     <Compile Include="Areas\Painel\ViewModel\ProfessorViewModel.cs" />
     <Compile Include="Areas\Painel\ViewModel\TurmaViewModel.cs" />
     <Content Include="Areas\Painel\ViewModel\UsuarioViewModel.txt" />
+    <Compile Include="Areas\Painel\ViewModel\UsuarioViewModel.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Filters\AutenticacaoAttribute.cs" />

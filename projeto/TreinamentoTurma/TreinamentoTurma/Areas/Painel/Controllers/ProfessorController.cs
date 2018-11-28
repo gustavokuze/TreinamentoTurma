@@ -38,6 +38,7 @@ namespace TreinamentoTurma.Areas.Painel.Controllers
             else
             {
                 Professor professor = Mapper.Map<Professor>(professorViewModel);
+                professor.GerarCodigoESenha();
                 repositorio.Inserir(professor);
                 TempData["Sucesso"] = $"Professor cadastrado com sucesso. Anote sua senha: {Base64.ParaString(professor.Senha)}.";
             }

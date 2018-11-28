@@ -13,7 +13,7 @@ namespace TreinamentoTurma.Models
          Ainda falta criar a ViewModel
              */
 
-        internal Usuario():this(0, string.Empty){}
+        internal Usuario() : this(0, string.Empty) { }
 
         public Usuario(int codigo, string senha)
         {
@@ -28,9 +28,9 @@ namespace TreinamentoTurma.Models
         }
 
         public int Id { get; set; }
-        [Required]
+        //[Required]
         public int Codigo { get; set; }
-        [Required]
+        //[Required]
         public string Senha { get; set; }
     }
 }

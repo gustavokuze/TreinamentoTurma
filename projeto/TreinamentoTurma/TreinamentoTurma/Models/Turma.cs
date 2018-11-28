@@ -9,10 +9,7 @@ namespace TreinamentoTurma.Models
 {
     public class Turma
     {
-        internal Turma()
-        {
-
-        }
+        internal Turma():this(string.Empty, 0){}
 
         public Turma(string descricao, int limiteAlunos)
         {

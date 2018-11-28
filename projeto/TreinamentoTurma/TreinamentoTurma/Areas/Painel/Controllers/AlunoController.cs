@@ -38,6 +38,8 @@ namespace TreinamentoTurma.Areas.Painel.Controllers
             else
             {
                 Aluno aluno = Mapper.Map<Aluno>(alunoViewModel);
+                aluno.GerarCodigoESenha();
+
                 repositorio.Inserir(aluno);
                 TempData["Sucesso"] = $"Aluno cadastrado com sucesso. Anote sua senha: {Base64.ParaString(aluno.Senha) }.";
             }

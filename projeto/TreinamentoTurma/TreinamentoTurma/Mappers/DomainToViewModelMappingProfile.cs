@@ -11,6 +11,7 @@ namespace TreinamentoTurma.Mappers
             CreateMap<Turma, TurmaViewModel>();
             CreateMap<Aluno, AlunoViewModel>();
             CreateMap<Professor, ProfessorViewModel>();
+            CreateMap<Inscricao, InscricaoViewModel>();
         }
     }
 }

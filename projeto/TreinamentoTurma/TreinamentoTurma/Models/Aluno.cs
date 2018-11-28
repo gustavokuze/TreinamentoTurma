@@ -4,7 +4,6 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq; 
 using System.Web;
 
-
 namespace TreinamentoTurma.Models
 {
     public class Aluno : Usuario
@@ -25,7 +24,6 @@ namespace TreinamentoTurma.Models
             string endereco
         )
         {
-            base.GerarCodigoESenha();
             Nome = nome;
             Email = email;
             DataNascimento = dataNascimento;
@@ -57,6 +55,6 @@ namespace TreinamentoTurma.Models
 
         //[Required]
         //[Display(Name = "Endereço")]
-        public string Endereco { get; set; }
+        public string Endereco { get; set; } 
     }
 }

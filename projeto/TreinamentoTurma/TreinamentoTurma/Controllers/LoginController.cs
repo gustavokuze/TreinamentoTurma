@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using TreinamentoTurma.Areas.Painel.ViewModel;
 using TreinamentoTurma.Helpers;
 using TreinamentoTurma.Infra;
 using TreinamentoTurma.Models;
@@ -18,10 +19,11 @@ namespace TreinamentoTurma.Controllers
         }
 
         [HttpPost]
-        public ActionResult Entrar(Usuario usuario)
+        public ActionResult Entrar(UsuarioViewModel usuarioViewModel)
         {
             UsuarioRepositorio repositorio = new UsuarioRepositorio();
-            var usuarioCadastrado = repositorio.ValidarUsuario(usuario.Codigo, Base64.ParaBase64(usuario.Senha));
+            var usuarioCadastrado = repositorio.ValidarUsuario(usuarioViewModel.Codigo, 
+                Base64.ParaBase64(usuarioViewModel.Senha));
 
             if (usuarioCadastrado == null)
             {
@@ -42,6 +44,7 @@ namespace TreinamentoTurma.Controllers
                     }
                     else
                     {
+                        alunoUsuario.Codigo = usuarioViewModel.Codigo;
                         Session["TreinamentoTurmaUsuarioAtual"] = alunoUsuario;
                         //return Content($"O email do aluno é: {alunoUsuario.Email}");
                         return RedirectToAction("Index", "Home");
@@ -49,6 +52,7 @@ namespace TreinamentoTurma.Controllers
                 }
                 else
                 {
+                    professorUsuario.Codigo = usuarioViewModel.Codigo;
                     Session["TreinamentoTurmaUsuarioAtual"] = professorUsuario;
                     //return Content($"O CPF do professor é: {professorUsuario.Cpf}");
                     return RedirectToAction("Index", "Home");
