@@ -1,0 +1,6 @@
+﻿- Pegar apenas os 6 primeiros caracteres da senha Guid gerada; -> OK
+- Criar a tabela professor com apenas Nome e CPF, com uma PK não Identity que é chave extrangeira de usuário; -> OK
+- Criar a classe Professor que extende de usuário assim como aluno; -> ok
+- Remover a ViewModel que fiz para verificar com o CheckBox se o usuário é professor e validar isso no código, 
+se o código não for achado em professor, procura em aluno -> OK 
+- Criar um construtor para as Models para definir como elas devem ser construidas;

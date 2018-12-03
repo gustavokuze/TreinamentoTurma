@@ -1,0 +1,66 @@
+﻿@model TreinamentoTurma.Areas.Painel.ViewModel.ProfessorViewModel
+
+@{
+    ViewBag.Title = "Cadastrar";
+}
+
+<h2>Cadastrar professor</h2>
+@Html.ValidationSummary(true, "", new { @class = "text-danger" })
+@{
+    if (TempData["Sucesso"] != null)
+    {
+        <div class="alert alert-success alert-dismissible" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <strong>Sucesso!</strong> @TempData["Sucesso"]
+        </div>
+    }
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            @using (Html.BeginForm("Cadastrar", "Professor", FormMethod.Post, new { }))
+            {
+                <div class="col-md-12">
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.Nome)
+                        @Html.TextBoxFor(m => m.Nome, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.Nome, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.Cpf)
+                        @Html.TextBoxFor(m => m.Cpf, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.Cpf, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                
+                <div class="col-md-12">
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.Telefone)
+                        @Html.TextBoxFor(m => m.Telefone, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.Telefone, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="col-md-12">
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.Endereco)
+                        @Html.TextBoxFor(m => m.Endereco, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.Endereco, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+
+                <button type="submit" class="btn btn-default">Cadastrar</button>
+            }
+        </div>
+    </div>
+
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/inputmask")
+}
