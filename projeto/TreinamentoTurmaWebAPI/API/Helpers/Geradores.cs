@@ -1,4 +1,5 @@
 ﻿using API.Infrastructure.Repository;
+using API.Infrastructure.Repository.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,8 +9,8 @@ namespace API.Helpers
 {
     public class Geradores
     {
-        private UsuarioRepositorio repositorio;
-        public Geradores(UsuarioRepositorio usuarioRepositorio)
+        private IUsuarioRepositorio repositorio;
+        public Geradores(IUsuarioRepositorio usuarioRepositorio)
         {
             repositorio = usuarioRepositorio;
         }

@@ -1,4 +1,5 @@
 ﻿using API.Helpers;
+using API.Infrastructure.Repository.Interfaces;
 using API.Models;
 using Dapper;
 using Microsoft.Extensions.Configuration;
@@ -10,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace API.Infrastructure.Repository
 {
-    public class ProfessorRepositorio 
+    public class ProfessorRepositorio : IProfessorRepositorio
     {
         private IConfiguration _configuration;
         private string connectionString;
@@ -23,7 +24,7 @@ namespace API.Infrastructure.Repository
 
         public void Atualizar(Professor professor)
         {
-            string query = "UPDATE professor SET Nome = @Nome, Cpf=@Cpf, Telefone = @Telefone, Endereco = @Endereco WHERE Id = @Id";
+            string query = "UPDATE professor SET Nome = @Nome, Cpf=@Cpf, Telefone = @Telefone, Endereco = @Endereco WHERE IdUsuario = @Id";
 
             using (var conexao = new SqlConnection(connectionString))
             {
@@ -33,7 +34,7 @@ namespace API.Infrastructure.Repository
 
         public void Excluir(int id)
         {
-            string query = "DELETE FROM professor WHERE Id = @Id";
+            string query = "DELETE FROM professor WHERE IdUsuario = @Id";
 
             using (var conexao = new SqlConnection(connectionString))
             {

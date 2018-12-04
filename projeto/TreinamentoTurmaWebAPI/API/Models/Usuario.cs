@@ -5,6 +5,7 @@ using System.Linq;
 using System.Web;
 using API.Helpers;
 using API.Infrastructure.Repository;
+using API.Infrastructure.Repository.Interfaces;
 using Microsoft.Extensions.Configuration;
 
 namespace API.Models
@@ -19,7 +20,7 @@ namespace API.Models
             Senha = senha;
         }
 
-        public void GerarCodigoESenha(UsuarioRepositorio repositorio)
+        public void GerarCodigoESenha(IUsuarioRepositorio repositorio)
         {
             Codigo = new Geradores(repositorio).GerarCodigoValido();
             Senha = new Geradores(repositorio).GerarSenha();

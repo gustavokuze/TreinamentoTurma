@@ -1,4 +1,5 @@
 ﻿using API.Helpers;
+using API.Infrastructure.Repository.Interfaces;
 using API.Models;
 using Dapper;
 using Microsoft.Extensions.Configuration;
@@ -10,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace API.Infrastructure.Repository
 {
-    public class TurmaRepositorio
+    public class TurmaRepositorio : ITurmaRepositorio
     {
         private string connectionString;
         private IConfiguration _configuration;

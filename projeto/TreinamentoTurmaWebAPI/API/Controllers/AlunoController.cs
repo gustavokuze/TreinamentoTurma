@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using API.Infrastructure.Repository;
+using API.Infrastructure.Repository.Interfaces;
 using API.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -14,39 +15,39 @@ namespace API.Controllers
     [ApiController]
     public class AlunoController : ControllerBase
     {
-        private IConfiguration _configuration;
-        private AlunoRepositorio repositorio;
+        private IAlunoRepositorio _alunoRepositorio;
+        private IUsuarioRepositorio _usuarioRepositorio;
         
-        public AlunoController(IConfiguration configuration)
+        public AlunoController(IAlunoRepositorio alunoRepositorio, IUsuarioRepositorio usuarioRepositorio)
         {
-            _configuration = configuration;
-            repositorio = new AlunoRepositorio(_configuration);
+            _alunoRepositorio = alunoRepositorio;
+            _usuarioRepositorio = usuarioRepositorio;
         }
 
         [HttpGet]
-        public IEnumerable<Aluno> Get()
+        public IEnumerable<Aluno> Listar()
         {
-            return repositorio.ObterTodos();
+            return _alunoRepositorio.ObterTodos();
         }
 
         [HttpGet("{id}")]
-        public Aluno Get(int id)
+        public Aluno Obter(int id)
         {
-            return repositorio.ObterPeloIdUsuario(id); ;
+            return _alunoRepositorio.ObterPeloIdUsuario(id);
         }
 
         [HttpPost]
-        public string Cadastrar([FromBody]Aluno aluno)
+        public ObjectResult Cadastrar([FromBody]Aluno aluno)
         {
-            try
+            if(_alunoRepositorio.ObterPeloEmail(aluno.Email) is var resultado && resultado.EstaValido)
             {
-                aluno.GerarCodigoESenha(new UsuarioRepositorio(_configuration));
-                repositorio.Inserir(aluno);
-                return "Aluno cadastrado com sucesso!";
+                return BadRequest($"O email {aluno.Email} já está cadastrado.");
             }
-            catch (Exception ex)
+            else
             {
-                return ex.Message;
+                aluno.GerarCodigoESenha(_usuarioRepositorio);
+                _alunoRepositorio.Inserir(aluno);
+                return Ok( "Aluno cadastrado com sucesso!");
             }
         }
 
@@ -55,7 +56,7 @@ namespace API.Controllers
         {
             try
             {
-                repositorio.Atualizar(aluno);
+                _alunoRepositorio.Atualizar(aluno);
                 return "Aluno atualizado com sucesso!";
             }
             catch (Exception ex)
@@ -69,7 +70,7 @@ namespace API.Controllers
         {
             try
             {
-                repositorio.Excluir(id);
+                _alunoRepositorio.Excluir(id);
                 return "Aluno excluído com sucesso!";
             }
             catch (Exception ex)

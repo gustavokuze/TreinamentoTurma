@@ -1,4 +1,5 @@
-﻿using API.Models;
+﻿using API.Infrastructure.Repository.Interfaces;
+using API.Models;
 using Dapper;
 using Microsoft.Extensions.Configuration;
 using System;
@@ -8,8 +9,8 @@ using System.Linq;
 using System.Threading.Tasks;
 
 namespace API.Infrastructure.Repository
-{
-    public class UsuarioRepositorio
+{ 
+    public class UsuarioRepositorio : IUsuarioRepositorio
     {
         private IConfiguration _configuration;
         private string connectionString;

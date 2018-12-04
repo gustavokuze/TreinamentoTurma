@@ -1,4 +1,5 @@
 ﻿using API.Helpers;
+using API.Infrastructure.Repository.Interfaces;
 using API.Models;
 using Dapper;
 using Microsoft.Extensions.Configuration;
@@ -10,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace API.Infrastructure.Repository 
 {
-    public class AlunoRepositorio
+    public class AlunoRepositorio : IAlunoRepositorio
     {
         private string connectionString;
         private IConfiguration _configuration;
@@ -33,7 +34,7 @@ namespace API.Infrastructure.Repository
 
         public void Excluir(int id)
         {
-            string query = "DELETE FROM aluno WHERE IdUsuario = @IdUsuario";
+            string query = "DELETE FROM aluno WHERE IdUsuario = @IdUsuario;DELETE FROM usuario WHERE Id = @IdUsuario;";
 
             using (var conexao = new SqlConnection(connectionString))
             {
@@ -65,7 +66,6 @@ namespace API.Infrastructure.Repository
             {
                 return conexao.QueryFirstOrDefault<Aluno>(query, new { id });
             }
-
         }
 
         public Resultado<Aluno, Falha> ObterPeloEmail(string email)
