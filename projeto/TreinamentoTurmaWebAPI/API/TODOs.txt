@@ -1,0 +1,4 @@
+﻿Criar uma pasta de Services;
+Adicionar as classes e interfaces responsáveis pelas regras de negócio que estão atualmente nos repositórios, nos Services;
+Adicionar a injeção das services ao Startup.cs;
+Trocar as interfaces que estão sendo injetadas nas controllers dos repositórios, pelas dos services;

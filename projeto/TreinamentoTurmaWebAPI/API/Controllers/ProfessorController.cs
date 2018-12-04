@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using API.Infrastructure.Repository;
-using API.Infrastructure.Repository.Interfaces;
-using API.Models;
+using API.Infraestrutura.Repositorio;
+using API.Infraestrutura.Repositorio.Interfaces;
+using API.Modelos;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;

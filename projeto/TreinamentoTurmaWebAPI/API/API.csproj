@@ -5,13 +5,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Infrastructure\Repository\EntidadeBasica.txt" />
-    <None Remove="Infrastructure\Repository\IRepositorio.txt" />
+    <None Remove="Infraestrutura\Repositorio\EntidadeBasica.txt" />
+    <None Remove="Infraestrutura\Repositorio\IRepositorio.txt" />
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Include="Infrastructure\Repository\EntidadeBasica.txt" />
-    <Compile Include="Infrastructure\Repository\IRepositorio.txt" />
+    <Compile Include="Infraestrutura\Repositorio\EntidadeBasica.txt" />
+    <Compile Include="Infraestrutura\Repositorio\IRepositorio.txt" />
   </ItemGroup>
 
   <ItemGroup>
