@@ -4,6 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using API.Infraestrutura.Repositorio;
 using API.Infraestrutura.Repositorio.Interfaces;
+using API.Servicos;
+using API.Servicos.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -29,11 +31,16 @@ namespace API
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
             services.AddSingleton(Configuration);
-
+            
             services.AddScoped<IUsuarioRepositorio, UsuarioRepositorio>();
             services.AddScoped<IAlunoRepositorio, AlunoRepositorio>();
             services.AddScoped<IProfessorRepositorio, ProfessorRepositorio>();
             services.AddScoped<ITurmaRepositorio, TurmaRepositorio>();
+
+           
+            services.AddScoped<IUsuarioServico, UsuarioServico>();
+            services.AddScoped<IAlunoServico, AlunoServico>();
+            services.AddScoped<IProfessorServico, ProfessorServico>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

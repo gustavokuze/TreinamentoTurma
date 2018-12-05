@@ -67,5 +67,15 @@ namespace API.Infraestrutura.Repositorio
             }
         }
         
+        public void Excluir(int id)
+        {
+            var query = "DELETE FROM usuario WHERE Id=@Id;";
+
+            using (var conexao = new SqlConnection(connectionString))
+            {
+                conexao.Execute(query, new { id });
+            }
+        }
+        
     }
 }

@@ -1,0 +1,41 @@
+﻿//using API.Infraestrutura.Repositorio.Interfaces;
+//using System;
+//using System.Collections.Generic;
+//using System.Linq;
+//using System.Threading.Tasks;
+
+//namespace API.Infraestrutura.Repositorio
+//{
+//    public class Repositorio<T> : IRepositorio<T>
+//    {
+//        public void Atualizar(T tabela, string query)
+//        {
+//            throw new NotImplementedException();
+//        }
+
+//        public void Excluir(int id, string query)
+//        {
+//            throw new NotImplementedException();
+//        }
+
+//        public int Inserir(T tabela, string query)
+//        {
+//            throw new NotImplementedException();
+//        }
+
+//        public T ObterPelaChaveUnica(string chave, string query)
+//        {
+//            throw new NotImplementedException();
+//        }
+
+//        public T ObterPeloId(int id, string query)
+//        {
+//            throw new NotImplementedException();
+//        }
+
+//        public IEnumerable<T> ObterTodos(string query)
+//        {
+//            throw new NotImplementedException();
+//        }
+//    }
+//}

@@ -1,0 +1,17 @@
+﻿//using System;
+//using System.Collections.Generic;
+//using System.Linq;
+//using System.Threading.Tasks;
+
+//namespace API.Infraestrutura.Repositorio.Interfaces
+//{
+//    public interface IRepositorio<T>
+//    {
+//        void Atualizar(T tabela, string query);
+//        void Excluir(int id, string query);
+//        int Inserir(T tabela, string query);
+//        T ObterPeloId(int id, string query);
+//        T ObterPelaChaveUnica(string chave, string query);
+//        IEnumerable<T> ObterTodos(string query);
+//    }
+//}

@@ -13,7 +13,7 @@ namespace API.Infraestrutura.Repositorio.Interfaces
         void Excluir(int id);
         void Inserir(Professor aluno);
         Professor ObterPeloIdUsuario(int id);
-        Resultado<Professor, Falha> ObterPeloCpf(string email);
-        IEnumerable<Professor> ObterTodos();
+        Professor ObterPeloCpf(string email);
+        IEnumerable<Professor> ListarProfessores();
     }
 }

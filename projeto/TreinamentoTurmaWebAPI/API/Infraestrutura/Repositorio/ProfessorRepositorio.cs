@@ -44,17 +44,12 @@ namespace API.Infraestrutura.Repositorio
 
         public void Inserir(Professor professor)
         {
-            string senhaPraBase64 = Base64.ParaBase64(professor.Senha);
-            professor.Senha = senhaPraBase64;
-
-            int idUsuario = new UsuarioRepositorio(_configuration).Inserir(professor as Usuario);
-
             var query = @"INSERT INTO professor (IdUsuario, Nome, Cpf, Telefone, Endereco)
                         VALUES (@IdUsuario, @Nome, @Cpf, @Telefone, @Endereco);";
 
             using (var conexao = new SqlConnection(connectionString))
             {
-                conexao.Execute(query, new { idUsuario, professor.Nome, professor.Cpf, professor.Telefone, professor.Endereco });
+                conexao.Execute(query, new { professor.Id, professor.Nome, professor.Cpf, professor.Telefone, professor.Endereco });
             }
         }
 
@@ -66,24 +61,20 @@ namespace API.Infraestrutura.Repositorio
             {
                 return conexao.QueryFirstOrDefault<Professor>(query, new { id });
             }
-
         }
 
-        public Resultado<Professor, Falha> ObterPeloCpf(string cpf)
+        public Professor ObterPeloCpf(string cpf)
         {
             string query = "SELECT IdUsuario FROM professor WHERE Cpf = @Cpf";
 
             using (var conexao = new SqlConnection(connectionString))
             {
-                var retorno = conexao.QueryFirstOrDefault<Professor>(query, new { cpf });
-                if (retorno == null)
-                    return new Falha("Usuário não encontrado");
-                return retorno;
+                return conexao.QueryFirstOrDefault<Professor>(query, new { cpf });
             }
 
         }
 
-        public IEnumerable<Professor> ObterTodos()
+        public IEnumerable<Professor> ListarProfessores()
         {
             var query = "SELECT * FROM professor;";
 

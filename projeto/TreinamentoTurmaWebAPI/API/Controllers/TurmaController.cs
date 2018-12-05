@@ -22,7 +22,7 @@ namespace API.Controllers
         [HttpGet]
         public IEnumerable<Turma> Listar()
         {
-            return _turmaRepositorio.ObterTodos();
+            return _turmaRepositorio.ListarTurmas();
         }
 
         [HttpGet("{id}")]
@@ -78,7 +78,7 @@ namespace API.Controllers
         {
             try
             {
-                _turmaRepositorio.Inserir(inscricao);
+                _turmaRepositorio.CadastrarInscricao(inscricao);
                 return Ok("Inscrição excluída com sucesso!");
             }
             catch (Exception ex)

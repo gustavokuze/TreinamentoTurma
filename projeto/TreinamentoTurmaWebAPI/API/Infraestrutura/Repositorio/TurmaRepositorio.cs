@@ -63,7 +63,7 @@ namespace API.Infraestrutura.Repositorio
 
         }
 
-        public IEnumerable<Turma> ObterTodos()
+        public IEnumerable<Turma> ListarTurmas()
         {
             var query = "SELECT * FROM turma;";
 
@@ -73,7 +73,7 @@ namespace API.Infraestrutura.Repositorio
             }
         }
 
-        public void Inserir(Inscricao inscricao)
+        public void CadastrarInscricao(Inscricao inscricao)
         {
             string query = "INSERT INTO inscricao (AlunoId, TurmaId, InscritoEm) VALUES (@AlunoId, @TurmaId, @InscritoEm)";
             using (var conexao = new SqlConnection(connectionString))

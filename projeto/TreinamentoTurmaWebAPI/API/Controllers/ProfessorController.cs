@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using API.Infraestrutura.Repositorio;
 using API.Infraestrutura.Repositorio.Interfaces;
 using API.Modelos;
+using API.Servicos.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -15,69 +16,66 @@ namespace API.Controllers
     [ApiController]
     public class ProfessorController : ControllerBase
     {
-        private IProfessorRepositorio _professorRepositorio;
-        private IUsuarioRepositorio _usuarioRepositorio;
+        private IProfessorServico _professorService;
 
-        public ProfessorController(IProfessorRepositorio professorRepositorio, IUsuarioRepositorio usuarioRepositorio)
+        public ProfessorController(IProfessorServico professorService)
         {
-            _professorRepositorio = professorRepositorio;
-            _usuarioRepositorio = usuarioRepositorio;
+            _professorService = professorService;
         }
 
         [HttpGet]
         public IEnumerable<Professor> Listar()
         {
-            return _professorRepositorio.ObterTodos();
+            return _professorService.ListarProfessores();
         }
 
         [HttpGet("{id}")]
         public Professor Obter(int id)
         {
-            return _professorRepositorio.ObterPeloIdUsuario(id);
+            return (_professorService.ObterPeloIdUsuario(id) is var resultado
+                && resultado.EstaValido) ? resultado.Sucesso : new Professor();
         }
 
         [HttpPost]
         public ObjectResult Cadastrar([FromBody]Professor professor)
         {
-            if (_professorRepositorio.ObterPeloCpf(professor.Cpf) is var resultado && resultado.EstaValido)
+            if (_professorService.ObterPeloCpf(professor.Cpf) is var resultado && resultado.EstaValido)
             {
-                return BadRequest($"O email {professor.Cpf} já está cadastrado.");
+                return BadRequest($"O CPF {professor.Cpf} já está cadastrado.");
             }
             else
             {
-                professor.GerarCodigoESenha(_usuarioRepositorio);
-                _professorRepositorio.Inserir(professor);
+                _professorService.Cadastrar(professor);
                 return Ok("Professor cadastrado com sucesso!");
             }
         }
 
         [HttpPut]
-        public string Atualizar([FromBody]Professor professor)
+        public ObjectResult Atualizar([FromBody]Professor professor)
         {
             try
             {
-                _professorRepositorio.Atualizar(professor);
-                return "Professor atualizado com sucesso!";
+                _professorService.Atualizar(professor);
+                return Ok("Professor atualizado com sucesso!");
             }
             catch (Exception ex)
             {
-                return ex.Message;
+                return BadRequest(ex.Message);
             }
         }
 
         [HttpDelete("{id}")]
-        public string Excluir(int id)
+        public ObjectResult Excluir(int id)
         {
             try
             {
-                _professorRepositorio.Excluir(id);
-                return "Professor excluído com sucesso!";
+                _professorService.Excluir(id);
+                return Ok("Professor excluído com sucesso!");
             }
             catch (Exception ex)
             {
-                return ex.Message;
+                return BadRequest(ex.Message);
             }
         }
     }
 }
-

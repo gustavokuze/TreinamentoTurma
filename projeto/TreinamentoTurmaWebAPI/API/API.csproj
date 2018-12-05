@@ -6,12 +6,16 @@
 
   <ItemGroup>
     <None Remove="Infraestrutura\Repositorio\EntidadeBasica.txt" />
+    <None Remove="Infraestrutura\Repositorio\Interfaces\IRepositorio.txt" />
     <None Remove="Infraestrutura\Repositorio\IRepositorio.txt" />
+    <None Remove="Infraestrutura\Repositorio\Repositorio.txt" />
   </ItemGroup>
 
   <ItemGroup>
     <Compile Include="Infraestrutura\Repositorio\EntidadeBasica.txt" />
+    <Compile Include="Infraestrutura\Repositorio\Interfaces\IRepositorio.txt" />
     <Compile Include="Infraestrutura\Repositorio\IRepositorio.txt" />
+    <Compile Include="Infraestrutura\Repositorio\Repositorio.txt" />
   </ItemGroup>
 
   <ItemGroup>

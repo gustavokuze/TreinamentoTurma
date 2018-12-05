@@ -40,7 +40,7 @@ namespace TreinamentoTurma.Infra
 
         public void Excluir(int alunoId)
         {
-            string query = "DELETE FROM aluno WHERE Id = @Id";
+            string query = "DELETE FROM aluno WHERE IdUsuario = @Id";
 
             using (var conexao = new SqlConnection(ObterConnectionString))
             {

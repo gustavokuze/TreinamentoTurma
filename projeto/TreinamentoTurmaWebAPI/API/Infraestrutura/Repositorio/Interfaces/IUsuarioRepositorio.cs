@@ -10,5 +10,6 @@ namespace API.Infraestrutura.Repositorio.Interfaces
         Usuario BuscarUsuarioPeloCodigo(int codigo);
         Usuario ObterPeloCodigo(int codigo);
         IEnumerable<Usuario> ObterTodos();
+        void Excluir(int id);
     }
 }

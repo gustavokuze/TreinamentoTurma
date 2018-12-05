@@ -24,7 +24,7 @@ namespace API.Infraestrutura.Repositorio
 
         public void Atualizar(Aluno aluno)
         {
-            string query = "UPDATE aluno SET Nome = @Nome, Email = @Email, DataNascimento = @DataNascimento, Telefone = @Telefone, Endereco = @Endereco WHERE Id = @Id";
+            string query = "UPDATE aluno SET Nome = @Nome, Email = @Email, DataNascimento = @DataNascimento, Telefone = @Telefone, Endereco = @Endereco WHERE IdUsuario = @Id";
 
             using (var conexao = new SqlConnection(connectionString))
             {
@@ -34,54 +34,52 @@ namespace API.Infraestrutura.Repositorio
 
         public void Excluir(int id)
         {
-            string query = "DELETE FROM aluno WHERE IdUsuario = @IdUsuario;DELETE FROM usuario WHERE Id = @IdUsuario;";
+            string query = "DELETE FROM aluno WHERE IdUsuario = @Id;";
 
             using (var conexao = new SqlConnection(connectionString))
             {
-                var queryResult = conexao.Execute(query, new { IdUsuario = id });
+                var queryResult = conexao.Execute(query, new { id });
             }
         }
 
         public void Inserir(Aluno aluno)
         {
-            string senhaPraBase64 = Base64.ParaBase64(aluno.Senha);
-            aluno.Senha = senhaPraBase64;
-
-            int idUsuario = new UsuarioRepositorio(_configuration).Inserir(aluno as Usuario);
-
             var query = @"INSERT INTO aluno (IdUsuario, Nome, Email, DataNascimento, Telefone, Endereco)
-                        VALUES (@IdUsuario, @Nome, @Email, @DataNascimento, @Telefone, @Endereco);";
+                        VALUES (@Id, @Nome, @Email, @DataNascimento, @Telefone, @Endereco);";
 
             using (var conexao = new SqlConnection(connectionString))
-            {
-                conexao.Execute(query, new { idUsuario, aluno.Nome, aluno.Email, aluno.DataNascimento, aluno.Telefone, aluno.Endereco });
+            {    
+                //ao invés de aluno.Id era IdUsuario antes da API
+                conexao.Execute(query, new { aluno.Id, aluno.Nome, aluno.Email, aluno.DataNascimento, aluno.Telefone, aluno.Endereco });
             }
         }
 
         public Aluno ObterPeloIdUsuario(int id)
         {
-            string query = "SELECT * FROM aluno WHERE IdUsuario = @IdUsuario;";
+            string query = "SELECT * FROM aluno WHERE IdUsuario = @Id;";
 
             using (var conexao = new SqlConnection(connectionString))
             {
                 return conexao.QueryFirstOrDefault<Aluno>(query, new { id });
             }
+            /*
+             pra buscar a senha e código(s) junto(s), a query seria:
+             select aluno.*, usuario.Codigo, usuario.Senha from aluno inner join usuario on aluno.IdUsuario = usuario.Id;
+             */
+
         }
 
-        public Resultado<Aluno, Falha> ObterPeloEmail(string email)
+        public Aluno ObterPeloEmail(string email)
         {
             string query = "SELECT * FROM aluno WHERE Email = @Email";
 
             using (var conexao = new SqlConnection(connectionString))
             {
-                var retorno = conexao.QueryFirstOrDefault<Aluno>(query, new { email });
-                if (retorno == null)
-                    return new Falha("Usuário não encontrado");
-                return retorno;
+                return conexao.QueryFirstOrDefault<Aluno>(query, new { email });
             }
         }
 
-        public IEnumerable<Aluno> ObterTodos()
+        public IEnumerable<Aluno> ListarAlunos()
         {
             var query = "SELECT * FROM aluno;";
 
