@@ -78,7 +78,7 @@ namespace API.Controllers
         {
             try
             {
-                _turmaRepositorio.CadastrarInscricao(inscricao);
+                _turmaRepositorio.InserirInscricao(inscricao);
                 return Ok("Inscrição excluída com sucesso!");
             }
             catch (Exception ex)

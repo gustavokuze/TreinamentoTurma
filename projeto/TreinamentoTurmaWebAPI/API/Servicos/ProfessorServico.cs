@@ -12,12 +12,12 @@ namespace API.Servicos
     public class ProfessorServico : IProfessorServico
     {
         private IProfessorRepositorio _professorRepositorio;
-        private IUsuarioServico _usuarioService;
+        private IUsuarioServico _usuarioServico;
 
         public ProfessorServico(IProfessorRepositorio professorRepositorio, IUsuarioServico usuarioService)
         {
             _professorRepositorio = professorRepositorio;
-            _usuarioService = usuarioService;
+            _usuarioServico = usuarioService;
         }
         
         public void Atualizar(Professor professor)
@@ -27,15 +27,13 @@ namespace API.Servicos
 
         public void Excluir(int id)
         {
-            // !!!!! É necessário excluir a inscrição primeiro, antes de excluir o professor !!!!!!!!!!!!
-            // fazer isso após criar o serviço de turma
             _professorRepositorio.Excluir(id);
-            _usuarioService.Excluir(id);
+            _usuarioServico.Excluir(id);
         }
 
         public void Cadastrar(Professor professor)
         {
-            professor.Id = _usuarioService.Inserir(professor as Usuario);
+            professor.Id = _usuarioServico.Inserir(professor as Usuario);
 
             _professorRepositorio.Inserir(professor);
         }

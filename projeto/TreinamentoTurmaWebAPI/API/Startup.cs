@@ -41,6 +41,7 @@ namespace API
             services.AddScoped<IUsuarioServico, UsuarioServico>();
             services.AddScoped<IAlunoServico, AlunoServico>();
             services.AddScoped<IProfessorServico, ProfessorServico>();
+            services.AddScoped<ITurmaServico, TurmaServico>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

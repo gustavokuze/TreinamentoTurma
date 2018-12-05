@@ -13,11 +13,13 @@ namespace API.Servicos
     {
         private IAlunoRepositorio _alunoRepositorio;
         private IUsuarioServico _usuarioService;
+        private ITurmaServico _turmaServico;
 
-        public AlunoServico(IAlunoRepositorio alunoRepositorio, IUsuarioServico usuarioService)
+        public AlunoServico(IAlunoRepositorio alunoRepositorio, IUsuarioServico usuarioService, ITurmaServico turmaServico)
         {
             _alunoRepositorio = alunoRepositorio;
             _usuarioService = usuarioService;
+            _turmaServico = turmaServico;
         }
         
         public void Atualizar(Aluno aluno)
@@ -27,8 +29,11 @@ namespace API.Servicos
 
         public void Excluir(int id)
         {
-            // !!!!! É necessário excluir a inscrição primeiro, antes de excluir o aluno !!!!!!!!!!!!
-            // fazer isso após criar o serviço de turma
+            var inscricao = _turmaServico.ObterPeloAlunoId(id);
+            if(inscricao is var resultado && resultado.EstaValido)
+            {
+                _turmaServico.ExcluirInscricao(resultado.Sucesso.Id);
+            }
             _alunoRepositorio.Excluir(id);
             _usuarioService.Excluir(id);
         }

@@ -10,8 +10,10 @@ namespace API.Infraestrutura.Repositorio.Interfaces
         void Excluir(int id);
         Turma ObterPeloId(int id);
         IEnumerable<Turma> ListarTurmas();
-        void CadastrarInscricao(Inscricao inscricao);
+        void InserirInscricao(Inscricao inscricao);
         void ExcluirInscricao(int inscricaoId);
         Inscricao ObterIncricao(int alunoId, int turmaId);
+        Inscricao ObterIncricaoPeloAlunoId(int alunoId);
+        Inscricao ObterIncricaoPeloTurmaId(int turmaId);
     }
 }
