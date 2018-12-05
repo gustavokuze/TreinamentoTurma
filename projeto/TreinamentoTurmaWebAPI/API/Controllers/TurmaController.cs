@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using API.Infraestrutura.Repositorio.Interfaces;
 using API.Modelos;
+using API.Servicos.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,22 +14,25 @@ namespace API.Controllers
     [ApiController]
     public class TurmaController : ControllerBase
     {
-        private ITurmaRepositorio _turmaRepositorio { get; set; }
-        public TurmaController(ITurmaRepositorio turmaRepositorio)
+        private ITurmaServico _turmaServico { get; set; }
+        public TurmaController(ITurmaServico turmaServico)
         {
-            _turmaRepositorio = turmaRepositorio;
+            _turmaServico = turmaServico;
         }
 
         [HttpGet]
         public IEnumerable<Turma> Listar()
         {
-            return _turmaRepositorio.ListarTurmas();
+            return _turmaServico.ListarTurmas();
         }
 
         [HttpGet("{id}")]
         public Turma Obter(int id)
         {
-            return _turmaRepositorio.ObterPeloId(id);
+            var turma = _turmaServico.ObterPeloId(id);
+            if (turma is var resultado && resultado.EstaValido)
+                return resultado.Sucesso;
+            return new Turma();
         }
 
         [HttpPost("cadastrar")]
@@ -36,7 +40,7 @@ namespace API.Controllers
         {
             try
             {
-                _turmaRepositorio.Inserir(turma);
+                _turmaServico.Cadastrar(turma);
                 return Ok("Turma cadastrada com sucesso!");
             }
             catch (Exception ex)
@@ -50,7 +54,7 @@ namespace API.Controllers
         {
             try
             {
-                _turmaRepositorio.Atualizar(turma);
+                _turmaServico.Atualizar(turma);
                 return "Turma atualizada com sucesso!";
             }
             catch (Exception ex)
@@ -64,7 +68,7 @@ namespace API.Controllers
         {
             try
             {
-                _turmaRepositorio.Excluir(id);
+                _turmaServico.Excluir(id);
                 return "Turma excluída com sucesso!";
             }
             catch (Exception ex)
@@ -78,7 +82,7 @@ namespace API.Controllers
         {
             try
             {
-                _turmaRepositorio.InserirInscricao(inscricao);
+                _turmaServico.CadastrarInscricao(inscricao);
                 return Ok("Inscrição excluída com sucesso!");
             }
             catch (Exception ex)

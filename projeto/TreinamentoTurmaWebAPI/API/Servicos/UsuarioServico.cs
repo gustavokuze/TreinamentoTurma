@@ -13,7 +13,7 @@ namespace API.Servicos
 {
     public class UsuarioServico : IUsuarioServico
     {
-        IUsuarioRepositorio _usuarioRepositorio;
+        IUsuarioRepositorio _usuarioRepositorio { get; set; }
         public UsuarioServico(IUsuarioRepositorio usuarioRepositorio)
         {
             _usuarioRepositorio = usuarioRepositorio;

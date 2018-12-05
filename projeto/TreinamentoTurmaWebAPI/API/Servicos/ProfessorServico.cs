@@ -11,8 +11,8 @@ namespace API.Servicos
 {
     public class ProfessorServico : IProfessorServico
     {
-        private IProfessorRepositorio _professorRepositorio;
-        private IUsuarioServico _usuarioServico;
+        private IProfessorRepositorio _professorRepositorio { get; set; }
+        private IUsuarioServico _usuarioServico { get; set; }
 
         public ProfessorServico(IProfessorRepositorio professorRepositorio, IUsuarioServico usuarioService)
         {
