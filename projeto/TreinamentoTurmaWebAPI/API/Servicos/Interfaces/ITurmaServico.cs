@@ -16,8 +16,8 @@ namespace API.Servicos.Interfaces
         IEnumerable<Turma> ListarTurmas();
         void CadastrarInscricao(Inscricao inscricao);
         void ExcluirInscricao(int id);
+        void ExcluirInscricoesPeloAlunoId(int alunoId);
         Resultado<Inscricao, Falha> ObterIncricao(int alunoId, int turmaId);
         Resultado<Inscricao, Falha> ObterPeloAlunoId(int id);
-        Resultado<Inscricao, Falha> ObterPeloTurmaId(int id);
     }
 }

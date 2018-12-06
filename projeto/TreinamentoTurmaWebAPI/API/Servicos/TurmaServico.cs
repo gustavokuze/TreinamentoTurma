@@ -65,10 +65,9 @@ namespace API.Servicos
             if (resultado == null) return new Falha("Nenhuma inscrição encontrada"); return resultado;
         }
 
-        public Resultado<Inscricao, Falha> ObterPeloTurmaId(int id)
+        public void ExcluirInscricoesPeloAlunoId(int alunoId)
         {
-            var resultado = _turmaRepositorio.ObterIncricaoPeloTurmaId(id);
-            if (resultado == null) return new Falha("Nenhuma inscrição encontrada"); return resultado;
+            _turmaRepositorio.ExcluirInscricoesPeloAlunoId(alunoId);
         }
     }
 }

@@ -19,7 +19,7 @@ namespace API.Uteis
         //Construtor de falha
         internal Resultado(TFalha falha)
         {
-            Falha = falha;
+            Falha = falha; 
             Sucesso = default(TSucesso);
             EstaValido = false;
         }

@@ -29,11 +29,7 @@ namespace API.Servicos
 
         public void Excluir(int id)
         {
-            var inscricao = _turmaServico.ObterPeloAlunoId(id);
-            if(inscricao is var resultado && resultado.EstaValido)
-            {
-                _turmaServico.ExcluirInscricao(resultado.Sucesso.Id);
-            }
+            _turmaServico.ExcluirInscricoesPeloAlunoId(id);
             _alunoRepositorio.Excluir(id);
             _usuarioService.Excluir(id);
         }

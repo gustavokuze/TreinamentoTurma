@@ -100,16 +100,7 @@ namespace API.Infraestrutura.Repositorio
                 return conexao.QueryFirstOrDefault<Inscricao>(query, new { alunoId, turmaId });
             }
         }
-
-        public Inscricao ObterIncricaoPeloTurmaId(int turmaId)
-        {
-            string query = "SELECT * FROM inscricao WHERE TurmaId = @TurmaId";
-
-            using (var conexao = new SqlConnection(connectionString))
-            {
-                return conexao.QueryFirstOrDefault<Inscricao>(query, new { turmaId });
-            }
-        }
+        
 
         public Inscricao ObterIncricaoPeloAlunoId(int alunoId)
         {
@@ -118,6 +109,16 @@ namespace API.Infraestrutura.Repositorio
             using (var conexao = new SqlConnection(connectionString))
             {
                 return conexao.QueryFirstOrDefault<Inscricao>(query, new { alunoId });
+            }
+        }
+
+        public void ExcluirInscricoesPeloAlunoId(int alunoId)
+        {
+            string query = "DELETE FROM inscricao WHERE AlunoId = @AlunoId";
+
+            using (var conexao = new SqlConnection(connectionString))
+            {
+                var queryResult = conexao.Execute(query, new { alunoId });
             }
         }
     }
