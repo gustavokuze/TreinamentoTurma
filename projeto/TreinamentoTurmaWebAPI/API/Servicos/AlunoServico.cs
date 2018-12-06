@@ -2,6 +2,7 @@
 using API.Modelos;
 using API.Servicos.Interfaces;
 using API.Uteis;
+using API.Uteis.Retornos.Validacao;
 using System;
 using System.Collections.Generic;
 using System.Linq;

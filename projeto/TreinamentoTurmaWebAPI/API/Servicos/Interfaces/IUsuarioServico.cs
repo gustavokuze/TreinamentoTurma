@@ -1,10 +1,7 @@
 ﻿using API.Modelos;
-using API.Uteis;
-using Microsoft.AspNetCore.Mvc;
+using API.Uteis.Retornos.Validacao;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace API.Servicos.Interfaces
 {

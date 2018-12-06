@@ -91,7 +91,7 @@ namespace API.Infraestrutura.Repositorio
             }
         }
         
-        public Inscricao ObterIncricao(int alunoId, int turmaId)
+        public Inscricao ObterInscricao(int alunoId, int turmaId)
         {
             string query = "SELECT * FROM inscricao WHERE AlunoId = @AlunoId AND TurmaId = @TurmaId";
 
@@ -101,14 +101,23 @@ namespace API.Infraestrutura.Repositorio
             }
         }
         
-
-        public Inscricao ObterIncricaoPeloAlunoId(int alunoId)
+        public Inscricao ObterInscricaoPeloAlunoId(int alunoId)
         {
             string query = "SELECT * FROM inscricao WHERE AlunoId = @AlunoId";
 
             using (var conexao = new SqlConnection(connectionString))
             {
                 return conexao.QueryFirstOrDefault<Inscricao>(query, new { alunoId });
+            }
+        }
+
+        public IEnumerable<Inscricao> ListarInscricoesPeloTurmaId(int turmaId)
+        {
+            string query = "SELECT * FROM inscricao WHERE TurmaId = @TurmaId";
+
+            using (var conexao = new SqlConnection(connectionString))
+            {
+                return conexao.Query<Inscricao>(query, new { turmaId });
             }
         }
 

@@ -6,6 +6,7 @@ using API.Infraestrutura.Repositorio;
 using API.Infraestrutura.Repositorio.Interfaces;
 using API.Modelos;
 using API.Servicos.Interfaces;
+using API.Uteis.Retornos.API;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -14,7 +15,7 @@ namespace API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ProfessorController : ControllerBase
+    public class ProfessorController : BaseController
     {
         private IProfessorServico _professorService;
 
@@ -24,57 +25,63 @@ namespace API.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<Professor> Listar()
+        public Retorno<List<Professor>, Falha> Listar()
         {
-            return _professorService.ListarProfessores();
+            var listaProfessores = _professorService.ListarProfessores();
+            return FormataRetorno(listaProfessores.ToList());
         }
 
         [HttpGet("{id}")]
-        public Professor Obter(int id)
+        public Retorno<Professor, Falha> Obter(int id)
         {
-            return (_professorService.ObterPeloIdUsuario(id) is var resultado
-                && resultado.EstaValido) ? resultado.Sucesso : new Professor();
+            var professor = _professorService.ObterPeloIdUsuario(id);
+            if ( professor.EstaValido)
+            {
+                return FormataRetorno(professor.Sucesso);
+            }
+            return FormataRetorno(professor.Sucesso, "Professor não encontrado");
         }
 
         [HttpPost]
-        public ObjectResult Cadastrar([FromBody]Professor professor)
+        public Retorno<Professor, Falha> Cadastrar([FromBody]Professor professor)
         {
-            if (_professorService.ObterPeloCpf(professor.Cpf) is var resultado && resultado.EstaValido)
+            var professorCadastrado = _professorService.ObterPeloCpf(professor.Cpf);
+            if ( professorCadastrado.EstaValido)
             {
-                return BadRequest($"O CPF {professor.Cpf} já está cadastrado.");
+                return FormataRetorno(professor, $"O CPF {professor.Cpf} já está cadastrado.");
             }
             else
             {
                 _professorService.Cadastrar(professor);
-                return Ok("Professor cadastrado com sucesso!");
+                return FormataRetorno(professor);
             }
         }
 
         [HttpPut]
-        public ObjectResult Atualizar([FromBody]Professor professor)
+        public Retorno<Professor, Falha> Atualizar([FromBody]Professor professor)
         {
             try
             {
                 _professorService.Atualizar(professor);
-                return Ok("Professor atualizado com sucesso!");
+                return FormataRetorno(professor);
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return FormataRetorno(professor, ex.Message);
             }
         }
 
         [HttpDelete("{id}")]
-        public ObjectResult Excluir(int id)
+        public Retorno<int, Falha> Excluir(int id)
         {
             try
             {
                 _professorService.Excluir(id);
-                return Ok("Professor excluído com sucesso!");
+                return FormataRetorno(id);
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return FormataRetorno(id, ex.Message);
             }
         }
     }

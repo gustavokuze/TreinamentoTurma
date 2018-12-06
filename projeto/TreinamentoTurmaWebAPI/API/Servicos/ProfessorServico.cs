@@ -1,11 +1,8 @@
 ﻿using API.Infraestrutura.Repositorio.Interfaces;
 using API.Modelos;
 using API.Servicos.Interfaces;
-using API.Uteis;
-using System;
+using API.Uteis.Retornos.Validacao;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace API.Servicos
 {

@@ -9,72 +9,77 @@ using API.Servicos.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using API.Uteis.Retornos.API;
 
 namespace API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class AlunoController : ControllerBase
+    public class AlunoController : BaseController
     {
         private IAlunoServico _alunoService;
-        
+
         public AlunoController(IAlunoServico alunoService)
         {
             _alunoService = alunoService;
         }
 
         [HttpGet]
-        public IEnumerable<Aluno> Listar()
+        public Retorno<List<Aluno>, Falha> Listar()
         {
-            return _alunoService.ListarAlunos();
+            var listaAlunos = _alunoService.ListarAlunos();
+            return FormataRetorno(listaAlunos.ToList());
         }
 
         [HttpGet("{id}")]
-        public Aluno Obter(int id)
+        public Retorno<Aluno, Falha> Obter(int id)
         {
-            return (_alunoService.ObterPeloIdUsuario(id) is var resultado 
-                && resultado.EstaValido) ? resultado.Sucesso : new Aluno();
+            var retorno = _alunoService.ObterPeloIdUsuario(id);
+            return (retorno.EstaValido)
+                ? FormataRetorno(retorno.Sucesso)
+                : FormataRetorno(retorno.Sucesso, "Aluno não encontrado");
         }
 
         [HttpPost]
-        public ObjectResult Cadastrar([FromBody]Aluno aluno)
+        public Retorno<Aluno, Falha> Cadastrar([FromBody]Aluno aluno)
         {
-            if(_alunoService.ObterPeloEmail(aluno.Email) is var resultado && resultado.EstaValido)
+            var alunoCadastrado = _alunoService.ObterPeloEmail(aluno.Email);
+            if (alunoCadastrado.EstaValido)
             {
-                return BadRequest($"O email {aluno.Email} já está cadastrado.");
+                return FormataRetorno(aluno, $"O email {aluno.Email} já está cadastrado.");
             }
             else
             {
                 _alunoService.Cadastrar(aluno);
-                return Ok( "Aluno cadastrado com sucesso!");
+                return FormataRetorno(aluno);
             }
         }
 
         [HttpPut]
-        public ObjectResult Atualizar([FromBody]Aluno aluno)
+        public Retorno<Aluno, Falha> Atualizar([FromBody]Aluno aluno)
         {
             try
             {
                 _alunoService.Atualizar(aluno);
-                return Ok("Aluno atualizado com sucesso!") ;
+                return FormataRetorno(aluno);
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message) ;
+                return FormataRetorno(aluno, ex.Message);
             }
         }
 
         [HttpDelete("{id}")]
-        public ObjectResult Excluir(int id)
+        public Retorno<int, Falha> Excluir(int id)
         {
             try
             {
                 _alunoService.Excluir(id);
-                return Ok( "Aluno excluído com sucesso!");
+                return FormataRetorno(id);
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return FormataRetorno(id, ex.Message);
             }
         }
     }

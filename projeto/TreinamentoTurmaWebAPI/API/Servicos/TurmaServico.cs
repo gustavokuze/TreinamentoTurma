@@ -2,6 +2,7 @@
 using API.Modelos;
 using API.Servicos.Interfaces;
 using API.Uteis;
+using API.Uteis.Retornos.Validacao;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -45,13 +46,27 @@ namespace API.Servicos
 
         public Resultado<Inscricao, Falha> ObterIncricao(int alunoId, int turmaId)
         {
-            var resultado = _turmaRepositorio.ObterIncricao(alunoId, turmaId);
+            var resultado = _turmaRepositorio.ObterInscricao(alunoId, turmaId);
             if (resultado == null) return new Falha("Nenhuma inscrição encontrada"); return resultado;
         }
 
-        public void CadastrarInscricao(Inscricao inscricao)
+        public Resultado<Inscricao, Falha> CadastrarInscricao(Inscricao inscricao)
         {
-            _turmaRepositorio.InserirInscricao(inscricao);
+            if(_turmaRepositorio.ObterInscricao(inscricao.AlunoId, inscricao.TurmaId) == null)
+            {
+                var inscricoes = _turmaRepositorio.ListarInscricoesPeloTurmaId(inscricao.TurmaId);
+                var turma = _turmaRepositorio.ObterPeloId(inscricao.TurmaId);
+                if (inscricoes.Count() < turma.LimiteAlunos)
+                {
+                    _turmaRepositorio.InserirInscricao(inscricao);
+                    return inscricao;
+                }
+                return new Falha("A turma já atingiu o limite de alunos");
+            }
+            else
+            {
+                return new Falha("O aluno já está inscrito na turma");
+            }
         }
 
         public void ExcluirInscricao(int id)
@@ -61,7 +76,7 @@ namespace API.Servicos
 
         public Resultado<Inscricao, Falha> ObterPeloAlunoId(int id)
         {
-            var resultado = _turmaRepositorio.ObterIncricaoPeloAlunoId(id);
+            var resultado = _turmaRepositorio.ObterInscricaoPeloAlunoId(id);
             if (resultado == null) return new Falha("Nenhuma inscrição encontrada"); return resultado;
         }
 

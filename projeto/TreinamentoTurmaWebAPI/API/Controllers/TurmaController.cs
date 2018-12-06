@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using API.Infraestrutura.Repositorio.Interfaces;
 using API.Modelos;
 using API.Servicos.Interfaces;
+using API.Uteis.Retornos.API;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -12,7 +13,7 @@ namespace API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class TurmaController : ControllerBase
+    public class TurmaController : BaseController
     {
         private ITurmaServico _turmaServico { get; set; }
         public TurmaController(ITurmaServico turmaServico)
@@ -21,73 +22,79 @@ namespace API.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<Turma> Listar()
+        public Retorno<List<Turma>, Falha> Listar()
         {
-            return _turmaServico.ListarTurmas();
+            var turmas = _turmaServico.ListarTurmas();
+
+            return FormataRetorno(turmas.ToList());
         }
 
         [HttpGet("{id}")]
-        public Turma Obter(int id)
+        public Retorno<Turma, Falha> Obter(int id)
         {
             var turma = _turmaServico.ObterPeloId(id);
-            if (turma is var resultado && resultado.EstaValido)
-                return resultado.Sucesso;
-            return new Turma();
+            if (turma.EstaValido)
+                return FormataRetorno(turma.Sucesso);
+            return FormataRetorno(turma.Sucesso, "Turma não encontrada");
         }
 
         [HttpPost("cadastrar")]
-        public ObjectResult Cadastrar([FromBody]Turma turma)
+        public Retorno<Turma, Falha> Cadastrar([FromBody]Turma turma)
         {
             try
             {
                 _turmaServico.Cadastrar(turma);
-                return Ok("Turma cadastrada com sucesso!");
+                return FormataRetorno(turma);
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return FormataRetorno(turma, ex.Message);
             }
         }
 
         [HttpPut]
-        public string Atualizar([FromBody]Turma turma)
+        public Retorno<Turma, Falha> Atualizar([FromBody]Turma turma)
         {
             try
             {
                 _turmaServico.Atualizar(turma);
-                return "Turma atualizada com sucesso!";
+                return FormataRetorno(turma);
             }
             catch (Exception ex)
             {
-                return ex.Message;
+                return FormataRetorno(turma, ex.Message);
             }
         }
-        
+
         [HttpDelete("{id}")]
-        public string Excluir(int id)
+        public Retorno<int, Falha> Excluir(int id)
         {
             try
             {
                 _turmaServico.Excluir(id);
-                return "Turma excluída com sucesso!";
+                return FormataRetorno(id);
             }
             catch (Exception ex)
             {
-                return ex.Message;
+                return FormataRetorno(id, ex.Message);
             }
         }
 
         [HttpPost("inscrever")]
-        public ObjectResult Inscrever([FromBody]Inscricao inscricao)
+        public Retorno<Inscricao, Falha> Inscrever([FromBody]Inscricao inscricao)
         {
             try
             {
-                _turmaServico.CadastrarInscricao(inscricao);
-                return Ok("Inscrição excluída com sucesso!");
+                var resultado = _turmaServico.CadastrarInscricao(inscricao);
+
+                if (resultado.EstaValido)
+                    return FormataRetorno(inscricao);
+                return FormataRetorno(inscricao, resultado.Falha.Msg);
+
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return FormataRetorno(inscricao, ex.Message);
             }
         }
     }

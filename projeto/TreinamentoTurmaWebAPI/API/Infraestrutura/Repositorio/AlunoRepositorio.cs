@@ -87,6 +87,8 @@ namespace API.Infraestrutura.Repositorio
             {
                 return conexao.Query<Aluno>(query);
             }
+            //List<Aluno> alunos = new List<Aluno>(); //teste
+            //return alunos;
         }
     }
 }

@@ -2,12 +2,9 @@
 using API.Infraestrutura.Repositorio.Interfaces;
 using API.Modelos;
 using API.Servicos.Interfaces;
-using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
-using System.Data.SqlClient;
-using System.Linq;
-using System.Threading.Tasks;
+using API.Uteis.Retornos.Validacao;
 
 namespace API.Servicos
 {

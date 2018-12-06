@@ -1,9 +1,6 @@
 ﻿using API.Modelos;
-using API.Uteis;
-using System;
+using API.Uteis.Retornos.Validacao;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace API.Servicos.Interfaces
 {
@@ -14,7 +11,7 @@ namespace API.Servicos.Interfaces
         int Cadastrar(Turma turma);
         Resultado<Turma, Falha> ObterPeloId(int id);
         IEnumerable<Turma> ListarTurmas();
-        void CadastrarInscricao(Inscricao inscricao);
+        Resultado<Inscricao, Falha> CadastrarInscricao(Inscricao inscricao);
         void ExcluirInscricao(int id);
         void ExcluirInscricoesPeloAlunoId(int alunoId);
         Resultado<Inscricao, Falha> ObterIncricao(int alunoId, int turmaId);
