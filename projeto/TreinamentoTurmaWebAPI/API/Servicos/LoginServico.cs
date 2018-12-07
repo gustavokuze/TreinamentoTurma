@@ -31,13 +31,6 @@ namespace API.Servicos
 
         public AutenticacaoUsuario Autenticar(int codigo, string senha)
         {
-            //buscar usuario do serviço depois
-            //Usuario usuario = new Usuario();
-            //usuario.Codigo = codigo;
-            //usuario.Senha = usuario.Senha;
-            //usuario.Id = 27;
-            //buscar usuario do serviço depois
-
             var usuario = _usuarioServico.ValidarUsuario(codigo, senha);
 
             if (!usuario.EstaValido) return null;
