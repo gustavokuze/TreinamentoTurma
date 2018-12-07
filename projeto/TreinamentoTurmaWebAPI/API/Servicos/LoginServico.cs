@@ -21,40 +21,44 @@ namespace API.Servicos
 
 
         public Configuracoes _configuracoes { get; }
+        public IUsuarioServico _usuarioServico { get; }
 
-        public LoginServico(IOptions<Configuracoes> configuracoes)
+        public LoginServico(IOptions<Configuracoes> configuracoes, IUsuarioServico usuarioServico)
         {
             _configuracoes = configuracoes.Value;
+            _usuarioServico = usuarioServico;
         }
 
         public AutenticacaoUsuario Autenticar(int codigo, string senha)
         {
             //buscar usuario do serviço depois
-            Usuario usuario = new Usuario();
-            usuario.Codigo = codigo;
-            usuario.Senha = usuario.Senha;
-            usuario.Id = 27;
+            //Usuario usuario = new Usuario();
+            //usuario.Codigo = codigo;
+            //usuario.Senha = usuario.Senha;
+            //usuario.Id = 27;
             //buscar usuario do serviço depois
 
-            if (usuario == null) return null;
+            var usuario = _usuarioServico.ValidarUsuario(codigo, senha);
+
+            if (!usuario.EstaValido) return null;
 
             // autenticação válida, prosseguir com a geração do token
             var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes(_configuracoes.ChaveSecreta);
+            var key = Encoding.ASCII.GetBytes(_configuracoes.ChaveSecreta); 
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(new Claim[]
                 {
-                    new Claim(ClaimTypes.Name, usuario.Id.ToString())
+                    new Claim(ClaimTypes.Name, usuario.Sucesso.Id.ToString())
                 }),
-                Expires = DateTime.UtcNow.AddDays(7),
+                Expires = DateTime.UtcNow.AddDays(3),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };
             var token = tokenHandler.CreateToken(tokenDescriptor);
 
 
             AutenticacaoUsuario autenticacao = new AutenticacaoUsuario();
-            autenticacao.Usuario = usuario;
+            autenticacao.Usuario = usuario.Sucesso;
             autenticacao.Token = tokenHandler.WriteToken(token);
 
             // remover a senha antes de retornar

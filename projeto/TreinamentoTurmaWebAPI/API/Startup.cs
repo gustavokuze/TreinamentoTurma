@@ -36,7 +36,6 @@ namespace API
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
 
-
             // configure strongly typed settings objects
             var appSettingsSection = Configuration.GetSection("Configuracoes");
             services.Configure<Configuracoes>(appSettingsSection);

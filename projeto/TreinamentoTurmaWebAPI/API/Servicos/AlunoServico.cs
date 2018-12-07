@@ -12,9 +12,9 @@ namespace API.Servicos
 {
     public class AlunoServico : IAlunoServico
     {
-        private IAlunoRepositorio _alunoRepositorio { get; set; }
-        private IUsuarioServico _usuarioService { get; set; }
-        private ITurmaServico _turmaServico { get; set; }
+        private IAlunoRepositorio _alunoRepositorio { get; }
+        private IUsuarioServico _usuarioService { get; }
+        private ITurmaServico _turmaServico { get; }
 
         public AlunoServico(IAlunoRepositorio alunoRepositorio, IUsuarioServico usuarioService, ITurmaServico turmaServico)
         {

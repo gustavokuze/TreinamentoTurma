@@ -13,20 +13,20 @@ namespace API.Infraestrutura.Repositorio
 {
     public class ProfessorRepositorio : IProfessorRepositorio
     {
-        private IConfiguration _configuration;
-        private string connectionString;
+        private IConfiguration _configuration { get; }
+        private string ConnectionString;
 
         public ProfessorRepositorio(IConfiguration configuration)
         {
             _configuration = configuration;
-            connectionString = configuration.GetValue<string>("DBInfo:ConnectionString");
+            ConnectionString = configuration.GetValue<string>("DBInfo:ConnectionString");
         }
 
         public void Atualizar(Professor professor)
         {
             string query = "UPDATE professor SET Nome = @Nome, Cpf=@Cpf, Telefone = @Telefone, Endereco = @Endereco WHERE IdUsuario = @Id";
 
-            using (var conexao = new SqlConnection(connectionString))
+            using (var conexao = new SqlConnection(ConnectionString))
             {
                 var queryResult = conexao.Execute(query, professor);
             }
@@ -36,7 +36,7 @@ namespace API.Infraestrutura.Repositorio
         {
             string query = "DELETE FROM professor WHERE IdUsuario = @Id";
 
-            using (var conexao = new SqlConnection(connectionString))
+            using (var conexao = new SqlConnection(ConnectionString))
             {
                 var queryResult = conexao.Execute(query, new { Id = id });
             }
@@ -47,7 +47,7 @@ namespace API.Infraestrutura.Repositorio
             var query = @"INSERT INTO professor (IdUsuario, Nome, Cpf, Telefone, Endereco)
                         VALUES (@IdUsuario, @Nome, @Cpf, @Telefone, @Endereco);";
 
-            using (var conexao = new SqlConnection(connectionString))
+            using (var conexao = new SqlConnection(ConnectionString))
             {
                 conexao.Execute(query, new { professor.Id, professor.Nome, professor.Cpf, professor.Telefone, professor.Endereco });
             }
@@ -57,7 +57,7 @@ namespace API.Infraestrutura.Repositorio
         {
             string query = "SELECT * FROM professor WHERE IdUsuario = @IdUsuario;";
 
-            using (var conexao = new SqlConnection(connectionString))
+            using (var conexao = new SqlConnection(ConnectionString))
             {
                 return conexao.QueryFirstOrDefault<Professor>(query, new { id });
             }
@@ -67,7 +67,7 @@ namespace API.Infraestrutura.Repositorio
         {
             string query = "SELECT IdUsuario FROM professor WHERE Cpf = @Cpf";
 
-            using (var conexao = new SqlConnection(connectionString))
+            using (var conexao = new SqlConnection(ConnectionString))
             {
                 return conexao.QueryFirstOrDefault<Professor>(query, new { cpf });
             }
@@ -78,7 +78,7 @@ namespace API.Infraestrutura.Repositorio
         {
             var query = "SELECT * FROM professor;";
 
-            using (var conexao = new SqlConnection(connectionString))
+            using (var conexao = new SqlConnection(ConnectionString))
             {
                 return conexao.Query<Professor>(query);
             }

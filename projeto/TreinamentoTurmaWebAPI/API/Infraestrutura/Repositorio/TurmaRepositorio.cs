@@ -14,7 +14,7 @@ namespace API.Infraestrutura.Repositorio
     public class TurmaRepositorio : ITurmaRepositorio
     {
         private string connectionString;
-        private IConfiguration _configuration;
+        private IConfiguration _configuration { get; }
 
         public TurmaRepositorio(IConfiguration configuration)
         {
