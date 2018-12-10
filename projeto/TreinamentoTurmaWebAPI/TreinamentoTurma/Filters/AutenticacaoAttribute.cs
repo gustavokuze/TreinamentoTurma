@@ -21,7 +21,7 @@ namespace TreinamentoTurma.Filters
                 }
             }
 
-            return false; //apens pra teste tornei true que permite tudo
+            return true; //apens pra teste tornei true que permite tudo
         }
 
         protected override void HandleUnauthorizedRequest(AuthorizationContext filterContext)

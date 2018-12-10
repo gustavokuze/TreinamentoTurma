@@ -10,7 +10,7 @@ namespace TreinamentoTurma.Services.Interfaces
         void Excluir(int id);
         int Cadastrar(Turma turma);
         Resultado<Turma, Helpers.Retornos.API.Falha> ObterPeloId(int id);
-        IEnumerable<Turma> ListarTurmas();
+        System.Threading.Tasks.Task<IEnumerable<Turma>> ListarTurmasAsync();
         Resultado<Inscricao, Helpers.Retornos.API.Falha> CadastrarInscricao(Inscricao inscricao);
         void ExcluirInscricao(int id);
         void ExcluirInscricoesPeloAlunoId(int alunoId);

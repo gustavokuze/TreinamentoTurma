@@ -24,7 +24,7 @@ criar uma camada de serviço que fará o acesso à API, ao invés de chamar o pr
 
 o que fiz até o momento com a migração:
 - Criei uma chave no web.config appsettings chamada ApiUri que contém a URL base da API;
-- Criei Uma pasta chamada services com a interface do serviço de aluno e a implementação que por enquanto só tem a listagem de 
-alunos assíncrona (não testado)
+- Criei Uma pasta chamada services com a interface do serviço de turma e a implementação que por enquanto só tem a listagem de 
+turmas assíncrona
 
 

@@ -8,12 +8,15 @@ using TreinamentoTurma.Areas.Painel.ViewModel;
 using TreinamentoTurma.Filters;
 using TreinamentoTurma.Infra;
 using TreinamentoTurma.Models;
+using TreinamentoTurma.Services;
 
 namespace TreinamentoTurma.Areas.Painel.Controllers
 {
 
     public class TurmaController : Controller
     {
+        private TurmaService _turmaService { get; set; } = new TurmaService();
+
         // GET: Painel/Turma
         public ActionResult Index()
         {
@@ -107,19 +110,26 @@ namespace TreinamentoTurma.Areas.Painel.Controllers
             return RedirectToAction("Cadastrar");
         }
 
-        private List<SelectListItem> ListarTurmas(TurmaRepositorio repositorio)
+        private async System.Threading.Tasks.Task<List<SelectListItem>> ListarTurmasAsync(TurmaRepositorio repositorio)
         {
-            return repositorio
-                .ListarTurmas()
-                .Select(x => new SelectListItem
-                {
-                    Text = x.Descricao,
-                    Value = x.Id.ToString()
-                }).ToList();
+            var turmas = await _turmaService.ListarTurmasAsync();
+            return turmas.Select(x => new SelectListItem
+            {
+                Text = x.Descricao,
+                Value = x.Id.ToString()
+            }).ToList();
+
+            //return repositorio
+            //    .ListarTurmas()
+            //    .Select(x => new SelectListItem
+            //    {
+            //        Text = x.Descricao,
+            //        Value = x.Id.ToString()
+            //    }).ToList();
         }
 
         [Autenticacao(Roles = "_ALUNO_")]
-        public ActionResult Inscricao()
+        public async System.Threading.Tasks.Task<ActionResult> InscricaoAsync()
         {
             List<SelectListItem> turmas = new List<SelectListItem>();
             //turmas.Add(new SelectListItem()
@@ -151,7 +161,7 @@ namespace TreinamentoTurma.Areas.Painel.Controllers
             //    });
             //}
 
-            turmas = ListarTurmas(repositorio);
+            turmas = await ListarTurmasAsync(repositorio);
 
             ViewBag.Turmas = turmas;
 
@@ -180,7 +190,7 @@ namespace TreinamentoTurma.Areas.Painel.Controllers
                 ModelState.AddModelError("", "Este aluno já está inscrito nesta turma");
             }
 
-            ViewBag.Turmas = ListarTurmas(turmaRepositorio);
+            ViewBag.Turmas = ListarTurmasAsync(turmaRepositorio);
 
             return View();
         }

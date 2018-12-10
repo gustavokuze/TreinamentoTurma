@@ -16,6 +16,6 @@ namespace TreinamentoTurma.Services.Interfaces
         void Cadastrar(Aluno aluno);
         Resultado<Aluno, Helpers.Retornos.API.Falha> ObterPeloIdUsuario(int id);
         Resultado<Aluno, Helpers.Retornos.API.Falha> ObterPeloEmail(string email);
-        IEnumerable<Aluno> ListarAlunosAsync();
+        Task<IEnumerable<Aluno>> ListarAlunosAsync();
     }
 }
