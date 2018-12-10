@@ -34,7 +34,6 @@ namespace API.Controllers
             return Ok(login);
         }
         
-
         [HttpGet("teste")]
         public ActionResult teste()
         {

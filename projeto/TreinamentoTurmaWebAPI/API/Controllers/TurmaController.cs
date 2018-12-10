@@ -38,7 +38,7 @@ namespace API.Controllers
             return FormataRetorno(turma.Sucesso, "Turma não encontrada");
         }
 
-        [HttpPost("cadastrar")]
+        [HttpPost]
         public Retorno<Turma, Falha> Cadastrar([FromBody]Turma turma)
         {
             try
@@ -80,7 +80,7 @@ namespace API.Controllers
             }
         }
 
-        [HttpPost("inscrever")]
+        [HttpPost("inscricao")]
         public Retorno<Inscricao, Falha> Inscrever([FromBody]Inscricao inscricao)
         {
             try
@@ -95,6 +95,20 @@ namespace API.Controllers
             catch (Exception ex)
             {
                 return FormataRetorno(inscricao, ex.Message);
+            }
+        }
+
+        [HttpDelete("inscricao/{id}")]
+        public Retorno<int, Falha> ExcluirInscricao(int id)
+        {
+            try
+            {
+                _turmaServico.ExcluirInscricao(id);
+                return FormataRetorno(id);
+            }
+            catch (Exception ex)
+            {
+                return FormataRetorno(id, ex.Message);
             }
         }
     }

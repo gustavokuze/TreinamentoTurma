@@ -58,7 +58,7 @@ namespace API.Infraestrutura.Repositorio
 
             using (var conexao = new SqlConnection(connectionString))
             {
-                return conexao.QueryFirst<Turma>(query, new { id });
+                return conexao.QueryFirstOrDefault<Turma>(query, new { id });
             }
         }
 
@@ -130,5 +130,26 @@ namespace API.Infraestrutura.Repositorio
                 var queryResult = conexao.Execute(query, new { alunoId });
             }
         }
+
+        public void ExcluirInscricoesPeloTurmaId(int turmaId)
+        {
+            string query = "DELETE FROM inscricao WHERE TurmaId = @TurmaId";
+
+            using (var conexao = new SqlConnection(connectionString))
+            {
+                var queryResult = conexao.Execute(query, new { turmaId });
+            }
+        }
+
+        public IEnumerable<Inscricao> ListarInscricoesPeloAlunoId(int alunoId)
+        {
+            string query = "SELECT * FROM inscricao WHERE AlunoId = @AlunoId";
+
+            using (var conexao = new SqlConnection(connectionString))
+            {
+                return conexao.Query<Inscricao>(query, new { alunoId });
+            }
+        }
+
     }
 }

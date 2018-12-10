@@ -56,7 +56,7 @@ namespace API.Infraestrutura.Repositorio
 
         public Aluno ObterPeloIdUsuario(int id)
         {
-            string query = "SELECT * FROM aluno WHERE IdUsuario = @Id;";
+            string query = "select aluno.IdUsuario as Id, aluno.Nome, aluno.Email, aluno.DataNascimento, aluno.Telefone, aluno.Endereco, usuario.Codigo from aluno inner join usuario on aluno.IdUsuario = usuario.Id where aluno.IdUsuario = @Id; ";
 
             using (var conexao = new SqlConnection(ConnectionString))
             {
@@ -71,7 +71,7 @@ namespace API.Infraestrutura.Repositorio
 
         public Aluno ObterPeloEmail(string email)
         {
-            string query = "SELECT * FROM aluno WHERE Email = @Email";
+            string query = "select aluno.IdUsuario as Id, aluno.Nome, aluno.Email, aluno.DataNascimento, aluno.Telefone, aluno.Endereco, usuario.Codigo from aluno inner join usuario on aluno.IdUsuario = usuario.Id where aluno.Email = @Email; "; ;
 
             using (var conexao = new SqlConnection(ConnectionString))
             {
@@ -81,7 +81,7 @@ namespace API.Infraestrutura.Repositorio
 
         public IEnumerable<Aluno> ListarAlunos()
         {
-            var query = "SELECT * FROM aluno;";
+            var query = "select aluno.IdUsuario as Id, aluno.Nome, aluno.Email, aluno.DataNascimento, aluno.Telefone, aluno.Endereco, usuario.Codigo from aluno inner join usuario on aluno.IdUsuario = usuario.Id;"; ;
 
             using (var conexao = new SqlConnection(ConnectionString))
             {

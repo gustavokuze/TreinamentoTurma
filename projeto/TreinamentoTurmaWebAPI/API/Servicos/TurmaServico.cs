@@ -30,6 +30,7 @@ namespace API.Servicos
 
         public void Excluir(int id)
         {
+            _turmaRepositorio.ExcluirInscricoesPeloTurmaId(id);
             _turmaRepositorio.Excluir(id);
         }
 
@@ -83,6 +84,12 @@ namespace API.Servicos
         public void ExcluirInscricoesPeloAlunoId(int alunoId)
         {
             _turmaRepositorio.ExcluirInscricoesPeloAlunoId(alunoId);
+        }
+
+        public Resultado<IEnumerable<Inscricao>, Falha> listarInscricoesPeloAlunoId(int id)
+        {
+            var resultado = _turmaRepositorio.ListarInscricoesPeloAlunoId(id);
+            if (resultado == null) return new Falha("O aluno não está cadastrado em nenhuma turma");return resultado.ToList();
         }
     }
 }

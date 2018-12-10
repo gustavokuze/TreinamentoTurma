@@ -11,9 +11,9 @@ namespace API.Controllers
 {
     public class BaseController : ControllerBase
     {
-        protected Retorno<T, Falha> FormataRetorno<T>(T objeto, string falha = "") //bool valido
+        protected Retorno<T, Falha> FormataRetorno<T>(T objeto, string mensagemFalha = "") //bool valido substituido pela existencia da msg de falha
         {
-            if (falha == string.Empty)
+            if (mensagemFalha == string.Empty || mensagemFalha == null)
             {
                 Response.StatusCode = (int)HttpStatusCode.OK;
                 return new Retorno<T, Falha>(objeto, (HttpStatusCode)Response.StatusCode);
@@ -21,7 +21,7 @@ namespace API.Controllers
             else
             {
                 Response.StatusCode = (int)HttpStatusCode.BadRequest;
-                return new Retorno<T, Falha>(new Falha(falha), (HttpStatusCode)Response.StatusCode);
+                return new Retorno<T, Falha>(new Falha(mensagemFalha), (HttpStatusCode)Response.StatusCode);
             }
         }
     }

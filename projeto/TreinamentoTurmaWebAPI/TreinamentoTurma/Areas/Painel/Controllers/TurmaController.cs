@@ -157,8 +157,7 @@ namespace TreinamentoTurma.Areas.Painel.Controllers
 
             return View();
         }
-
-
+        
         [Autenticacao(Roles = "_ALUNO_")]
         [HttpPost]
         public ActionResult Inscricao(InscricaoViewModel inscricaoViewModel)
@@ -168,7 +167,6 @@ namespace TreinamentoTurma.Areas.Painel.Controllers
             UsuarioRepositorio usuarioRepositorio = new UsuarioRepositorio();
             Aluno alunoAtual = (Aluno)Session["TreinamentoTurmaUsuarioAtual"];
            
-
             inscricaoViewModel.AlunoId = alunoAtual.Id;
             inscricaoViewModel.InscritoEm = DateTime.Now;
             inscricaoViewModel.AlunoId = usuarioRepositorio.BuscarUsuarioPeloCodigo(alunoAtual.Codigo).Id;

@@ -45,7 +45,7 @@ namespace API.Infraestrutura.Repositorio
         public void Inserir(Professor professor)
         {
             var query = @"INSERT INTO professor (IdUsuario, Nome, Cpf, Telefone, Endereco)
-                        VALUES (@IdUsuario, @Nome, @Cpf, @Telefone, @Endereco);";
+                        VALUES (@Id, @Nome, @Cpf, @Telefone, @Endereco);";
 
             using (var conexao = new SqlConnection(ConnectionString))
             {
@@ -55,7 +55,7 @@ namespace API.Infraestrutura.Repositorio
 
         public Professor ObterPeloIdUsuario(int id)
         {
-            string query = "SELECT * FROM professor WHERE IdUsuario = @IdUsuario;";
+            string query = "select professor.IdUsuario as Id, professor.Nome, professor.Cpf, professor.Telefone, professor.Endereco, usuario.Codigo, usuario.Senha from professor inner join usuario on professor.IdUsuario = Usuario.Id WHERE professor.IdUsuario = @Id; ";
 
             using (var conexao = new SqlConnection(ConnectionString))
             {
@@ -65,7 +65,7 @@ namespace API.Infraestrutura.Repositorio
 
         public Professor ObterPeloCpf(string cpf)
         {
-            string query = "SELECT IdUsuario FROM professor WHERE Cpf = @Cpf";
+            string query = "select professor.IdUsuario as Id, professor.Nome, professor.Cpf, professor.Telefone, professor.Endereco, usuario.Codigo, usuario.Senha from professor inner join usuario on professor.IdUsuario = Usuario.Id WHERE professor.Cpf = @Cpf; "; ;
 
             using (var conexao = new SqlConnection(ConnectionString))
             {
@@ -76,7 +76,7 @@ namespace API.Infraestrutura.Repositorio
 
         public IEnumerable<Professor> ListarProfessores()
         {
-            var query = "SELECT * FROM professor;";
+            var query = "select professor.IdUsuario as Id, professor.Nome, professor.Cpf, professor.Telefone, professor.Endereco, usuario.Codigo, usuario.Senha from professor inner join usuario on professor.IdUsuario = Usuario.Id ;"; ;
 
             using (var conexao = new SqlConnection(ConnectionString))
             {

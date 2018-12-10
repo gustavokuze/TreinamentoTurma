@@ -13,8 +13,10 @@ namespace API.Infraestrutura.Repositorio.Interfaces
         void InserirInscricao(Inscricao inscricao);
         void ExcluirInscricao(int inscricaoId);
         void ExcluirInscricoesPeloAlunoId(int alunoId);
+        void ExcluirInscricoesPeloTurmaId(int turmaId);
         Inscricao ObterInscricao(int alunoId, int turmaId);
         Inscricao ObterInscricaoPeloAlunoId(int alunoId);
         IEnumerable<Inscricao> ListarInscricoesPeloTurmaId(int turmaId);
+        IEnumerable<Inscricao> ListarInscricoesPeloAlunoId(int alunoId);
     }
 }

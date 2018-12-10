@@ -139,6 +139,13 @@
     <Compile Include="Areas\Painel\Controllers\DashboardController.cs" />
     <Compile Include="Areas\Painel\Controllers\ProfessorController.cs" />
     <Compile Include="Areas\Painel\Controllers\TurmaController.cs" />
+    <Compile Include="Helpers\Retornos\API\Falha.cs" />
+    <Compile Include="Helpers\Retornos\API\Retorno.cs" />
+    <Compile Include="Helpers\Retornos\API\Sucesso.cs" />
+    <Compile Include="Services\AlunoService.cs" />
+    <Compile Include="Services\Interfaces\IAlunoService.cs" />
+    <Compile Include="Services\Interfaces\ITurmaService.cs" />
+    <Compile Include="Services\TurmaService.cs" />
     <Content Include="Areas\Painel\Controllers\UsuarioController.txt" />
     <Compile Include="Areas\Painel\PainelAreaRegistration.cs" />
     <Compile Include="Areas\Painel\ViewModel\AlunoViewModel.cs" />
