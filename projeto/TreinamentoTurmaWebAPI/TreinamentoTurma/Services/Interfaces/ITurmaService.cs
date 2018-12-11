@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using TreinamentoTurma.Helpers;
+using TreinamentoTurma.Helpers.Retornos.Validacao;
 using TreinamentoTurma.Models;
 
 namespace TreinamentoTurma.Services.Interfaces
@@ -9,12 +9,12 @@ namespace TreinamentoTurma.Services.Interfaces
         void Atualizar(Turma turma);
         void Excluir(int id);
         int Cadastrar(Turma turma);
-        Resultado<Turma, Helpers.Retornos.API.Falha> ObterPeloId(int id);
-        System.Threading.Tasks.Task<IEnumerable<Turma>> ListarTurmasAsync();
-        Resultado<Inscricao, Helpers.Retornos.API.Falha> CadastrarInscricao(Inscricao inscricao);
+        Resultado<Turma, Falha> ObterPeloId(int id);
+        IEnumerable<Turma> ListarTurmas();
+        Resultado<Inscricao, Falha> CadastrarInscricao(Inscricao inscricao);
         void ExcluirInscricao(int id);
         void ExcluirInscricoesPeloAlunoId(int alunoId);
-        Resultado<Inscricao, Helpers.Retornos.API.Falha> ObterIncricao(int alunoId, int turmaId);
-        Resultado<Inscricao, Helpers.Retornos.API.Falha> ObterPeloAlunoId(int id);
+        Resultado<Inscricao, Falha> ObterIncricao(int alunoId, int turmaId);
+        Resultado<Inscricao, Falha> ObterPeloAlunoId(int id);
     }
 }

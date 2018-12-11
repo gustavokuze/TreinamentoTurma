@@ -7,6 +7,7 @@ using System.Web;
 using System.Web.Script.Serialization;
 using TreinamentoTurma.Helpers;
 using TreinamentoTurma.Helpers.Retornos.API;
+using TreinamentoTurma.Helpers.Retornos.Validacao;
 using TreinamentoTurma.Models;
 using TreinamentoTurma.Services.Interfaces;
 
@@ -52,12 +53,12 @@ namespace TreinamentoTurma.Services
             }
         }
 
-        public Resultado<Aluno, Helpers.Retornos.API.Falha> ObterPeloEmail(string email)
+        public Resultado<Aluno, Helpers.Retornos.Validacao.Falha> ObterPeloEmail(string email)
         {
             throw new NotImplementedException();
         }
 
-        public Resultado<Aluno, Helpers.Retornos.API.Falha> ObterPeloIdUsuario(int id)
+        public Resultado<Aluno, Helpers.Retornos.Validacao.Falha> ObterPeloIdUsuario(int id)
         {
             throw new NotImplementedException();
         }

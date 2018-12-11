@@ -4,7 +4,8 @@ using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
-using TreinamentoTurma.Helpers; 
+using TreinamentoTurma.Helpers;
+using TreinamentoTurma.Helpers.Retornos.Validacao;
 using TreinamentoTurma.Models;
 
 namespace TreinamentoTurma.Infra

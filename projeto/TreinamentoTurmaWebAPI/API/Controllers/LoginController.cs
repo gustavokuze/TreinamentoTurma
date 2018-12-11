@@ -6,13 +6,14 @@ using API.Modelos;
 using API.Servicos.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.Authentication;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
 {
     [Authorize]
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class LoginController : ControllerBase
     {
         private ILoginServico _loginServico;
@@ -26,6 +27,12 @@ namespace API.Controllers
         [HttpPost("Autenticar")]
         public IActionResult Autenticar([FromBody]Usuario usuario)
         {
+            //tentando encontrar uma maneira de validar o token do usuário logado
+            var auth = new AuthenticationProperties();
+            var claims = User.Claims.Where(x => x.Value == usuario.Id.ToString());
+
+            var identities = User.Identities;
+            
             var login = _loginServico.Autenticar(usuario.Codigo, usuario.Senha);
 
             if (login == null)
@@ -35,7 +42,7 @@ namespace API.Controllers
         }
         
         [HttpGet("teste")]
-        public ActionResult teste()
+        public ActionResult Teste()
         {
             return Ok("Maravilha! Tudo dando certo por aqui");
         }

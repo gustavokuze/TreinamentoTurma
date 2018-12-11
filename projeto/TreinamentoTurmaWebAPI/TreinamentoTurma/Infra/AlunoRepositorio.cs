@@ -5,6 +5,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
 using TreinamentoTurma.Helpers;
+using TreinamentoTurma.Helpers.Retornos.Validacao;
 using TreinamentoTurma.Models;
 
 namespace TreinamentoTurma.Infra
@@ -87,8 +88,8 @@ namespace TreinamentoTurma.Infra
                     return new Falha("Usuário não encontrado");
                 return retorno;
             }
-        } 
-        
+        }
+
         public Aluno BuscarAlunoPorIdDeUsuario(int idUsuario)
         {
             string query = "SELECT * FROM aluno WHERE IdUsuario = @IdUsuario;";
