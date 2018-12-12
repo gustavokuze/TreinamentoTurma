@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using API.Modelos;
 using API.Servicos.Interfaces;
+using API.Uteis.Retornos.API;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Authentication;
@@ -12,10 +13,10 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
 {
-    [Authorize]
+    //[authorize] removido para poder usar o método da contagem de claims
     [ApiController]
     [Route("api/[controller]")]
-    public class LoginController : ControllerBase
+    public class LoginController : BaseController
     {
         private ILoginServico _loginServico;
 
@@ -24,39 +25,42 @@ namespace API.Controllers
             _loginServico = loginServico;
         }
 
-        [AllowAnonymous]
+
         [HttpPost("Autenticar")]
-        public IActionResult Autenticar([FromBody]AutenticacaoUsuario autenticacao)
+        public Retorno<AutenticacaoUsuario, Falha> Autenticar([FromBody]AutenticacaoUsuario autenticacao)
         {
-            /*
-             O que posso fazer aqui é chegar se o token da autenticação passada
-             por parametro não é vazio, e se está válido (ainda não expirou)
-             talvez verificar se o usuário atual é o usuário do token
-
-            caso nada disso esteja válidado devidamente, envia pra autenticação, do contrário 
-            damos um jeito de salvar o usuário do token na memória, ou usamos a própria claim da prop User
-            e retornamos o token novo/atual para o client
-             */
-
-            var tok = autenticacao.Token;
+            var token = autenticacao.Token;
             var tokHandler = new JwtSecurityTokenHandler();
-            if (tok != string.Empty && tokHandler.CanReadToken(tok))
+            if (token != string.Empty && tokHandler.CanReadToken(token))
             {
-                var token = tokHandler.ReadJwtToken(tok);
-                if( token.ValidTo.CompareTo(DateTime.UtcNow) > 0)
+                var jwtTokenLido = tokHandler.ReadJwtToken(token);
+                if (jwtTokenLido.ValidTo.CompareTo(DateTime.UtcNow) < 0)
+                    return FormataRetorno(autenticacao, "Token inválido, faça login novamente");
+
+                var usuarioAtualClaims = User.Claims.Where(x => x.Value == autenticacao.Usuario.Id.ToString());
+                var jwtTokenLidoClaims = jwtTokenLido.Claims.Where(x => x.Value == autenticacao.Usuario.Id.ToString());
+                if (usuarioAtualClaims.Count() == 0 || jwtTokenLidoClaims.Count() == 0)
                 {
-                    // aqui o token expirou no caso
+                    return FormataRetorno(autenticacao, $"Faça login novamente {usuarioAtualClaims.Count()} {jwtTokenLidoClaims.Count()}");
                 }
+
+                return FormataRetorno(autenticacao);
             }
+            else
+            {
+                var login = _loginServico.Autenticar(autenticacao.Usuario.Codigo, autenticacao.Usuario.Senha);
 
-            //var claims = User.Claims.Where(x => x.Value == autenticacao.Usuario.Id.ToString());
-            
-            var login = _loginServico.Autenticar(autenticacao.Usuario.Codigo, autenticacao.Usuario.Senha);
+                if (login == null)
+                    return FormataRetorno(autenticacao, "Codigo ou senha incorretos");
 
-            if (login == null)
-                return BadRequest(new { message = "Codigo ou senha incorretos" });
+                return FormataRetorno(login);
+            }
+        }
 
-            return Ok(login);
+        [HttpGet("claims/{id}")]
+        public ActionResult claims(int id)
+        {
+            return Ok(User.Claims.Where(x => x.Value == id.ToString()).Count());
         }
 
         [HttpGet("teste")]
