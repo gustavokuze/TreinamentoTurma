@@ -32,7 +32,6 @@ namespace TreinamentoTurma.Controllers
             }
             else
             {
-                //isso poderia ser validado com um container assim como aluno
                 var professorUsuario = new ProfessorRepositorio().BuscarProfessorPorIdDeUsuario(usuarioCadastrado.Id);
                 if (professorUsuario == null)
                 {
@@ -45,18 +44,27 @@ namespace TreinamentoTurma.Controllers
                     else
                     {
                         alunoUsuario.Codigo = usuarioViewModel.Codigo;
+                        alunoUsuario.Senha = usuarioCadastrado.Senha;
+                        
+                        /*
+                         Aqui eu deveria criar uma nova instancia de AutenticacaoAluno e passar isso para o objeto da Session
+                         */
+
                         Session["TreinamentoTurmaUsuarioAtual"] = alunoUsuario;
-                        //return Content($"O email do aluno é: {alunoUsuario.Email}");
                         return RedirectToAction("Index", "Home");
                     }
                 }
                 else
                 {
                     professorUsuario.Codigo = usuarioViewModel.Codigo;
-                    Session["TreinamentoTurmaUsuarioAtual"] = professorUsuario;
-                    //return Content($"O CPF do professor é: {professorUsuario.Cpf}");
-                    return RedirectToAction("Index", "Home");
+                    professorUsuario.Senha = usuarioCadastrado.Senha;
 
+                    /*
+                     Aqui eu deveria criar uma nova instancia de AutenticacaoProfessor e passar isso para o objeto da Session
+                     */
+
+                    Session["TreinamentoTurmaUsuarioAtual"] = professorUsuario;
+                    return RedirectToAction("Index", "Home");
                 }
             }
         }

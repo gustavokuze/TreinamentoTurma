@@ -10,10 +10,11 @@ using TreinamentoTurma.Models;
 using TreinamentoTurma.Services.Interfaces;
 using TreinamentoTurma.Helpers.Retornos.Validacao;
 using TreinamentoTurma.Helpers.Retornos.API;
+using System.Web;
 
 namespace TreinamentoTurma.Services
 {
-    public class TurmaService : ITurmaService
+    public class TurmaService : BaseService, ITurmaService
     {
         public void Atualizar(Turma turma)
         {
@@ -65,14 +66,9 @@ namespace TreinamentoTurma.Services
 
         public IEnumerable<Turma> ListarTurmas()
         {
-            // isso aqui precisa ser colocado em uma classe que fará a autenticação
-            // talvez utilizando cookies
             var turmas = new List<Turma>();
-            var client = new RestClient(new Uri(ConfigurationManager.AppSettings["ApiUri"]));
-            var request = new RestRequest("turma");
-            request.AddHeader("authorization",
-                $"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6IjI3IiwibmJmIjoxNTQ0NTMwMDk4LCJleHAiOjE1NDQ3ODkyOTgsImlhdCI6MTU0NDUzMDA5OH0.89hN3L9Klhn1nxK9E12joLGNsT7nz__ColWmAdBkcJg");
-            var response = client.Execute(request);
+
+            var response = RequisitarAPI("turma");
             var responseData = JsonConvert.DeserializeObject<Retorno<List<Turma>, Helpers.Retornos.API.Falha>>(response.Content);
 
             if (responseData.Sucesso != null)

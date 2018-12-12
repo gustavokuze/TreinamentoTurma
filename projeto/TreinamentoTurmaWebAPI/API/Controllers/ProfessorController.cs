@@ -7,6 +7,7 @@ using API.Infraestrutura.Repositorio.Interfaces;
 using API.Modelos;
 using API.Servicos.Interfaces;
 using API.Uteis.Retornos.API;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;

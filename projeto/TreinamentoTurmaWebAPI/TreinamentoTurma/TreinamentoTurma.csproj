@@ -145,7 +145,11 @@
     <Compile Include="Helpers\Retornos\API\Falha.cs" />
     <Compile Include="Helpers\Retornos\API\Retorno.cs" />
     <Compile Include="Helpers\Retornos\API\Sucesso.cs" />
+    <Compile Include="Models\AutenticacaoAluno.cs" />
+    <Compile Include="Models\AutenticacaoProfessor.cs" />
+    <Compile Include="Models\AutenticacaoUsuario.cs" />
     <Compile Include="Services\AlunoService.cs" />
+    <Compile Include="Services\BaseService.cs" />
     <Compile Include="Services\Interfaces\IAlunoService.cs" />
     <Compile Include="Services\Interfaces\ITurmaService.cs" />
     <Compile Include="Services\TurmaService.cs" />
