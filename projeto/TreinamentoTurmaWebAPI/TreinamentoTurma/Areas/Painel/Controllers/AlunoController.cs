@@ -1,15 +1,11 @@
 ﻿using AutoMapper;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using TreinamentoTurma.Areas.Painel.ViewModel;
 using TreinamentoTurma.Filters;
 using TreinamentoTurma.Helpers;
-using TreinamentoTurma.Infra;
 using TreinamentoTurma.Models;
- 
+using TreinamentoTurma.Services;
+
 namespace TreinamentoTurma.Areas.Painel.Controllers
 {
     [Autenticacao]
@@ -29,8 +25,8 @@ namespace TreinamentoTurma.Areas.Painel.Controllers
         [HttpPost]
         public ActionResult Cadastrar(AlunoViewModel alunoViewModel)
         {
-            AlunoRepositorio repositorio = new AlunoRepositorio();
-            if (repositorio.BuscarAluno(alunoViewModel.Email) is var retorno && retorno.EstaValido)
+            var alunoService = new AlunoService();
+            if (alunoService.ObterPeloEmail(alunoViewModel.Email) is var retorno && retorno.EstaValido)
             {
                 ModelState.AddModelError("", $"O email {alunoViewModel.Email} já está cadastrado");
                 return View();
@@ -38,10 +34,12 @@ namespace TreinamentoTurma.Areas.Painel.Controllers
             else
             {
                 Aluno aluno = Mapper.Map<Aluno>(alunoViewModel);
-                aluno.GerarCodigoESenha();
 
-                repositorio.Inserir(aluno);
-                TempData["Sucesso"] = $"Aluno cadastrado com sucesso. Anote sua senha: {Base64.ParaString(aluno.Senha) }.";
+                var alunoCadastrado = alunoService.Cadastrar(aluno);
+
+                //aqui preciso requisitar a senha caso ela não venha na resposta
+
+                TempData["Sucesso"] = $"Aluno cadastrado com sucesso. Anote sua senha: {Base64.ParaString(alunoCadastrado.Sucesso.Senha) }.";
             }
              
             return RedirectToAction("Cadastrar");

@@ -7,7 +7,7 @@ namespace API.Servicos.Interfaces
 {
     public interface IUsuarioServico
     {
-        int Inserir(Usuario usuario);
+        Resultado<Usuario, Falha> Inserir(Usuario usuario);
         Resultado<Usuario, Falha> ValidarUsuario(int codigo, string senha);
         Resultado<Usuario, Falha> ObterPeloCodigo(int codigo);
         IEnumerable<Usuario> ListarUsuarios();

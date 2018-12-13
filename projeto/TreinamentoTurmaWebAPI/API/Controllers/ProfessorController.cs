@@ -43,6 +43,17 @@ namespace API.Controllers
             return FormataRetorno(professor.Sucesso, "Professor não encontrado");
         }
 
+        [HttpGet("obter/{cpf}")]
+        public Retorno<Professor, Falha> Obter(string cpf)
+        {
+            var professor = _professorService.ObterPeloCpf(cpf);
+            if (professor.EstaValido)
+            {
+                return FormataRetorno(professor.Sucesso);
+            }
+            return FormataRetorno(professor.Sucesso, "Professor não encontrado");
+        }
+
         [HttpPost]
         public Retorno<Professor, Falha> Cadastrar([FromBody]Professor professor)
         {

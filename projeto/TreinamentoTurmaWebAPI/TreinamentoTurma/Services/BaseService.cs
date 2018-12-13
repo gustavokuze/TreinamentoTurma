@@ -12,7 +12,7 @@ namespace TreinamentoTurma.Services
 {
     public class BaseService
     {
-        public IRestResponse RequisitarAPI(string resource, Method method = Method.GET)
+        public IRestResponse RequisitarAPI(string resource, Method method = Method.GET, object body = null)
         {
             var autenticacaoUsuario = HttpContext.Current.Session["TreinamentoTurmaUsuarioAtual"] as AutenticacaoUsuario;
             var token = "";
@@ -22,6 +22,7 @@ namespace TreinamentoTurma.Services
             }
             var client = new RestClient(new Uri(ConfigurationManager.AppSettings["ApiUri"]));
             var request = new RestRequest(resource, method);
+            if (body != null) request.AddJsonBody(body);
             if(token != string.Empty && token != null)
                 request.AddHeader("authorization", $"Bearer {token}");
 

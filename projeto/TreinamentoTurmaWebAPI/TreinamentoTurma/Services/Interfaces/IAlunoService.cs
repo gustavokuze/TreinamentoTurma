@@ -1,22 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TreinamentoTurma.Helpers;
-using TreinamentoTurma.Helpers.Retornos.API;
+﻿using System.Collections.Generic;
 using TreinamentoTurma.Helpers.Retornos.Validacao;
 using TreinamentoTurma.Models;
+using Falha = TreinamentoTurma.Helpers.Retornos.Validacao.Falha;
 
 namespace TreinamentoTurma.Services.Interfaces
 {
     public interface IAlunoService
     {
-        void Atualizar(Aluno aluno);
-        void Excluir(int id);
-        void Cadastrar(Aluno aluno);
-        Resultado<Aluno, Helpers.Retornos.Validacao.Falha> ObterPeloIdUsuario(int id);
-        Resultado<Aluno, Helpers.Retornos.Validacao.Falha> ObterPeloEmail(string email);
-        Task<IEnumerable<Aluno>> ListarAlunosAsync();
+        Resultado<Aluno, Falha> Atualizar(Aluno aluno);
+        Resultado<int, Falha> Excluir(int id);
+        Resultado<Usuario, Falha> Cadastrar(Aluno aluno);
+        Resultado<Aluno, Falha> ObterPeloIdUsuario(int id);
+        Resultado<Aluno, Falha> ObterPeloEmail(string email);
+        IEnumerable<Aluno> ListarAlunos();
     }
 }

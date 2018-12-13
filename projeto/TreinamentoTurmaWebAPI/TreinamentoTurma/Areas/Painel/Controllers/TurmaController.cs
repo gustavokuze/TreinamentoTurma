@@ -2,11 +2,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using TreinamentoTurma.Areas.Painel.ViewModel;
 using TreinamentoTurma.Filters;
-using TreinamentoTurma.Infra;
 using TreinamentoTurma.Models;
 using TreinamentoTurma.Services;
 
@@ -27,17 +25,19 @@ namespace TreinamentoTurma.Areas.Painel.Controllers
         public ActionResult Cadastrar(int? id = null)
         {
             TurmaViewModel viewModel = new TurmaViewModel();
-            TurmaRepositorio repositorio = new TurmaRepositorio();
 
-            viewModel.ListaTurmas = Mapper.Map<List<TurmaViewModel>>(_turmaService.ListarTurmas());
+            var listaTurmas = Mapper.Map<List<TurmaViewModel>>(_turmaService.ListarTurmas());
 
             if (id.HasValue)
             {
-                //TODO: passar a chamada abaixo para um método na própria ViewModel chamado 
-                //"Selecionar(int id)", pra torná-la reutilizável
-
-                //antes do Mapper era viewModel.Turma
-                viewModel = Mapper.Map<TurmaViewModel>(viewModel.ListaTurmas.FirstOrDefault(x => x.Id == id.Value));
+                var turmaSelecionada = listaTurmas.First(x => x.Id == id);
+                viewModel = turmaSelecionada;
+                viewModel.ListaTurmas = listaTurmas;
+                //viewModel.ListaTurmas.Remove(turmaSelecionada);
+            }
+            else
+            {
+                viewModel.ListaTurmas = listaTurmas;
             }
 
             return View(viewModel);
@@ -72,12 +72,11 @@ namespace TreinamentoTurma.Areas.Painel.Controllers
         [HttpPost]
         public ActionResult Cadastrar(TurmaViewModel viewModel)
         {
-            TurmaRepositorio turmaRepositorio = new TurmaRepositorio();
             Turma mappedTurma = Mapper.Map<Turma>(viewModel);
 
             if (viewModel.Id > 0)
             {
-                turmaRepositorio.Atualizar(mappedTurma);
+                _turmaService.Atualizar(mappedTurma);
 
                 viewModel.ListaTurmas.ForEach((x) =>
                 {
@@ -90,7 +89,7 @@ namespace TreinamentoTurma.Areas.Painel.Controllers
             }
             else
             {
-                viewModel.Id = turmaRepositorio.Inserir(mappedTurma);
+                viewModel.Id = _turmaService.Cadastrar(mappedTurma);
                 viewModel.ListaTurmas.Add(viewModel);
             }
 
@@ -100,17 +99,15 @@ namespace TreinamentoTurma.Areas.Painel.Controllers
         [Autenticacao(Roles = "_PROFESSOR_")]
         public ActionResult Excluir(int id = 0)
         {
-            TurmaRepositorio repositorio = new TurmaRepositorio();
-
             if (id > 0)
             {
-                repositorio.Excluir(id);
+                _turmaService.Excluir(id);
             }
 
             return RedirectToAction("Cadastrar");
         }
 
-        private List<SelectListItem> ListarTurmas(TurmaRepositorio repositorio)
+        private List<SelectListItem> ListarTurmas()
         {
             var turmas =  _turmaService.ListarTurmas();
             return turmas.Select(x => new SelectListItem
@@ -150,8 +147,8 @@ namespace TreinamentoTurma.Areas.Painel.Controllers
             //    Value = "3"
             //});
 
-            TurmaRepositorio repositorio = new TurmaRepositorio();
-            var listaDeTurmas = repositorio.ListarTurmas();
+
+            var listaDeTurmas = _turmaService.ListarTurmas();
             //for (int i = 0; i < listaDeTurmas.Count; i++)
             //{
             //    turmas.Add(new SelectListItem()
@@ -161,7 +158,7 @@ namespace TreinamentoTurma.Areas.Painel.Controllers
             //    });
             //}
 
-            turmas = ListarTurmas(repositorio);
+            turmas = ListarTurmas();
 
             ViewBag.Turmas = turmas;
 
@@ -172,25 +169,23 @@ namespace TreinamentoTurma.Areas.Painel.Controllers
         [HttpPost]
         public ActionResult Inscricao(InscricaoViewModel inscricaoViewModel)
         {
-            TurmaRepositorio turmaRepositorio = new TurmaRepositorio();
-            AlunoRepositorio alunoRepositorio = new AlunoRepositorio();
-            UsuarioRepositorio usuarioRepositorio = new UsuarioRepositorio();
+            UsuarioService usuarioService = new UsuarioService();
             Aluno alunoAtual = (Aluno)Session["TreinamentoTurmaUsuarioAtual"];
            
             inscricaoViewModel.AlunoId = alunoAtual.Id;
             inscricaoViewModel.InscritoEm = DateTime.Now;
-            inscricaoViewModel.AlunoId = usuarioRepositorio.BuscarUsuarioPeloCodigo(alunoAtual.Codigo).Id;
+            //inscricaoViewModel.AlunoId = usuarioService.BuscarUsuarioPeloCodigo(alunoAtual.Codigo).Id;
 
-            if (turmaRepositorio.BuscarInscricao(inscricaoViewModel.AlunoId, inscricaoViewModel.TurmaId) == null)
+            if (_turmaService.BuscarInscricao(inscricaoViewModel.AlunoId, inscricaoViewModel.TurmaId).Sucesso == null)
             {
-                turmaRepositorio.Inserir(Mapper.Map<Inscricao>(inscricaoViewModel));
+                _turmaService.CadastrarInscricao(Mapper.Map<Inscricao>(inscricaoViewModel));
             }
             else
             {
                 ModelState.AddModelError("", "Este aluno já está inscrito nesta turma");
             }
 
-            ViewBag.Turmas = ListarTurmas(turmaRepositorio);
+            ViewBag.Turmas = ListarTurmas();
 
             return View();
         }

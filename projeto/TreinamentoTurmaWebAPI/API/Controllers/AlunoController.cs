@@ -1,14 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using API.Infraestrutura.Repositorio;
-using API.Infraestrutura.Repositorio.Interfaces;
 using API.Modelos;
 using API.Servicos.Interfaces;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
 using API.Uteis.Retornos.API;
 
 namespace API.Controllers
@@ -40,18 +35,27 @@ namespace API.Controllers
                 : FormataRetorno(retorno.Sucesso, "Aluno não encontrado");
         }
 
+        [HttpGet("obter/{email}")]
+        public Retorno<Aluno, Falha> Obter(string email)
+        {
+            var retorno = _alunoService.ObterPeloEmail(email);
+            return (retorno.EstaValido)
+                ? FormataRetorno(retorno.Sucesso)
+                : FormataRetorno(retorno.Sucesso, "Aluno não encontrado");
+        }
+
         [HttpPost]
-        public Retorno<Aluno, Falha> Cadastrar([FromBody]Aluno aluno)
+        public Retorno<Usuario, Falha> Cadastrar([FromBody]Aluno aluno)
         {
             var alunoCadastrado = _alunoService.ObterPeloEmail(aluno.Email);
             if (alunoCadastrado.EstaValido)
             {
-                return FormataRetorno(aluno, $"O email {aluno.Email} já está cadastrado.");
+                return FormataRetorno(aluno as Usuario, $"O email {aluno.Email} já está cadastrado.");
             }
             else
             {
-                _alunoService.Cadastrar(aluno);
-                return FormataRetorno(aluno);
+                var usuario =_alunoService.Cadastrar(aluno);
+                return FormataRetorno(usuario.Sucesso);
             }
         }
 

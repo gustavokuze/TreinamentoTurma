@@ -8,7 +8,7 @@ namespace API.Servicos.Interfaces
     {
         void Atualizar(Professor professor);
         void Excluir(int id);
-        void Cadastrar(Professor professor);
+        Resultado<Usuario, Falha> Cadastrar(Professor professor);
         Resultado<Professor, Falha> ObterPeloIdUsuario(int id);
         Resultado<Professor, Falha> ObterPeloCpf(string cpf);
         IEnumerable<Professor> ListarProfessores();

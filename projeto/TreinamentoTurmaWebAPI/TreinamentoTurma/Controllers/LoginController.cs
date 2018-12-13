@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 using TreinamentoTurma.Areas.Painel.ViewModel;
-using TreinamentoTurma.Helpers;
-using TreinamentoTurma.Infra;
 using TreinamentoTurma.Models;
+using TreinamentoTurma.Services;
 
 namespace TreinamentoTurma.Controllers
 {
@@ -21,9 +16,16 @@ namespace TreinamentoTurma.Controllers
         [HttpPost]
         public ActionResult Entrar(UsuarioViewModel usuarioViewModel)
         {
-            UsuarioRepositorio repositorio = new UsuarioRepositorio();
-            var usuarioCadastrado = repositorio.ValidarUsuario(usuarioViewModel.Codigo, 
-                Base64.ParaBase64(usuarioViewModel.Senha));
+            //UsuarioRepositorio repositorio = new UsuarioRepositorio();
+            //var usuarioCadastrado = repositorio.ValidarUsuario(usuarioViewModel.Codigo, 
+            //    Base64.ParaBase64(usuarioViewModel.Senha));
+
+            AutenticacaoUsuario usuarioParaAutenticar = new AutenticacaoUsuario();
+            usuarioParaAutenticar.Usuario = usuarioParaAutenticar.Usuario;
+
+            UsuarioService usuarioService = new UsuarioService();
+            var usuarioCadastrado = usuarioService.Autenticar(usuarioParaAutenticar);
+
 
             if (usuarioCadastrado == null)
             {
@@ -32,38 +34,35 @@ namespace TreinamentoTurma.Controllers
             }
             else
             {
-                var professorUsuario = new ProfessorRepositorio().BuscarProfessorPorIdDeUsuario(usuarioCadastrado.Id);
-                if (professorUsuario == null)
+                var professorUsuario = new ProfessorService().ObterPeloIdUsuario(usuarioCadastrado.Usuario.Id);
+                if (professorUsuario.Sucesso == null)
                 {
-                    var alunoUsuario = new AlunoRepositorio().BuscarAlunoPorIdDeUsuario(usuarioCadastrado.Id);
-                    if (alunoUsuario == null)
+                    var alunoUsuario = new AlunoService().ObterPeloIdUsuario(usuarioCadastrado.Usuario.Id);
+                    if (alunoUsuario.Sucesso == null)
                     {
                         ModelState.AddModelError("", "Erro interno. O código do usuário está cadastrado mas não existe nenhum professor ou aluno com este código.");
                         return View("Index");
                     }
                     else
                     {
-                        alunoUsuario.Codigo = usuarioViewModel.Codigo;
-                        alunoUsuario.Senha = usuarioCadastrado.Senha;
-                        
-                        /*
-                         Aqui eu deveria criar uma nova instancia de AutenticacaoAluno e passar isso para o objeto da Session
-                         */
+                        alunoUsuario.Sucesso.Codigo = usuarioCadastrado.Usuario.Codigo;
+                        alunoUsuario.Sucesso.Senha = usuarioCadastrado.Usuario.Senha;
 
-                        Session["TreinamentoTurmaUsuarioAtual"] = alunoUsuario;
+                        var autenticacaoAluno = new AutenticacaoAluno(alunoUsuario.Sucesso, usuarioCadastrado.Token);
+
+                        Session["TreinamentoTurmaUsuarioAtual"] = autenticacaoAluno;
                         return RedirectToAction("Index", "Home");
                     }
                 }
                 else
                 {
-                    professorUsuario.Codigo = usuarioViewModel.Codigo;
-                    professorUsuario.Senha = usuarioCadastrado.Senha;
+                    professorUsuario.Sucesso.Codigo = usuarioCadastrado.Usuario.Codigo;
+                    professorUsuario.Sucesso.Senha = usuarioCadastrado.Usuario.Senha;
 
-                    /*
-                     Aqui eu deveria criar uma nova instancia de AutenticacaoProfessor e passar isso para o objeto da Session
-                     */
 
-                    Session["TreinamentoTurmaUsuarioAtual"] = professorUsuario;
+                    var autenticacaoProfessor = new AutenticacaoProfessor(professorUsuario.Sucesso, usuarioCadastrado.Token);
+
+                    Session["TreinamentoTurmaUsuarioAtual"] = autenticacaoProfessor;
                     return RedirectToAction("Index", "Home");
                 }
             }

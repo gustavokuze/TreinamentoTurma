@@ -148,11 +148,14 @@
     <Compile Include="Models\AutenticacaoAluno.cs" />
     <Compile Include="Models\AutenticacaoProfessor.cs" />
     <Compile Include="Models\AutenticacaoUsuario.cs" />
+    <Compile Include="Services\Interfaces\IProfessorService .cs" />
+    <Compile Include="Services\ProfessorService.cs" />
     <Compile Include="Services\AlunoService.cs" />
     <Compile Include="Services\BaseService.cs" />
     <Compile Include="Services\Interfaces\IAlunoService.cs" />
     <Compile Include="Services\Interfaces\ITurmaService.cs" />
     <Compile Include="Services\TurmaService.cs" />
+    <Compile Include="Services\UsuarioService.cs" />
     <Content Include="Areas\Painel\Controllers\UsuarioController.txt" />
     <Compile Include="Areas\Painel\PainelAreaRegistration.cs" />
     <Compile Include="Areas\Painel\ViewModel\AlunoViewModel.cs" />
@@ -169,13 +172,12 @@
     </Compile>
     <Compile Include="Helpers\Base64.cs" />
     <Compile Include="Helpers\Retornos\Validacao\Falha.cs" />
-    <Compile Include="Helpers\Geradores.cs" />
     <Compile Include="Helpers\Retornos\Validacao\Resultado.cs" />
-    <Compile Include="Infra\AlunoRepositorio.cs" />
-    <Compile Include="Infra\ProfessorRepositorio.cs" />
-    <Compile Include="Infra\Repositorio.cs" />
-    <Compile Include="Infra\TurmaRepositorio.cs" />
-    <Compile Include="Infra\UsuarioRepositorio.cs" />
+    <Content Include="Infra\AlunoRepositorio.txt" />
+    <Content Include="Infra\ProfessorRepositorio.txt" />
+    <Content Include="Infra\Repositorio.txt" />
+    <Content Include="Infra\TurmaRepositorio.txt" />
+    <Content Include="Infra\UsuarioRepositorio.txt" />
     <Compile Include="Mappers\AutoMapperConfig.cs" />
     <Compile Include="Mappers\DomainToViewModelMappingProfile.cs" />
     <Compile Include="Mappers\ViewModelToDomainMappingProfile.cs" />

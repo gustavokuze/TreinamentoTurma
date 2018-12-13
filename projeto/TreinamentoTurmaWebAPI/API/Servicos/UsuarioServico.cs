@@ -22,7 +22,7 @@ namespace API.Servicos
             return (_usuarioRepositorio.ObterPeloCodigo(randNum) == null) ? randNum : GerarCodigoValido(random);
         }
 
-        public int Inserir(Usuario usuario)
+        public Resultado<Usuario, Falha> Inserir(Usuario usuario)
         {
             try
             {
@@ -33,7 +33,7 @@ namespace API.Servicos
             } 
             catch (Exception ex)
             {
-                return 0;
+                return new Falha(ex.Message);
             }
         }
 

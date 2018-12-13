@@ -2,6 +2,7 @@
 using API.Modelos;
 using API.Servicos.Interfaces;
 using API.Uteis.Retornos.Validacao;
+using System;
 using System.Collections.Generic;
 
 namespace API.Servicos
@@ -28,11 +29,20 @@ namespace API.Servicos
             _usuarioServico.Excluir(id);
         }
 
-        public void Cadastrar(Professor professor)
+        public Resultado<Usuario, Falha> Cadastrar(Professor professor)
         {
-            professor.Id = _usuarioServico.Inserir(professor as Usuario);
+            try
+            {
+                var usuario = _usuarioServico.Inserir(professor as Usuario);
+                professor.Id = usuario.Sucesso.Id;
 
-            _professorRepositorio.Inserir(professor);
+                _professorRepositorio.Inserir(professor);
+                return usuario.Sucesso;
+            }
+            catch (Exception ex)
+            {
+                return new Falha(ex.Message);
+            }
         }
 
         public Resultado<Professor, Falha> ObterPeloCpf(string cpf)

@@ -1,21 +1,21 @@
 ﻿
 
-@if (Session["TreinamentoTurmaUsuarioAtual"] is TreinamentoTurma.Models.Aluno)
+@if (Session["TreinamentoTurmaUsuarioAtual"] is TreinamentoTurma.Models.AutenticacaoAluno)
 {
     <li>
         @Html.ActionLink(
-        $"Olá, {((Session["TreinamentoTurmaUsuarioAtual"] as TreinamentoTurma.Models.Aluno).Nome)}"
+        $"Olá, {((Session["TreinamentoTurmaUsuarioAtual"] as TreinamentoTurma.Models.AutenticacaoAluno).Aluno.Nome)}"
         , "Sair","Login", new { Area = ""},
         new { @class = "pull-right" })
     </li>
 
 
 }
-else if (Session["TreinamentoTurmaUsuarioAtual"] is TreinamentoTurma.Models.Professor)
+else if (Session["TreinamentoTurmaUsuarioAtual"] is TreinamentoTurma.Models.AutenticacaoProfessor)
 {
     <li>
         @Html.ActionLink(
-        $"Olá, Prof. {((Session["TreinamentoTurmaUsuarioAtual"] as TreinamentoTurma.Models.Professor).Nome)}"
+        $"Olá, Prof. {((Session["TreinamentoTurmaUsuarioAtual"] as TreinamentoTurma.Models.AutenticacaoProfessor).Professor.Nome)}"
         , "Sair", "Login", new { Area = "" },
         new { @class = "pull-right" })
     </li>

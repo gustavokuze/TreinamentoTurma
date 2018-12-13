@@ -21,12 +21,14 @@ namespace API.Infraestrutura.Repositorio
             ConnectionString = configuration.GetValue<string>("DBInfo:ConnectionString"); 
         }
         
-        public int Inserir(Usuario usuario)
+        public Usuario Inserir(Usuario usuario)
         {
             string query = "INSERT INTO usuario (Codigo, Senha) VALUES (@Codigo, @Senha);SELECT SCOPE_IDENTITY();";
             using (var conexao = new SqlConnection(ConnectionString))
             {
-                return conexao.QueryFirst<int>(query, new { usuario.Codigo, usuario.Senha });
+                int id = conexao.QueryFirst<int>(query, new { usuario.Codigo, usuario.Senha });
+                usuario.Id = id;
+                return usuario;
             }
         }
 

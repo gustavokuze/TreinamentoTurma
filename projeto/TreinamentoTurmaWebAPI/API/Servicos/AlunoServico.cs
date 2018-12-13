@@ -13,13 +13,13 @@ namespace API.Servicos
     public class AlunoServico : IAlunoServico
     {
         private IAlunoRepositorio _alunoRepositorio { get; }
-        private IUsuarioServico _usuarioService { get; }
+        private IUsuarioServico _usuarioServico { get; }
         private ITurmaServico _turmaServico { get; }
 
-        public AlunoServico(IAlunoRepositorio alunoRepositorio, IUsuarioServico usuarioService, ITurmaServico turmaServico)
+        public AlunoServico(IAlunoRepositorio alunoRepositorio, IUsuarioServico usuarioServico, ITurmaServico turmaServico)
         {
             _alunoRepositorio = alunoRepositorio;
-            _usuarioService = usuarioService;
+            _usuarioServico = usuarioServico;
             _turmaServico = turmaServico;
         }
         
@@ -32,14 +32,23 @@ namespace API.Servicos
         {
             _turmaServico.ExcluirInscricoesPeloAlunoId(id);
             _alunoRepositorio.Excluir(id);
-            _usuarioService.Excluir(id);
+            _usuarioServico.Excluir(id);
         }
 
-        public void Cadastrar(Aluno aluno)
+        public Resultado<Usuario, Falha> Cadastrar(Aluno aluno)
         {
-            aluno.Id = _usuarioService.Inserir(aluno as Usuario);
+            try
+            {
+                var usuario = _usuarioServico.Inserir(aluno as Usuario);
+                aluno.Id = usuario.Sucesso.Id;
 
-            _alunoRepositorio.Inserir(aluno);
+                _alunoRepositorio.Inserir(aluno);
+                return usuario.Sucesso;
+            }
+            catch (Exception ex)
+            {
+                return new Falha(ex.Message);
+            }
         }
 
         public Resultado<Aluno, Falha> ObterPeloEmail(string email)

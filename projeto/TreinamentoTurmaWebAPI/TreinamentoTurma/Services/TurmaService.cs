@@ -1,46 +1,126 @@
 ﻿using Newtonsoft.Json;
 using RestSharp;
-using System;
 using System.Collections.Generic;
-using System.Configuration;
-using System.Net.Http;
-using System.Threading.Tasks;
-using TreinamentoTurma.Helpers;
 using TreinamentoTurma.Models;
 using TreinamentoTurma.Services.Interfaces;
 using TreinamentoTurma.Helpers.Retornos.Validacao;
 using TreinamentoTurma.Helpers.Retornos.API;
-using System.Web;
 
 namespace TreinamentoTurma.Services
 {
     public class TurmaService : BaseService, ITurmaService
     {
-        public void Atualizar(Turma turma)
+        public Resultado<Turma, Helpers.Retornos.Validacao.Falha> Atualizar(Turma turma)
         {
-            throw new NotImplementedException();
+            var response = JsonConvert.DeserializeObject<Retorno<Turma, Helpers.Retornos.API.Falha>>(RequisitarAPI($"turma", Method.PUT, turma).Content);
+            if (response.Sucesso != null)
+            {
+                return new Resultado<Turma,
+                    Helpers.Retornos.Validacao.Falha>(response.Sucesso.Objeto);
+            }
+            else
+            {
+                return new Resultado<Turma,
+                    Helpers.Retornos.Validacao.Falha>(new Helpers.Retornos.Validacao.Falha(response.Falha.Mensagem));
+            }
         }
 
         public int Cadastrar(Turma turma)
         {
-            throw new NotImplementedException();
+            var response = JsonConvert.DeserializeObject<Retorno<Turma, Helpers.Retornos.API.Falha>>(RequisitarAPI($"turma", Method.POST, turma).Content);
+            if (response.Sucesso != null)
+            {
+                return response.Sucesso.Objeto.Id;
+            }
+            else
+            {
+                return 0;
+            }
         }
         
-        public void Excluir(int id)
+        public Resultado<int, Helpers.Retornos.Validacao.Falha> Excluir(int id)
         {
-            throw new NotImplementedException();
+            var response = JsonConvert.DeserializeObject<Retorno<int, Helpers.Retornos.API.Falha>>(RequisitarAPI($"turma/{id}", Method.DELETE).Content);
+            if (response.Sucesso != null)
+            {
+                return new Resultado<int, Helpers.Retornos.Validacao.Falha>(response.Sucesso.Objeto);
+            }
+            else
+            {
+                return new Resultado<int, Helpers.Retornos.Validacao.Falha>(new Helpers.Retornos.Validacao.Falha(response.Falha.Mensagem));
+            }
         }
 
-        public void ExcluirInscricao(int id)
+        public Resultado<int, Helpers.Retornos.Validacao.Falha> ExcluirInscricao(int id)
         {
-            throw new NotImplementedException();
+            var response = JsonConvert.DeserializeObject<Retorno<int, Helpers.Retornos.API.Falha>>(RequisitarAPI($"turma/inscricao/{id}", Method.DELETE).Content);
+            if (response.Sucesso != null)
+            {
+                return new Resultado<int, Helpers.Retornos.Validacao.Falha>(response.Sucesso.Objeto);
+            }
+            else
+            {
+                return new Resultado<int, Helpers.Retornos.Validacao.Falha>(new Helpers.Retornos.Validacao.Falha(response.Falha.Mensagem));
+            }
+        }
+        
+        public IEnumerable<Turma> ListarTurmas()
+        {
+            var turmas = new List<Turma>();
+            var response = RequisitarAPI("turma");
+            var responseData = JsonConvert.DeserializeObject<Retorno<List<Turma>, Helpers.Retornos.API.Falha>>(response.Content);
+
+            if (responseData.Sucesso != null)
+                turmas = responseData.Sucesso.Objeto;
+            return turmas;
+        }
+        
+        public Resultado<Turma, Helpers.Retornos.Validacao.Falha> ObterPeloId(int id)
+        {
+            var response = JsonConvert.DeserializeObject<Retorno<Turma, Helpers.Retornos.API.Falha>>(RequisitarAPI($"turma/{id}").Content);
+            if (response.Sucesso != null)
+            {
+                return new Resultado<Turma,
+                    Helpers.Retornos.Validacao.Falha>(response.Sucesso.Objeto);
+            }
+            else
+            {
+                return new Resultado<Turma,
+                    Helpers.Retornos.Validacao.Falha>(new Helpers.Retornos.Validacao.Falha(response.Falha.Mensagem));
+            }
+        }
+        
+        public Resultado<Inscricao, Helpers.Retornos.Validacao.Falha> CadastrarInscricao(Inscricao inscricao)
+        {
+            var response = JsonConvert.DeserializeObject<Retorno<Inscricao, Helpers.Retornos.API.Falha>>(RequisitarAPI($"turma/inscricao", Method.POST, inscricao).Content);
+            if (response.Sucesso != null)
+            {
+                return new Resultado<Inscricao, 
+                    Helpers.Retornos.Validacao.Falha>(response.Sucesso.Objeto);
+            }
+            else
+            {
+                return new Resultado<Inscricao, 
+                    Helpers.Retornos.Validacao.Falha>(new Helpers.Retornos.Validacao.Falha(response.Falha.Mensagem));
+            }
         }
 
-        public void ExcluirInscricoesPeloTurmaId(int alunoId)
+        public Resultado<Inscricao, Helpers.Retornos.Validacao.Falha> BuscarInscricao(int alunoId, int turmaId)
         {
-            throw new NotImplementedException();
+            var response = JsonConvert.DeserializeObject<Retorno<Inscricao, Helpers.Retornos.API.Falha>>(RequisitarAPI($"turma/inscricao/{alunoId}/{turmaId}").Content);
+            if (response.Sucesso != null)
+            {
+                return new Resultado<Inscricao,
+                    Helpers.Retornos.Validacao.Falha>(response.Sucesso.Objeto);
+            }
+            else
+            {
+                return new Resultado<Inscricao,
+                    Helpers.Retornos.Validacao.Falha>(new Helpers.Retornos.Validacao.Falha(response.Falha.Mensagem));
+            }
         }
-
+    }
+}
         //public async Task<IEnumerable<Turma>> ListarTurmasAsync()
         //{
         //    List<Turma> turmas = new List<Turma>();
@@ -64,46 +144,17 @@ namespace TreinamentoTurma.Services
         //    }
         //}
 
-        public IEnumerable<Turma> ListarTurmas()
-        {
-            var turmas = new List<Turma>();
-
-            var response = RequisitarAPI("turma");
-            var responseData = JsonConvert.DeserializeObject<Retorno<List<Turma>, Helpers.Retornos.API.Falha>>(response.Content);
-
-            if (responseData.Sucesso != null)
-                turmas = responseData.Sucesso.Objeto;
-            return turmas;
-        }
-
-        public Resultado<Inscricao, Helpers.Retornos.Validacao.Falha> ObterIncricao(int alunoId, int turmaId)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Resultado<Inscricao, Helpers.Retornos.API.Falha> ObterPeloTurmaId(int id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Resultado<Turma, Helpers.Retornos.Validacao.Falha> ObterPeloId(int id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void ExcluirInscricoesPeloAlunoId(int alunoId)
-        {
-            throw new NotImplementedException();
-        }
-        
-        Resultado<Inscricao, Helpers.Retornos.Validacao.Falha> ITurmaService.CadastrarInscricao(Inscricao inscricao)
-        {
-            throw new NotImplementedException();
-        }
-
-        Resultado<Inscricao, Helpers.Retornos.Validacao.Falha> ITurmaService.ObterPeloAlunoId(int id)
-        {
-            throw new NotImplementedException();
-        }
-    }
-}
+        //Resultado<Inscricao, Helpers.Retornos.Validacao.Falha> ObterPeloAlunoId(int id)
+        //{
+        //    var response = JsonConvert.DeserializeObject<Retorno<Inscricao, Helpers.Retornos.API.Falha>>(RequisitarAPI($"turma/inscricao/{id}").Content);
+        //    if (response.Sucesso != null)
+        //    {
+        //        return new Resultado<Inscricao,
+        //            Helpers.Retornos.Validacao.Falha>(response.Sucesso.Objeto);
+        //    }
+        //    else
+        //    {
+        //        return new Resultado<Inscricao,
+        //            Helpers.Retornos.Validacao.Falha>(new Helpers.Retornos.Validacao.Falha(response.Falha.Mensagem));
+        //    }
+        //}

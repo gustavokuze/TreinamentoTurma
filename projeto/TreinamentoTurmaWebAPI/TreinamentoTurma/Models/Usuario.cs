@@ -20,13 +20,7 @@ namespace TreinamentoTurma.Models
             Codigo = codigo;
             Senha = senha;
         }
-
-        public void GerarCodigoESenha()
-        {
-            Codigo = Geradores.GerarCodigoValido();
-            Senha = Geradores.GerarSenha();
-        }
-
+        
         public int Id { get; set; }
         //[Required]
         public int Codigo { get; set; }

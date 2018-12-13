@@ -1,66 +1,87 @@
-﻿using System;
+﻿using Newtonsoft.Json;
 using System.Collections.Generic;
-using System.Configuration;
-using System.Linq;
-using System.Net.Http;
-using System.Web;
-using System.Web.Script.Serialization;
-using TreinamentoTurma.Helpers;
 using TreinamentoTurma.Helpers.Retornos.API;
 using TreinamentoTurma.Helpers.Retornos.Validacao;
 using TreinamentoTurma.Models;
 using TreinamentoTurma.Services.Interfaces;
+using Falha = TreinamentoTurma.Helpers.Retornos.Validacao.Falha;
 
 namespace TreinamentoTurma.Services
 {
-    public class AlunoService : IAlunoService
+    public class AlunoService : BaseService, IAlunoService
     {
-        public void Atualizar(Aluno aluno)
+        public Resultado<Aluno, Falha> Atualizar(Aluno aluno)
         {
-            throw new NotImplementedException();
-        }
-
-        public void Cadastrar(Aluno aluno)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Excluir(int id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public async System.Threading.Tasks.Task<IEnumerable<Aluno>> ListarAlunosAsync()
-        {
-            List<Aluno> alunos = new List<Aluno>();
-
-            using (var client = new HttpClient())
+            var response = JsonConvert.DeserializeObject<Retorno<Aluno, Helpers.Retornos.API.Falha>>(RequisitarAPI($"aluno", RestSharp.Method.PUT, aluno).Content);
+            if (response.Sucesso.Objeto != null)
             {
-                client.BaseAddress = new Uri(ConfigurationManager.AppSettings["ApiUri"]);
-
-                var responseTask = client.GetAsync("aluno");
-                responseTask.Wait();
-
-                var result = responseTask.Result;
-                if (result.IsSuccessStatusCode)
-                {
-                    var dados = await result.Content.ReadAsStringAsync();
-
-                    JavaScriptSerializer jsSerializer = new JavaScriptSerializer();
-                    alunos = jsSerializer.Deserialize<List<Aluno>>(dados);
-                }
-                return alunos;
+                return new Resultado<Aluno, Falha>(response.Sucesso.Objeto);
+            }
+            else
+            {
+                return new Resultado<Aluno, Falha>(new Falha(response.Falha.Mensagem));
             }
         }
 
-        public Resultado<Aluno, Helpers.Retornos.Validacao.Falha> ObterPeloEmail(string email)
+        public Resultado<Usuario, Falha> Cadastrar(Aluno aluno)
         {
-            throw new NotImplementedException();
+            var response = JsonConvert.DeserializeObject<Retorno<Usuario, Helpers.Retornos.API.Falha>>(RequisitarAPI($"aluno", RestSharp.Method.POST, aluno).Content);
+            if (response.Sucesso.Objeto != null)
+            {
+                return new Resultado<Usuario, Falha>(response.Sucesso.Objeto);
+            }
+            else
+            {
+                return new Resultado<Usuario, Falha>(new Falha(response.Falha.Mensagem));
+            }
         }
 
-        public Resultado<Aluno, Helpers.Retornos.Validacao.Falha> ObterPeloIdUsuario(int id)
+        public Resultado<int, Falha> Excluir(int id)
         {
-            throw new NotImplementedException();
+            var response = JsonConvert.DeserializeObject<Retorno<int, Helpers.Retornos.API.Falha>>(RequisitarAPI($"aluno/{id}", RestSharp.Method.DELETE).Content);
+            if (response.Sucesso.Objeto > 0)
+            {
+                return new Resultado<int, Falha>(response.Sucesso.Objeto);
+            }
+            else
+            {
+                return new Resultado<int, Falha>(new Falha(response.Falha.Mensagem));
+            }
+        }
+
+        public IEnumerable<Aluno> ListarAlunos()
+        {
+            List<Aluno> alunos = new List<Aluno>();
+
+            var response = JsonConvert.DeserializeObject<Retorno<List<Aluno>, Falha> >( RequisitarAPI("aluno").Content);
+            if (response.Sucesso.Objeto != null) alunos = response.Sucesso.Objeto;
+            return alunos;
+        }
+
+        public Resultado<Aluno, Falha> ObterPeloEmail(string email)
+        {
+            var response = JsonConvert.DeserializeObject<Retorno<Aluno, Helpers.Retornos.API.Falha>>(RequisitarAPI($"aluno/obter/{email}").Content);
+            if (response.Sucesso.Objeto != null)
+            {
+                return new Resultado<Aluno, Falha>(response.Sucesso.Objeto);
+            }
+            else
+            {
+                return new Resultado<Aluno, Falha>(new Falha(response.Falha.Mensagem));
+            }
+        }
+
+        public Resultado<Aluno, Falha> ObterPeloIdUsuario(int id)
+        {
+            var response = JsonConvert.DeserializeObject<Retorno<Aluno, Helpers.Retornos.API.Falha>>(RequisitarAPI($"aluno/{id}").Content);
+            if(response.Sucesso.Objeto != null)
+            {
+                return new Resultado<Aluno, Falha>(response.Sucesso.Objeto);
+            }
+            else
+            {
+                return new Resultado<Aluno, Falha>(new Falha(response.Falha.Mensagem));
+            }
         }
         
     }

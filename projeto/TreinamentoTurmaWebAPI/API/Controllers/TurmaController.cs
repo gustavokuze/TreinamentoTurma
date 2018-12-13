@@ -1,13 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using API.Infraestrutura.Repositorio.Interfaces;
 using API.Modelos;
 using API.Servicos.Interfaces;
 using API.Uteis.Retornos.API;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
@@ -111,6 +107,17 @@ namespace API.Controllers
             {
                 return FormataRetorno(id, ex.Message);
             }
+        }
+
+        [HttpGet("inscricao/{AlunoId}/{TurmaId}")]
+        public Retorno<Inscricao, Falha> BuscarInscricao(int AlunoId, int TurmaId)
+        {
+            var resultado = _turmaServico.ObterIncricao(AlunoId, TurmaId);
+            if (resultado.Sucesso != null)
+            {
+                return FormataRetorno(resultado.Sucesso);
+            }
+            return FormataRetorno(resultado.Sucesso, "Inscrição não encontrada");
         }
     }
 }
