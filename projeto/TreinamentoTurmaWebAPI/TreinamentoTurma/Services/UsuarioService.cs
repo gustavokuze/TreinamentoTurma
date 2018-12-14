@@ -10,11 +10,12 @@ namespace TreinamentoTurma.Services
 {
     public class UsuarioService : BaseService
     {
-        public AutenticacaoUsuario Autenticar(AutenticacaoUsuario autenticacaoUsuario)
-        {//o único erro provavel é o erro de login, aparentemente
+        public Helpers.Retornos.Validacao.Resultado< AutenticacaoUsuario, Helpers.Retornos.Validacao.Falha> Autenticar(AutenticacaoUsuario autenticacaoUsuario)
+        {
             var response = JsonConvert.DeserializeObject<Retorno<AutenticacaoUsuario, Falha>>( RequisitarAPI("login/autenticar", RestSharp.Method.POST, autenticacaoUsuario).Content);
+            
             if (response.Sucesso != null) return response.Sucesso.Objeto;
-            return null;
+            return new Helpers.Retornos.Validacao.Falha(response.Falha.Mensagem);
         }
     }
 }

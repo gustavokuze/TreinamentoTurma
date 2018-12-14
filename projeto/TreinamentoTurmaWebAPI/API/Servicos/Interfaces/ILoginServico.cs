@@ -9,6 +9,6 @@ namespace API.Servicos.Interfaces
 {
     public interface ILoginServico
     {
-        AutenticacaoUsuario Autenticar(int codigo, string senha);
+        Uteis.Retornos.Validacao.Resultado<AutenticacaoUsuario, Uteis.Retornos.Validacao.Falha> Autenticar(int codigo, string senha);
     }
 }

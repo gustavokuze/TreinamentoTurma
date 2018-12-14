@@ -6,25 +6,7 @@ se o código não for achado em professor, procura em aluno -> OK
 - Criar um construtor para as Models para definir como elas devem ser construidas; OK
 
 
+- Ao invés de guardar o token, devo sempre solicitar um novo token pra API com 
+usuario e senha e pegar o token novo pra usar na requisição;
 
-Planos de como implementar a WebAPI ao front MVC:
-
-criar uma camada de serviço que fará o acesso à API, ao invés de chamar o próprio repositório (que aliás talvez possa ser excluído)
-
-
-
-
-
-
-
-
-
-
-
-
-o que fiz até o momento com a migração:
-- Criei uma chave no web.config appsettings chamada ApiUri que contém a URL base da API;
-- Criei Uma pasta chamada services com a interface do serviço de turma e a implementação que por enquanto só tem a listagem de 
-turmas assíncrona
-
-
+- Tornar os métodos das services estáticos para não precisar instanciar um negócio que nem construtor tem

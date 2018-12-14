@@ -27,28 +27,29 @@ namespace API.Controllers
         [HttpPost("Autenticar")]
         public Retorno<AutenticacaoUsuario, Falha> Autenticar([FromBody]AutenticacaoUsuario autenticacao)
         {
-            var token = autenticacao.Token;
-            var tokHandler = new JwtSecurityTokenHandler();
-            if (token != string.Empty && tokHandler.CanReadToken(token)) //token formatado adequadamente?
-            {
-                var jwtTokenLido = tokHandler.ReadJwtToken(token); //deserializa o token
-                if (jwtTokenLido.ValidTo.CompareTo(DateTime.UtcNow) > 0) // ainda não expirou
-                {
-                    var jwtTokenLidoClaimsCount = jwtTokenLido.Claims.Where(x => x.Value == autenticacao.Usuario.Id.ToString()).Count(); //conta quantos claims vindos do token possuem o Id do usuário passado
+            /*Esse código comentado seria util caso o token precisasse ser validado*/
+            //var token = autenticacao.Token;
+            //var tokHandler = new JwtSecurityTokenHandler();
+            //if (token != string.Empty && tokHandler.CanReadToken(token)) //token formatado adequadamente?
+            //{
+            //    var jwtTokenLido = tokHandler.ReadJwtToken(token); //deserializa o token
+            //    if (jwtTokenLido.ValidTo.CompareTo(DateTime.UtcNow) > 0) // ainda não expirou
+            //    {
+            //        var jwtTokenLidoClaimsCount = jwtTokenLido.Claims.Where(x => x.Value == autenticacao.Usuario.Id.ToString()).Count(); //conta quantos claims vindos do token possuem o Id do usuário passado
 
-                    if (jwtTokenLidoClaimsCount > 0)
-                    {
-                        return FormataRetorno(autenticacao); //retorna o mesmo token que ainda está válido
-                    }
-                }
-            }
+            //        if (jwtTokenLidoClaimsCount > 0)
+            //        {
+            //            return FormataRetorno(autenticacao); //retorna o mesmo token que ainda está válido
+            //        }
+            //    }
+            //}
               
             //caso o token passado não seja válido, ou não esteja presente, gera um novo token com o usuário e senha passados
             var login = _loginServico.Autenticar(autenticacao.Usuario.Codigo, autenticacao.Usuario.Senha);
-            if (login == null)
+            if (!login.EstaValido)
                 return FormataRetorno(autenticacao, "Codigo ou senha incorretos");
 
-            return FormataRetorno(login);
+            return FormataRetorno(login.Sucesso);
         }
 
         //[HttpGet("claims/{id}")]

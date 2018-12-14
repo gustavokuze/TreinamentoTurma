@@ -31,11 +31,11 @@ namespace API.Servicos
             _usuarioServico = usuarioServico;
         }
 
-        public AutenticacaoUsuario Autenticar(int codigo, string senha)
+        public Uteis.Retornos.Validacao.Resultado< AutenticacaoUsuario, Uteis.Retornos.Validacao.Falha> Autenticar(int codigo, string senha)
         {
             var usuario = _usuarioServico.ValidarUsuario(codigo, senha);
 
-            if (!usuario.EstaValido) return null;
+            if (!usuario.EstaValido) return new Uteis.Retornos.Validacao.Falha("Codigo ou senha incorretos");
 
             var claim = new ClaimsIdentity(new Claim[]
             {
@@ -48,7 +48,7 @@ namespace API.Servicos
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = claim,
-                Expires = DateTime.UtcNow.AddMinutes(1),
+                Expires = DateTime.UtcNow.AddSeconds(30),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };
             var token = tokenHandler.CreateToken(tokenDescriptor);
