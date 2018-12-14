@@ -11,7 +11,6 @@ namespace TreinamentoTurma.Areas.Painel.Controllers
     [Autenticacao(Roles = "_PROFESSOR_")]
     public class ProfessorController : Controller
     {
-        // GET: Painel/Professor
         public ActionResult Index()
         {
             return View();
@@ -26,7 +25,7 @@ namespace TreinamentoTurma.Areas.Painel.Controllers
         public ActionResult Cadastrar(ProfessorViewModel professorViewModel) 
         {
             var professorService = new ProfessorService(); 
-            if (professorService.ObterPeloCpf(professorViewModel.Cpf) is var retorno && retorno.EstaValido)
+            if (professorService.ObterPeloCpf(professorViewModel.Cpf) is var retorno && retorno.EstaValido) //investigar por que isso aqui está valido sempre
             {
                 ModelState.AddModelError("", $"O CPF {professorViewModel.Cpf} já está cadastrado");
                 return View();
@@ -34,8 +33,8 @@ namespace TreinamentoTurma.Areas.Painel.Controllers
             else
             {
                 Professor professor = Mapper.Map<Professor>(professorViewModel);
-                professorService.Cadastrar(professor);
-                TempData["Sucesso"] = $"Professor cadastrado com sucesso. Anote sua senha: {Base64.ParaString(professor.Senha)}.";
+                var professorCadastrado = professorService.Cadastrar(professor);
+                TempData["Sucesso"] = $"Professor cadastrado com sucesso. Anote sua senha: {Base64.ParaString(professorCadastrado.Sucesso.Senha)}.";
             }
 
             return RedirectToAction("Cadastrar");

@@ -24,16 +24,16 @@ namespace TreinamentoTurma.Services
             }
         }
 
-        public Resultado<Professor, Falha> Cadastrar(Professor professor)
+        public Resultado<Usuario, Falha> Cadastrar(Professor professor)
         {
-            var response = JsonConvert.DeserializeObject<Retorno<Professor, Helpers.Retornos.API.Falha>>(RequisitarAPI($"professor", RestSharp.Method.POST, professor).Content);
-            if (response.Sucesso != null)
+            var response = JsonConvert.DeserializeObject<Retorno<Usuario, Helpers.Retornos.API.Falha>>(RequisitarAPI($"professor", RestSharp.Method.POST, professor).Content);
+            if (response.Sucesso.Objeto != null)
             {
-                return new Resultado<Professor, Falha>(response.Sucesso.Objeto);
+                return response.Sucesso.Objeto;
             }
             else
             {
-                return new Resultado<Professor, Falha>(new Falha(response.Falha.Mensagem));
+                return new Falha(response.Falha.Mensagem);
             }
         }
 
@@ -62,7 +62,7 @@ namespace TreinamentoTurma.Services
         public Resultado<Professor, Falha> ObterPeloCpf(string cpf)
         {
             var response = JsonConvert.DeserializeObject<Retorno<Professor, Helpers.Retornos.API.Falha>>(RequisitarAPI($"professor/obter/{cpf}").Content);
-            if (response.Sucesso != null)
+            if (response.Sucesso.Objeto != null)
             {
                 return new Resultado<Professor, Falha>(response.Sucesso.Objeto);
             }

@@ -28,8 +28,10 @@ namespace API.Servicos
             {
                 usuario.Codigo = GerarCodigoValido();
                 usuario.Senha = Base64.ParaBase64( GerarSenha());
-                
-                return _usuarioRepositorio.Inserir(usuario);
+                var usuarioInserido =_usuarioRepositorio.Inserir(usuario);
+                if(usuarioInserido.Id > 0)
+                    return usuarioInserido;
+                return new Falha("O usuário não foi inserido com sucesso");
             } 
             catch (Exception ex)
             {

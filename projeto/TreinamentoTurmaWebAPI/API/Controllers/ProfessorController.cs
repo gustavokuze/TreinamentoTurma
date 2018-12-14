@@ -55,17 +55,17 @@ namespace API.Controllers
         }
 
         [HttpPost]
-        public Retorno<Professor, Falha> Cadastrar([FromBody]Professor professor)
+        public Retorno<Usuario, Falha> Cadastrar([FromBody]Professor professor)
         {
             var professorCadastrado = _professorService.ObterPeloCpf(professor.Cpf);
             if ( professorCadastrado.EstaValido)
             {
-                return FormataRetorno(professor, $"O CPF {professor.Cpf} já está cadastrado.");
+                return FormataRetorno(professor as Usuario, $"O CPF {professor.Cpf} já está cadastrado.");
             }
             else
             {
-                _professorService.Cadastrar(professor);
-                return FormataRetorno(professor);
+                var usuario = _professorService.Cadastrar(professor);
+                return FormataRetorno(usuario.Sucesso);
             }
         }
 

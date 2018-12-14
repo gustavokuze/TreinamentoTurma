@@ -34,11 +34,7 @@ namespace TreinamentoTurma.Areas.Painel.Controllers
             else
             {
                 Aluno aluno = Mapper.Map<Aluno>(alunoViewModel);
-
                 var alunoCadastrado = alunoService.Cadastrar(aluno);
-
-                //aqui preciso requisitar a senha caso ela não venha na resposta
-
                 TempData["Sucesso"] = $"Aluno cadastrado com sucesso. Anote sua senha: {Base64.ParaString(alunoCadastrado.Sucesso.Senha) }.";
             }
              

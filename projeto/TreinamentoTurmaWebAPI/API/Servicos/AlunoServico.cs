@@ -40,10 +40,20 @@ namespace API.Servicos
             try
             {
                 var usuario = _usuarioServico.Inserir(aluno as Usuario);
-                aluno.Id = usuario.Sucesso.Id;
 
-                _alunoRepositorio.Inserir(aluno);
-                return usuario.Sucesso;
+                if (usuario.EstaValido)
+                {
+                    aluno.Id = usuario.Sucesso.Id;
+
+                    _alunoRepositorio.Inserir(aluno);
+                    return usuario.Sucesso;
+                }
+                else
+                {
+                    return usuario.Falha;
+                }
+
+                
             }
             catch (Exception ex)
             {

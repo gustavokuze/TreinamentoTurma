@@ -28,11 +28,11 @@ namespace TreinamentoTurma.Services
             var response = JsonConvert.DeserializeObject<Retorno<Usuario, Helpers.Retornos.API.Falha>>(RequisitarAPI($"aluno", RestSharp.Method.POST, aluno).Content);
             if (response.Sucesso.Objeto != null)
             {
-                return new Resultado<Usuario, Falha>(response.Sucesso.Objeto);
+                return response.Sucesso.Objeto;
             }
             else
             {
-                return new Resultado<Usuario, Falha>(new Falha(response.Falha.Mensagem));
+                return new Falha( response.Falha.Mensagem);
             }
         }
 
