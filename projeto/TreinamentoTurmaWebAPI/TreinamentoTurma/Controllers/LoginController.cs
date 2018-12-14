@@ -29,6 +29,10 @@ namespace TreinamentoTurma.Controllers
             }
             else
             {
+                //!!!!!!ERRO!!!!!!! o erro está acontecendo aqui por que é preciso um token pra pegar um usuário por id
+
+                Session["TreinamentoTurmaUsuarioAtual"] = usuarioCadastrado.Sucesso; // pra poder gerar o token
+                
                 var professorUsuario = new ProfessorService().ObterPeloIdUsuario(usuarioCadastrado.Sucesso.Usuario.Id);
                 if (!professorUsuario.EstaValido)
                 {

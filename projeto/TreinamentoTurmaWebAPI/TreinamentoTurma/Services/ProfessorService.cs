@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System.Collections.Generic;
+using System.Web;
 using TreinamentoTurma.Helpers.Retornos.API;
 using TreinamentoTurma.Helpers.Retornos.Validacao;
 using TreinamentoTurma.Models;
@@ -10,7 +11,19 @@ namespace TreinamentoTurma.Services
 {
     public class ProfessorService : BaseService, IProfessorService
     {
-        
+        public ProfessorService()
+        {
+            var usuarioAtual = HttpContext.Current.Session["TreinamentoTurmaUsuarioAtual"] as AutenticacaoUsuario;
+            if (usuarioAtual == null)
+            {
+                TokenValido = "";
+            }
+            else
+            {
+                TokenValido = RequisitarToken(usuarioAtual.Usuario.Codigo, usuarioAtual.Usuario.Senha);
+            }
+        }
+
         public Resultado<Professor, Falha> Atualizar(Professor professor)
         {
             var response = JsonConvert.DeserializeObject<Retorno<Professor, Helpers.Retornos.API.Falha>>(RequisitarAPI($"professor", RestSharp.Method.PUT, professor).Content);
@@ -61,21 +74,27 @@ namespace TreinamentoTurma.Services
 
         public Resultado<Professor, Falha> ObterPeloCpf(string cpf)
         {
-            var response = JsonConvert.DeserializeObject<Retorno<Professor, Helpers.Retornos.API.Falha>>(RequisitarAPI($"professor/obter/{cpf}").Content);
-            if (response.Sucesso.Objeto != null)
+            var response = JsonConvert.DeserializeObject<Retorno<Professor, Helpers.Retornos.API.Falha>>(RequisitarAPI($"professor/obter/{cpf}", RestSharp.Method.GET, null, TokenValido).Content);
+            if (response.Sucesso.Objeto == null || TokenValido == "")
             {
-                return new Resultado<Professor, Falha>(response.Sucesso.Objeto);
+                return new Resultado<Professor, Falha>(new Falha(response.Falha.Mensagem));
             }
             else
             {
-                return new Resultado<Professor, Falha>(new Falha(response.Falha.Mensagem));
+                return new Resultado<Professor, Falha>(response.Sucesso.Objeto);
             }
         }
 
         public Resultado<Professor, Falha> ObterPeloIdUsuario(int id)
         {
-            var response = JsonConvert.DeserializeObject<Retorno<Professor, Helpers.Retornos.API.Falha>>(RequisitarAPI($"professor/{id}").Content);
-            if(response.Sucesso != null)
+            //var authUsuario = new AutenticacaoUsuario() { Usuario = usuario };
+            //var resultado = JsonConvert.DeserializeObject < Retorno < Professor, Helpers.Retornos.API.Falha >>( RequisitarAPI("login/autenticar", RestSharp.Method.POST, authUsuario).Content);
+            //if (resultado.Sucesso.Objeto != null) return new Falha("Senha ou codigo incorretos");
+            //var usuarioAutenticado = new UsuarioService().Autenticar(usuario );
+            //if (!usuarioAutenticado.EstaValido) return new Falha("Codigo ou senha incorretos");
+
+            var response = JsonConvert.DeserializeObject<Retorno<Professor, Helpers.Retornos.API.Falha>>(RequisitarAPI($"professor/{id}", RestSharp.Method.GET, null, TokenValido).Content);
+            if(response.Sucesso == null || TokenValido == "")
             {
                 return new Resultado<Professor, Falha>(response.Sucesso.Objeto);
             }

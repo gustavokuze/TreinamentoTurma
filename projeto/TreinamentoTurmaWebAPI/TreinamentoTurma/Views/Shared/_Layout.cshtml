@@ -5,7 +5,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     @* Aqui estou mostrando o title como se fosse o token temporáriamente *@
-    @{
+    @*@{
         if (Session["TreinamentoTurmaUsuarioAtual"] != null)
         {
             var token = $"{((Session["TreinamentoTurmaUsuarioAtual"] as TreinamentoTurma.Models.AutenticacaoProfessor).Token)}";
@@ -15,8 +15,8 @@
         {
             <title>@ViewBag.Title - Treinamento</title>
         }
-    }
-
+    }*@
+    <title>@ViewBag.Title - Treinamento</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
 </head>

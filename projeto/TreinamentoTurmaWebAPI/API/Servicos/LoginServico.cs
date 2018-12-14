@@ -56,9 +56,7 @@ namespace API.Servicos
             AutenticacaoUsuario autenticacao = new AutenticacaoUsuario();
             autenticacao.Usuario = usuario.Sucesso;
             autenticacao.Token = tokenHandler.WriteToken(token);
-
-            // remover a senha antes de retornar
-            autenticacao.Usuario.Senha = null;
+            
 
             return autenticacao;
         }

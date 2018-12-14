@@ -25,7 +25,7 @@ namespace TreinamentoTurma.Areas.Painel.Controllers
         public ActionResult Cadastrar(ProfessorViewModel professorViewModel) 
         {
             var professorService = new ProfessorService(); 
-            if (professorService.ObterPeloCpf(professorViewModel.Cpf) is var retorno && retorno.EstaValido) //investigar por que isso aqui está valido sempre
+            if (professorService.ObterPeloCpf(professorViewModel.Cpf) is var retorno && retorno.EstaValido)
             {
                 ModelState.AddModelError("", $"O CPF {professorViewModel.Cpf} já está cadastrado");
                 return View();

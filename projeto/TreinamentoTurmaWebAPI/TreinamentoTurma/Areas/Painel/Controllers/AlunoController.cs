@@ -26,7 +26,7 @@ namespace TreinamentoTurma.Areas.Painel.Controllers
         public ActionResult Cadastrar(AlunoViewModel alunoViewModel)
         {
             var alunoService = new AlunoService();
-            if (alunoService.ObterPeloEmail(alunoViewModel.Email) is var retorno && retorno.EstaValido)
+            if (alunoService.ObterPeloEmail( alunoViewModel.Email) is var retorno && retorno.EstaValido)
             {
                 ModelState.AddModelError("", $"O email {alunoViewModel.Email} já está cadastrado");
                 return View();
