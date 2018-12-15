@@ -21,26 +21,43 @@
 <div class="jumbotron">
     <div class="row">
         <div class="col-md-12">
-            <div class="row">
-                <div class="col">
-                    @Html.ActionLink("Cadastrar turma", "Cadastrar", "Turma")
+            @{
+                var usuarioAtual = Session["TreinamentoTurmaUsuarioAtual"];
+                if (usuarioAtual != null && usuarioAtual.GetType().Name == "AutenticacaoProfessor")
+                {
+                    <div class="row">
+                        <div class="col">
+                            @Html.ActionLink("Cadastrar turma", "Cadastrar", "Turma")
+                        </div>
+                    </div>
+                }
+
+                <div class="row">
+                    <div class="col">
+                        @Html.ActionLink("Cadastrar aluno", "Cadastrar", "Aluno")
+                    </div>
                 </div>
-            </div>
-            <div class="row">
-                <div class="col">
-                    @Html.ActionLink("Cadastrar aluno", "Cadastrar", "Aluno")
-                </div>
-            </div>
-            <div class="row">
-                <div class="col">
-                    @Html.ActionLink("Cadastrar professor", "Cadastrar", "Professor")
-                </div>
-            </div>
-            <div class="row">
-                <div class="col">
-                    @Html.ActionLink("Inscrever aluno", "Inscricao", "Turma")
-                </div>
-            </div>
+
+                if (usuarioAtual != null && usuarioAtual.GetType().Name == "AutenticacaoProfessor")
+                {
+                    <div class="row">
+                        <div class="col">
+                            @Html.ActionLink("Cadastrar professor", "Cadastrar", "Professor")
+                        </div>
+                    </div>
+
+                }
+
+                if (usuarioAtual != null && usuarioAtual.GetType().Name == "AutenticacaoAluno")
+                {
+                    <div class="row">
+                        <div class="col">
+                            @Html.ActionLink("Inscrever-se em uma turma", "Inscricao", "Turma")
+                        </div>
+                    </div>
+                }
+            }
+
         </div>
     </div>
 </div>

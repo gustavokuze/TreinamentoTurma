@@ -21,7 +21,8 @@
             <div class="navbar-collapse collapse">
                @Html.Partial("UsuarioAtualPartialView")
                 <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Início", "Index", new { Area="", Controller="Home"})</li>
+                    <li>@Html.ActionLink("Início", "Index", new { Area = "", Controller = "Home" })</li>
+                    <li>@Html.ActionLink("Painel de Administração", "Index", "Dashboard", new { Area = "Painel" }, new { })</li>
                 </ul>
             </div>
         </div>

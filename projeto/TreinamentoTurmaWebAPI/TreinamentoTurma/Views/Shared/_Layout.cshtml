@@ -35,6 +35,8 @@
                 @Html.Partial("UsuarioAtualPartialView")
                 <ul class="nav navbar-nav">
                     <li>@Html.ActionLink("Início", "Index", "Home")</li>
+                    <li>@Html.ActionLink("Painel de Administração", "Index", "Dashboard", new { Area = "Painel" }, new { })</li>
+                    
 
                     @*<li>@Html.ActionLink("Sobre", "About", "Home")</li>*@
                     @*<li>@Html.ActionLink("Contato", "Contact", "Home")</li>*@

@@ -168,7 +168,11 @@ namespace TreinamentoTurma.Areas.Painel.Controllers
 
             if (_turmaService.BuscarInscricao(inscricaoViewModel.AlunoId, inscricaoViewModel.TurmaId).Sucesso == null)
             {
-                _turmaService.CadastrarInscricao(Mapper.Map<Inscricao>(inscricaoViewModel));
+                var inscrito = _turmaService.CadastrarInscricao(Mapper.Map<Inscricao>(inscricaoViewModel));
+                if(inscrito.Sucesso != null && inscrito.EstaValido)
+                {
+                    TempData["InscritoSucesso"] = "Aluno inscrito com sucesso!";
+                }
             }
             else
             {

@@ -8,10 +8,10 @@ using TreinamentoTurma.Services;
 
 namespace TreinamentoTurma.Areas.Painel.Controllers
 {
-    [Autenticacao]
+    //[Autenticacao] // o aluno precisa estar cadastrado para se cadastrar?
     public class AlunoController : Controller
     {
-        // GET: Painel/Aluno
+
         public ActionResult Index()
         {
             return View();

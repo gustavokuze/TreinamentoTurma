@@ -5,9 +5,11 @@ using API.Modelos;
 using API.Servicos.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using API.Uteis.Retornos.API;
+using Microsoft.AspNetCore.Authorization;
 
 namespace API.Controllers
 {
+    [AllowAnonymous]
     [Route("api/[controller]")]
     [ApiController]
     public class AlunoController : BaseController

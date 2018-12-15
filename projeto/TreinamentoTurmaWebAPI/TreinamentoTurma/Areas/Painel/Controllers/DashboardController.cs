@@ -9,8 +9,8 @@ namespace TreinamentoTurma.Areas.Painel.Controllers
 {
     public class DashboardController : Controller
     {
-        // GET: Painel/Dashboard
-        [Autenticacao]
+
+        //[Autenticacao]
         public ActionResult Index()
         {
             return View();  
