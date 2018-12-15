@@ -22,7 +22,7 @@
     <div class="row">
         <div class="col-md-12">
             @{
-                var usuarioAtual = Session["TreinamentoTurmaUsuarioAtual"];
+                var usuarioAtual = Session[TreinamentoTurma.Helpers.Login.ChaveUsuarioSession];
                 if (usuarioAtual != null && usuarioAtual.GetType().Name == "AutenticacaoProfessor")
                 {
                     <div class="row">

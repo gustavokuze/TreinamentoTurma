@@ -13,20 +13,9 @@ namespace TreinamentoTurma.Filters
         protected override bool AuthorizeCore(HttpContextBase httpContext)
         {
             var usuarioAtual = Login.ObterUsuarioAtualObject();
-
-            /*
-                pesquisar como saber se uma chave existe dentro de um objeto
-                ex: se aluno existe em usuarioAtual ou se professor existe
-
-
-                Se isso não funcionar eu preciso talvez criar um quarto tipo de Model AutenticacaoAlgumaCoisa, que além de conter 
-                a autenticação em sí, vai conter o tipo de autenticação contida nela
-             
-            */
-
+            
             if (usuarioAtual != null)
             {
-
                 var usuarioAtualType = usuarioAtual.GetType().Name ;
 
                 if ((usuarioAtualType == "AutenticacaoAluno" && Roles == "_ALUNO_") ||
@@ -38,7 +27,7 @@ namespace TreinamentoTurma.Filters
                 }
             }
 
-            return false; //apenas pra teste tornei true que permite tudo
+            return false; // true permite a todos
         }
 
         protected override void HandleUnauthorizedRequest(AuthorizationContext filterContext)

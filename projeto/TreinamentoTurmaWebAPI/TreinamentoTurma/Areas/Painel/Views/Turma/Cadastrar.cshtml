@@ -1,7 +1,7 @@
 ﻿@model TreinamentoTurma.Areas.Painel.ViewModel.TurmaViewModel
 
 @{
-    ViewBag.Title = "Cadastrar";
+    ViewBag.Title = "Cadastrar"; 
 }
 
 <h2>Cadastrar turma</h2>
@@ -21,7 +21,7 @@
             <div class="form-group">
                 @Html.HiddenFor(m => m.Id)
                 @Html.LabelFor(m => m.Descricao)
-                @Html.TextBoxFor(m => m.Descricao, new { @class = "form-control" })
+                @Html.TextBoxFor(m => m.Descricao, new { @class = "form-control", @maxlength = "200" })
                 @Html.ValidationMessageFor(m => m.Descricao, "", new { @class = "text-danger" })
             </div>
 

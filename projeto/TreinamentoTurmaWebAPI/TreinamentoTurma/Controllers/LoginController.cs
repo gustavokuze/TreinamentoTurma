@@ -1,5 +1,6 @@
 ﻿using System.Web.Mvc;
 using TreinamentoTurma.Areas.Painel.ViewModel;
+using TreinamentoTurma.Helpers;
 using TreinamentoTurma.Models;
 using TreinamentoTurma.Services;
 
@@ -29,7 +30,7 @@ namespace TreinamentoTurma.Controllers
             }
             else
             {
-                Session["TreinamentoTurmaUsuarioAtual"] = usuarioCadastrado.Sucesso; // pra poder gerar o token
+                Session[Login.ChaveUsuarioSession] = usuarioCadastrado.Sucesso; // pra poder gerar o token
                 
                 var professorUsuario = new ProfessorService().ObterPeloIdUsuario(usuarioCadastrado.Sucesso.Usuario.Id);
                 //if (true) { }
@@ -48,7 +49,7 @@ namespace TreinamentoTurma.Controllers
 
                         var autenticacaoAluno = new AutenticacaoAluno(alunoUsuario.Sucesso, usuarioCadastrado.Sucesso.Token);
 
-                        Session["TreinamentoTurmaUsuarioAtual"] = autenticacaoAluno;
+                        Session[Login.ChaveUsuarioSession] = autenticacaoAluno;
                         return RedirectToAction("Index", "Home");
                     }
                 }
@@ -59,7 +60,7 @@ namespace TreinamentoTurma.Controllers
                     
                     var autenticacaoProfessor = new AutenticacaoProfessor(professorUsuario.Sucesso, usuarioCadastrado.Sucesso.Token);
 
-                    Session["TreinamentoTurmaUsuarioAtual"] = autenticacaoProfessor;
+                    Session[Login.ChaveUsuarioSession] = autenticacaoProfessor;
                     return RedirectToAction("Index", "Home");
                 }
             }

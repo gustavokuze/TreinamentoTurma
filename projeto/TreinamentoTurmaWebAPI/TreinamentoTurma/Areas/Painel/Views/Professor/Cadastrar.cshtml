@@ -24,7 +24,7 @@
                 <div class="col-md-12">
                     <div class="form-group">
                         @Html.LabelFor(m => m.Nome)
-                        @Html.TextBoxFor(m => m.Nome, new { @class = "form-control" })
+                        @Html.TextBoxFor(m => m.Nome, new { @class = "form-control", @maxlength = "30" })
                         @Html.ValidationMessageFor(m => m.Nome, "", new { @class = "text-danger" })
                     </div>
                 </div>
@@ -32,14 +32,14 @@
                     <div class="form-group">
                         @Html.LabelFor(m => m.Cpf)
                         @Html.TextBoxFor(m => m.Cpf, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(m => m.Cpf, "", new { @class = "text-danger" })
+                        @Html.ValidationMessageFor(m => m.Cpf, "", new { @class = "text-danger", @maxlength = "15" })
                     </div>
                 </div>
                 
                 <div class="col-md-12">
                     <div class="form-group">
                         @Html.LabelFor(m => m.Telefone)
-                        @Html.TextBoxFor(m => m.Telefone, new { @class = "form-control" })
+                        @Html.TextBoxFor(m => m.Telefone, new { @class = "form-control", @maxlength = "15" })
                         @Html.ValidationMessageFor(m => m.Telefone, "", new { @class = "text-danger" })
                     </div>
                 </div>
@@ -47,7 +47,7 @@
                 <div class="col-md-12">
                     <div class="form-group">
                         @Html.LabelFor(m => m.Endereco)
-                        @Html.TextBoxFor(m => m.Endereco, new { @class = "form-control" })
+                        @Html.TextBoxFor(m => m.Endereco, new { @class = "form-control", @maxlength = "50" })
                         @Html.ValidationMessageFor(m => m.Endereco, "", new { @class = "text-danger" })
                     </div>
                 </div>

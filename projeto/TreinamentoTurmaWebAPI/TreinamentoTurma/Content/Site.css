@@ -26,3 +26,7 @@ textarea {
 li {
     list-style: none !important;
 }
+
+.mt-2{
+    margin-top: 15px;
+}

@@ -1,31 +1,39 @@
 ﻿
+@{
 
-@if (Session["TreinamentoTurmaUsuarioAtual"] is TreinamentoTurma.Models.AutenticacaoAluno)
-{
-    <li>
-        @Html.ActionLink(
-        $"Olá, {((Session["TreinamentoTurmaUsuarioAtual"] as TreinamentoTurma.Models.AutenticacaoAluno).Aluno.Nome)}"
-        , "Sair","Login", new { Area = ""},
-        new { @class = "pull-right" })
-    </li>
+    var usuarioAtual = Session[TreinamentoTurma.Helpers.Login.ChaveUsuarioSession] as TreinamentoTurma.Models.AutenticacaoUsuario;
+
+    if (usuarioAtual != null && usuarioAtual.GetType().Name == "AutenticacaoAluno")
+    {
+        <li>
+            @Html.ActionLink(
+            $"Olá, {((usuarioAtual as TreinamentoTurma.Models.AutenticacaoAluno).Aluno.Nome)}"
+            , "Sair","Login", new { Area = ""},
+            new { @class = "pull-right mt-2" })
+        </li>
+
+
+    }
+    else if (usuarioAtual != null && usuarioAtual.GetType().Name == "AutenticacaoProfessor")
+    {
+        <li>
+            @Html.ActionLink(
+            $"Olá, Prof. {((usuarioAtual as TreinamentoTurma.Models.AutenticacaoProfessor).Professor.Nome)}"
+            , "Sair", "Login", new { Area = "" },
+            new { @class = "pull-right mt-2" })
+        </li>
+    }
+    else
+    {
+        <li>
+            @Html.ActionLink(
+              $"Entrar"
+              , "Index", "Login", new { Area = "" },
+              new { @class = "pull-right mt-2" })
+        </li>
+    }
+
 
 
 }
-else if (Session["TreinamentoTurmaUsuarioAtual"] is TreinamentoTurma.Models.AutenticacaoProfessor)
-{
-    <li>
-        @Html.ActionLink(
-        $"Olá, Prof. {((Session["TreinamentoTurmaUsuarioAtual"] as TreinamentoTurma.Models.AutenticacaoProfessor).Professor.Nome)}"
-        , "Sair", "Login", new { Area = "" },
-        new { @class = "pull-right" })
-    </li>
-}
-else
-{
-    <li>
-        @Html.ActionLink(
-          $"Entrar"
-          , "Index", "Login", new { Area = "" },
-          new { @class = "pull-right" })
-    </li>
-}
+
