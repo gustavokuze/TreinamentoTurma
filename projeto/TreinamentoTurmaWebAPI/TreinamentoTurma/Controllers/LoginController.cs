@@ -29,15 +29,14 @@ namespace TreinamentoTurma.Controllers
             }
             else
             {
-                //!!!!!!ERRO!!!!!!! o erro está acontecendo aqui por que é preciso um token pra pegar um usuário por id
-
                 Session["TreinamentoTurmaUsuarioAtual"] = usuarioCadastrado.Sucesso; // pra poder gerar o token
                 
                 var professorUsuario = new ProfessorService().ObterPeloIdUsuario(usuarioCadastrado.Sucesso.Usuario.Id);
-                if (!professorUsuario.EstaValido)
+                //if (true) { }
+                if (professorUsuario.Sucesso == null && !professorUsuario.EstaValido)
                 {
                     var alunoUsuario = new AlunoService().ObterPeloIdUsuario(usuarioCadastrado.Sucesso.Usuario.Id);
-                    if (!alunoUsuario.EstaValido)
+                    if (alunoUsuario.Sucesso == null && !alunoUsuario.EstaValido)
                     {
                         ModelState.AddModelError("", "Erro interno. O código do usuário está cadastrado mas não existe nenhum professor ou aluno com este código.");
                         return View("Index");
@@ -68,7 +67,7 @@ namespace TreinamentoTurma.Controllers
 
         public ActionResult Sair()
         {
-            //HttpContext.Session.Clear();
+            HttpContext.Session.Clear();
             return RedirectToAction("Index");
         }
     }

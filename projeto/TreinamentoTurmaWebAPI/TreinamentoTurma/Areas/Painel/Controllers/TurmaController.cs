@@ -5,6 +5,7 @@ using System.Linq;
 using System.Web.Mvc;
 using TreinamentoTurma.Areas.Painel.ViewModel;
 using TreinamentoTurma.Filters;
+using TreinamentoTurma.Helpers;
 using TreinamentoTurma.Models;
 using TreinamentoTurma.Services;
 
@@ -25,20 +26,28 @@ namespace TreinamentoTurma.Areas.Painel.Controllers
         public ActionResult Cadastrar(int? id = null)
         {
             TurmaViewModel viewModel = new TurmaViewModel();
-
-            var listaTurmas = Mapper.Map<List<TurmaViewModel>>(_turmaService.ListarTurmas());
-
-            if (id.HasValue)
+            var turmas = _turmaService.ListarTurmas();
+            if(turmas.Sucesso is var retorno && turmas.EstaValido)
             {
-                var turmaSelecionada = listaTurmas.First(x => x.Id == id);
-                viewModel = turmaSelecionada;
-                viewModel.ListaTurmas = listaTurmas;
-                //viewModel.ListaTurmas.Remove(turmaSelecionada);
+                var listaTurmas = Mapper.Map<List<TurmaViewModel>>(retorno);
+
+                if (id.HasValue)
+                {
+                    var turmaSelecionada = listaTurmas.First(x => x.Id == id);
+                    viewModel = turmaSelecionada;
+                    viewModel.ListaTurmas = listaTurmas;
+                    //viewModel.ListaTurmas.Remove(turmaSelecionada);
+                }
+                else
+                {
+                    viewModel.ListaTurmas = listaTurmas;
+                }
             }
             else
             {
-                viewModel.ListaTurmas = listaTurmas;
+                viewModel.ListaTurmas = new List<TurmaViewModel>();
             }
+            
 
             return View(viewModel);
         }
@@ -89,8 +98,13 @@ namespace TreinamentoTurma.Areas.Painel.Controllers
             }
             else
             {
-                viewModel.Id = _turmaService.Cadastrar(mappedTurma);
-                viewModel.ListaTurmas.Add(viewModel);
+                var turmaCadastrada = _turmaService.Cadastrar(mappedTurma);
+                if(turmaCadastrada.Sucesso is var retorno && turmaCadastrada.EstaValido)
+                {
+                    viewModel.Id = retorno;
+                    viewModel.ListaTurmas.Add(viewModel);
+                }
+                
             }
 
             return View(viewModel);
@@ -107,56 +121,31 @@ namespace TreinamentoTurma.Areas.Painel.Controllers
             return RedirectToAction("Cadastrar");
         }
 
+        [Autenticacao(Roles = "_PROFESSOR_")]
         private List<SelectListItem> ListarTurmas()
         {
             var turmas =  _turmaService.ListarTurmas();
-            return turmas.Select(x => new SelectListItem
-            {
-                Text = x.Descricao,
-                Value = x.Id.ToString()
-            }).ToList();
 
-            //return repositorio
-            //    .ListarTurmas()
-            //    .Select(x => new SelectListItem
-            //    {
-            //        Text = x.Descricao,
-            //        Value = x.Id.ToString()
-            //    }).ToList();
+            if(turmas.Sucesso is var retorno && turmas.EstaValido)
+            {
+                return turmas.Sucesso.Select(x => new SelectListItem
+                {
+                    Text = x.Descricao,
+                    Value = x.Id.ToString()
+                }).ToList();
+            }
+            else
+            {
+                return new List<SelectListItem>();
+            }
         }
 
+
         [Autenticacao(Roles = "_ALUNO_")]
-        public ActionResult InscricaoAsync()
+        public ActionResult Inscricao()
         {
             List<SelectListItem> turmas = new List<SelectListItem>();
-            //turmas.Add(new SelectListItem()
-            //{
-            //    Text = "Turma de programação .Net",
-            //    Value = "1"
-            //});
-
-            //turmas.Add(new SelectListItem()
-            //{
-            //    Text = "Turma de programação Java",
-            //    Value = "2"
-            //});
-
-            //turmas.Add(new SelectListItem()
-            //{
-            //    Text = "Turma de programação PHP",
-            //    Value = "3"
-            //});
-
-
             var listaDeTurmas = _turmaService.ListarTurmas();
-            //for (int i = 0; i < listaDeTurmas.Count; i++)
-            //{
-            //    turmas.Add(new SelectListItem()
-            //    {
-            //        Text = listaDeTurmas[i].Descricao,
-            //        Value = listaDeTurmas[i].Id.ToString()
-            //    });
-            //}
 
             turmas = ListarTurmas();
 
@@ -164,17 +153,18 @@ namespace TreinamentoTurma.Areas.Painel.Controllers
 
             return View();
         }
-        
+
+
         [Autenticacao(Roles = "_ALUNO_")]
         [HttpPost]
         public ActionResult Inscricao(InscricaoViewModel inscricaoViewModel)
         {
             UsuarioService usuarioService = new UsuarioService();
-            Aluno alunoAtual = (Aluno)Session["TreinamentoTurmaUsuarioAtual"];
+
+            Aluno alunoAtual = (Login.ObterUsuarioAtual() as AutenticacaoAluno).Aluno;
            
             inscricaoViewModel.AlunoId = alunoAtual.Id;
             inscricaoViewModel.InscritoEm = DateTime.Now;
-            //inscricaoViewModel.AlunoId = usuarioService.BuscarUsuarioPeloCodigo(alunoAtual.Codigo).Id;
 
             if (_turmaService.BuscarInscricao(inscricaoViewModel.AlunoId, inscricaoViewModel.TurmaId).Sucesso == null)
             {

@@ -7,6 +7,9 @@ se o código não for achado em professor, procura em aluno -> OK
 
 
 - Ao invés de guardar o token, devo sempre solicitar um novo token pra API com 
-usuario e senha e pegar o token novo pra usar na requisição;
+usuario e senha e pegar o token novo pra usar na requisição; OK
+
+
+- Substituir todas as chamadas ao usuário atual pelo método e pela propriedade da classe Helpers.Login
 
 - Tornar os métodos das services estáticos para não precisar instanciar um negócio que nem construtor tem

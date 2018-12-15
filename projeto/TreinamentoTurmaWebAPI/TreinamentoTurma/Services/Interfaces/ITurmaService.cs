@@ -8,9 +8,9 @@ namespace TreinamentoTurma.Services.Interfaces
     {
         Resultado<Turma, Falha> Atualizar(Turma turma);
         Resultado<int, Falha> Excluir(int id);
-        int Cadastrar(Turma turma);
+        Resultado<int, Falha> Cadastrar(Turma turma);
         Resultado<Turma, Falha> ObterPeloId(int id);
-        IEnumerable<Turma> ListarTurmas();
+        Resultado<IEnumerable<Turma>, Falha> ListarTurmas();
         Resultado<Inscricao, Falha> CadastrarInscricao(Inscricao inscricao);
         Resultado<int, Falha> ExcluirInscricao(int id);
         Resultado<Inscricao, Falha> BuscarInscricao(int alunoId, int turmaId);

@@ -12,6 +12,6 @@ namespace TreinamentoTurma.Services.Interfaces
         Resultado<Usuario, Falha> Cadastrar(Aluno aluno);
         Resultado<Aluno, Falha> ObterPeloIdUsuario(int id);
         Resultado<Aluno, Falha> ObterPeloEmail(string email);
-        IEnumerable<Aluno> ListarAlunos();
+        Resultado<IEnumerable<Aluno>, Falha> ListarAlunos();
     }
 }

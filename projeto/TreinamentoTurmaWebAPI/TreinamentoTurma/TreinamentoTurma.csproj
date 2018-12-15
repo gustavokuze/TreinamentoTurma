@@ -142,6 +142,7 @@
     <Compile Include="Areas\Painel\Controllers\DashboardController.cs" />
     <Compile Include="Areas\Painel\Controllers\ProfessorController.cs" />
     <Compile Include="Areas\Painel\Controllers\TurmaController.cs" />
+    <Compile Include="Helpers\Login.cs" />
     <Compile Include="Helpers\Retornos\API\Falha.cs" />
     <Compile Include="Helpers\Retornos\API\Retorno.cs" />
     <Compile Include="Helpers\Retornos\API\Sucesso.cs" />

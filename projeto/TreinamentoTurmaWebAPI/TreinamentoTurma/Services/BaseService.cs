@@ -13,6 +13,7 @@ namespace TreinamentoTurma.Services
     public class BaseService
     {
         public string TokenValido { get; set; }
+        public AutenticacaoUsuario UsuarioAtual { get; set; }
         
         public IRestResponse RequisitarAPI(string resource, Method method = Method.GET, object body = null, string token = "")
         {

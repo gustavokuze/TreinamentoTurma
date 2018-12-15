@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Web;
+using TreinamentoTurma.Helpers;
 using TreinamentoTurma.Helpers.Retornos.API;
 using TreinamentoTurma.Helpers.Retornos.Validacao;
 using TreinamentoTurma.Models;
@@ -14,36 +15,38 @@ namespace TreinamentoTurma.Services
 
         public AlunoService()
         {
-            var usuarioAtual = HttpContext.Current.Session["TreinamentoTurmaUsuarioAtual"] as AutenticacaoUsuario;
-            if (usuarioAtual == null)
+            UsuarioAtual = Login.ObterUsuarioAtual();
+            if (UsuarioAtual == null)
             {
                 TokenValido = "";
             }
             else
             {
-                TokenValido = RequisitarToken(usuarioAtual.Usuario.Codigo, usuarioAtual.Usuario.Senha);
+                TokenValido = RequisitarToken(UsuarioAtual.Usuario.Codigo, UsuarioAtual.Usuario.Senha);
             }
         }
 
         public Resultado<Aluno, Falha> Atualizar(Aluno aluno)
         {
-            var response = JsonConvert.DeserializeObject<Retorno<Aluno, Helpers.Retornos.API.Falha>>(RequisitarAPI($"aluno", RestSharp.Method.PUT, aluno).Content);
+            if (TokenValido == string.Empty) { return new Falha("O usuário precisa estar logado para efetuar esta tarefa"); }
+
+
+            var response = JsonConvert.DeserializeObject<Retorno<Aluno, Helpers.Retornos.API.Falha>>(RequisitarAPI($"aluno", RestSharp.Method.PUT, aluno, TokenValido).Content);
             if (response.Sucesso.Objeto != null)
             {
-                return new Resultado<Aluno, Falha>(response.Sucesso.Objeto);
+                return response.Sucesso.Objeto;
             }
             else
             {
-                return new Resultado<Aluno, Falha>(new Falha(response.Falha.Mensagem));
+                return new Falha(response.Falha.Mensagem);
             }
         }
 
         public Resultado<Usuario, Falha> Cadastrar(Aluno aluno)
         {
-            var usuarioCadastrado = new UsuarioService().Autenticar((AutenticacaoUsuario)HttpContext.Current.Session["TreinamentoTurmaUsuarioAtual"]);
-            if (!usuarioCadastrado.EstaValido) { return new Falha("O usuário precisa estar logado para efetuar esta tarefa"); }
+            if (TokenValido == string.Empty) { return new Falha("O usuário precisa estar logado para efetuar esta tarefa"); }
 
-            var response = JsonConvert.DeserializeObject<Retorno<Usuario, Helpers.Retornos.API.Falha>>(RequisitarAPI($"aluno", RestSharp.Method.POST, aluno, usuarioCadastrado.Sucesso.Token).Content);
+            var response = JsonConvert.DeserializeObject<Retorno<Usuario, Helpers.Retornos.API.Falha>>(RequisitarAPI($"aluno", RestSharp.Method.POST, aluno, TokenValido).Content);
             if (response.Sucesso.Objeto != null)
             {
                 return response.Sucesso.Objeto;
@@ -56,49 +59,58 @@ namespace TreinamentoTurma.Services
 
         public Resultado<int, Falha> Excluir(int id)
         {
-            var response = JsonConvert.DeserializeObject<Retorno<int, Helpers.Retornos.API.Falha>>(RequisitarAPI($"aluno/{id}", RestSharp.Method.DELETE).Content);
-            if (response.Sucesso.Objeto > 0)
+            if (TokenValido == string.Empty) { return new Falha("O usuário precisa estar logado para efetuar esta tarefa"); }
+
+
+            var response = JsonConvert.DeserializeObject<Retorno<int, Helpers.Retornos.API.Falha>>(RequisitarAPI($"aluno/{id}", RestSharp.Method.DELETE, null, TokenValido).Content);
+            if (response.Sucesso != null && response.Sucesso.Objeto > 0)
             {
-                return new Resultado<int, Falha>(response.Sucesso.Objeto);
+                return response.Sucesso.Objeto;
             }
             else
             {
-                return new Resultado<int, Falha>(new Falha(response.Falha.Mensagem));
+                return new Falha("Erro ao excluir");
             }
         }
 
-        public IEnumerable<Aluno> ListarAlunos()
+        public Resultado< IEnumerable<Aluno>, Falha> ListarAlunos()
         {
+            if (TokenValido == string.Empty) { return new Falha("O usuário precisa estar logado para efetuar esta tarefa"); }
+
             List<Aluno> alunos = new List<Aluno>();
 
-            var response = JsonConvert.DeserializeObject<Retorno<List<Aluno>, Falha>>(RequisitarAPI("aluno").Content);
+            var response = JsonConvert.DeserializeObject<Retorno<List<Aluno>, Falha>>(RequisitarAPI("aluno", RestSharp.Method.GET, null, TokenValido).Content);
             if (response.Sucesso.Objeto != null) alunos = response.Sucesso.Objeto;
             return alunos;
         }
 
         public Resultado<Aluno, Falha> ObterPeloEmail(string email)
         {
+            if (TokenValido == string.Empty) { return new Falha("O usuário precisa estar logado para efetuar esta tarefa"); }
+
             var response = JsonConvert.DeserializeObject<Retorno<Aluno, Helpers.Retornos.API.Falha>>(RequisitarAPI($"aluno/obter/{email}", RestSharp.Method.GET, null, TokenValido).Content);
-            if (response.Sucesso.Objeto == null || TokenValido == "")
+            if (response.Sucesso.Objeto != null)
             {
-                return new Resultado<Aluno, Falha>(new Falha(response.Falha.Mensagem));
+                return response.Sucesso.Objeto;
             }
             else
             {
-                return new Resultado<Aluno, Falha>(response.Sucesso.Objeto);
+                return new Falha(response.Falha.Mensagem);
             }
         }
 
         public Resultado<Aluno, Falha> ObterPeloIdUsuario(int id)
         {
+            if (TokenValido == string.Empty) { return new Falha("O usuário precisa estar logado para efetuar esta tarefa"); }
+
             var response = JsonConvert.DeserializeObject<Retorno<Aluno, Helpers.Retornos.API.Falha>>(RequisitarAPI($"aluno/{id}", RestSharp.Method.GET, null, TokenValido).Content);
-            if (response.Sucesso == null || TokenValido == "")
+            if (response.Sucesso.Objeto != null)
             {
-                return new Resultado<Aluno, Falha>(new Falha(response.Falha.Mensagem));
+                return response.Sucesso.Objeto;
             }
             else
             {
-                return new Resultado<Aluno, Falha>(response.Sucesso.Objeto);
+                return new Falha(response.Falha.Mensagem);
             }
         }
 

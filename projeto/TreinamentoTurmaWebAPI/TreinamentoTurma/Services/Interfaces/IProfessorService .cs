@@ -12,6 +12,6 @@ namespace TreinamentoTurma.Services.Interfaces
         Resultado<Usuario, Falha> Cadastrar(Professor professor);
         Resultado<Professor, Falha> ObterPeloIdUsuario(int id);
         Resultado<Professor, Falha> ObterPeloCpf(string cpf);
-        IEnumerable<Professor> ListarProfessores();
+        Resultado<IEnumerable<Professor>, Falha> ListarProfessores();
     }
 }

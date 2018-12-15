@@ -4,157 +4,173 @@ using System.Collections.Generic;
 using TreinamentoTurma.Models;
 using TreinamentoTurma.Services.Interfaces;
 using TreinamentoTurma.Helpers.Retornos.Validacao;
-using TreinamentoTurma.Helpers.Retornos.API;
+using TreinamentoTurma.Helpers;
 
 namespace TreinamentoTurma.Services
 {
     public class TurmaService : BaseService, ITurmaService
     {
-        public Resultado<Turma, Helpers.Retornos.Validacao.Falha> Atualizar(Turma turma)
+        public TurmaService()
         {
-            var response = JsonConvert.DeserializeObject<Retorno<Turma, Helpers.Retornos.API.Falha>>(RequisitarAPI($"turma", Method.PUT, turma).Content);
-            if (response.Sucesso != null)
+            UsuarioAtual = Login.ObterUsuarioAtual();
+            if (UsuarioAtual == null)
             {
-                return new Resultado<Turma,
-                    Helpers.Retornos.Validacao.Falha>(response.Sucesso.Objeto);
+                TokenValido = "";
             }
             else
             {
-                return new Resultado<Turma,
-                    Helpers.Retornos.Validacao.Falha>(new Helpers.Retornos.Validacao.Falha(response.Falha.Mensagem));
+                TokenValido = RequisitarToken(UsuarioAtual.Usuario.Codigo, UsuarioAtual.Usuario.Senha);
+            }
+        }
+        public Resultado<Turma, Falha> Atualizar(Turma turma)
+        {
+            if (TokenValido == string.Empty) { return new Falha("O usuário precisa estar logado para efetuar esta tarefa"); }
+            var response = JsonConvert.DeserializeObject<Helpers.Retornos.API.Retorno<Turma, Helpers.Retornos.API.Falha>>(RequisitarAPI($"turma", Method.PUT, turma, TokenValido).Content);
+            if (response.Sucesso != null)
+            {
+                return response.Sucesso.Objeto;
+            }
+            else
+            {
+                return new Falha(response.Falha.Mensagem);
             }
         }
 
-        public int Cadastrar(Turma turma)
+        public Resultado<int, Falha> Cadastrar(Turma turma)
         {
-            var response = JsonConvert.DeserializeObject<Retorno<Turma, Helpers.Retornos.API.Falha>>(RequisitarAPI($"turma", Method.POST, turma).Content);
+            if (TokenValido == string.Empty) { return new Falha("O usuário precisa estar logado para efetuar esta tarefa"); }
+            var response = JsonConvert.DeserializeObject<Helpers.Retornos.API.Retorno<Turma, Helpers.Retornos.API.Falha>>(RequisitarAPI($"turma", Method.POST, turma, TokenValido).Content);
             if (response.Sucesso != null)
             {
                 return response.Sucesso.Objeto.Id;
             }
             else
             {
-                return 0;
-            }
-        }
-        
-        public Resultado<int, Helpers.Retornos.Validacao.Falha> Excluir(int id)
-        {
-            var response = JsonConvert.DeserializeObject<Retorno<int, Helpers.Retornos.API.Falha>>(RequisitarAPI($"turma/{id}", Method.DELETE).Content);
-            if (response.Sucesso != null)
-            {
-                return new Resultado<int, Helpers.Retornos.Validacao.Falha>(response.Sucesso.Objeto);
-            }
-            else
-            {
-                return new Resultado<int, Helpers.Retornos.Validacao.Falha>(new Helpers.Retornos.Validacao.Falha(response.Falha.Mensagem));
+                return new Falha("Erro ao cadastrar, objeto vazio");
             }
         }
 
-        public Resultado<int, Helpers.Retornos.Validacao.Falha> ExcluirInscricao(int id)
+        public Resultado<int, Falha> Excluir(int id)
         {
-            var response = JsonConvert.DeserializeObject<Retorno<int, Helpers.Retornos.API.Falha>>(RequisitarAPI($"turma/inscricao/{id}", Method.DELETE).Content);
+            if (TokenValido == string.Empty) { return new Falha("O usuário precisa estar logado para efetuar esta tarefa"); }
+            var response = JsonConvert.DeserializeObject<Helpers.Retornos.API.Retorno<int, Helpers.Retornos.API.Falha>>(RequisitarAPI($"turma/{id}", Method.DELETE, null, TokenValido).Content);
             if (response.Sucesso != null)
             {
-                return new Resultado<int, Helpers.Retornos.Validacao.Falha>(response.Sucesso.Objeto);
+                return response.Sucesso.Objeto;
             }
             else
             {
-                return new Resultado<int, Helpers.Retornos.Validacao.Falha>(new Helpers.Retornos.Validacao.Falha(response.Falha.Mensagem));
+                return new Falha(response.Falha.Mensagem);
             }
         }
-        
-        public IEnumerable<Turma> ListarTurmas()
+
+        public Resultado<int, Falha> ExcluirInscricao(int id)
         {
+            if (TokenValido == string.Empty) { return new Falha("O usuário precisa estar logado para efetuar esta tarefa"); }
+            var response = JsonConvert.DeserializeObject<Helpers.Retornos.API.Retorno<int, Helpers.Retornos.API.Falha>>(RequisitarAPI($"turma/inscricao/{id}", Method.DELETE, null, TokenValido).Content);
+            if (response.Sucesso != null)
+            {
+                return response.Sucesso.Objeto;
+            }
+            else
+            {
+                return new Falha(response.Falha.Mensagem);
+            }
+        }
+
+        public Resultado<IEnumerable<Turma>, Falha> ListarTurmas()
+        {
+            if (TokenValido == string.Empty) { return new Falha("O usuário precisa estar logado para efetuar esta tarefa"); }
             var turmas = new List<Turma>();
-            var response = RequisitarAPI("turma");
-            var responseData = JsonConvert.DeserializeObject<Retorno<List<Turma>, Helpers.Retornos.API.Falha>>(response.Content);
+            var response = JsonConvert.DeserializeObject<Helpers.Retornos.API.Retorno<List<Turma>, Helpers.Retornos.API.Falha>>(RequisitarAPI("turma", Method.GET, null, TokenValido).Content);
 
-            if (responseData.Sucesso != null)
-                turmas = responseData.Sucesso.Objeto;
-            return turmas;
-        }
-        
-        public Resultado<Turma, Helpers.Retornos.Validacao.Falha> ObterPeloId(int id)
-        {
-            var response = JsonConvert.DeserializeObject<Retorno<Turma, Helpers.Retornos.API.Falha>>(RequisitarAPI($"turma/{id}").Content);
             if (response.Sucesso != null)
             {
-                return new Resultado<Turma,
-                    Helpers.Retornos.Validacao.Falha>(response.Sucesso.Objeto);
+                return response.Sucesso.Objeto;
             }
             else
             {
-                return new Resultado<Turma,
-                    Helpers.Retornos.Validacao.Falha>(new Helpers.Retornos.Validacao.Falha(response.Falha.Mensagem));
-            }
-        }
-        
-        public Resultado<Inscricao, Helpers.Retornos.Validacao.Falha> CadastrarInscricao(Inscricao inscricao)
-        {
-            var response = JsonConvert.DeserializeObject<Retorno<Inscricao, Helpers.Retornos.API.Falha>>(RequisitarAPI($"turma/inscricao", Method.POST, inscricao).Content);
-            if (response.Sucesso != null)
-            {
-                return new Resultado<Inscricao, 
-                    Helpers.Retornos.Validacao.Falha>(response.Sucesso.Objeto);
-            }
-            else
-            {
-                return new Resultado<Inscricao, 
-                    Helpers.Retornos.Validacao.Falha>(new Helpers.Retornos.Validacao.Falha(response.Falha.Mensagem));
+                return new Falha(response.Falha.Mensagem);
             }
         }
 
-        public Resultado<Inscricao, Helpers.Retornos.Validacao.Falha> BuscarInscricao(int alunoId, int turmaId)
+        public Resultado<Turma, Falha> ObterPeloId(int id)
         {
-            var response = JsonConvert.DeserializeObject<Retorno<Inscricao, Helpers.Retornos.API.Falha>>(RequisitarAPI($"turma/inscricao/{alunoId}/{turmaId}").Content);
+            if (TokenValido == string.Empty) { return new Falha("O usuário precisa estar logado para efetuar esta tarefa"); }
+            var response = JsonConvert.DeserializeObject<Helpers.Retornos.API.Retorno<Turma, Helpers.Retornos.API.Falha>>(RequisitarAPI($"turma/{id}", Method.GET, null, TokenValido).Content);
             if (response.Sucesso != null)
             {
-                return new Resultado<Inscricao,
-                    Helpers.Retornos.Validacao.Falha>(response.Sucesso.Objeto);
+                return response.Sucesso.Objeto;
             }
             else
             {
-                return new Resultado<Inscricao,
-                    Helpers.Retornos.Validacao.Falha>(new Helpers.Retornos.Validacao.Falha(response.Falha.Mensagem));
+                return new Falha(response.Falha.Mensagem);
+            }
+        }
+
+        public Resultado<Inscricao, Falha> CadastrarInscricao(Inscricao inscricao)
+        {
+            if (TokenValido == string.Empty) { return new Falha("O usuário precisa estar logado para efetuar esta tarefa"); }
+            var response = JsonConvert.DeserializeObject<Helpers.Retornos.API.Retorno<Inscricao, Helpers.Retornos.API.Falha>>(RequisitarAPI($"turma/inscricao", Method.POST, inscricao, TokenValido).Content);
+            if (response.Sucesso != null)
+            {
+                return response.Sucesso.Objeto;
+            }
+            else
+            {
+                return new Falha(response.Falha.Mensagem);
+            }
+        }
+
+        public Resultado<Inscricao, Falha> BuscarInscricao(int alunoId, int turmaId)
+        {
+            if (TokenValido == string.Empty) { return new Falha("O usuário precisa estar logado para efetuar esta tarefa"); }
+            var response = JsonConvert.DeserializeObject<Helpers.Retornos.API.Retorno<Inscricao, Helpers.Retornos.API.Falha>>(RequisitarAPI($"turma/inscricao/{alunoId}/{turmaId}", Method.GET, null, TokenValido).Content);
+            if (response.Sucesso != null)
+            {
+                return response.Sucesso.Objeto;
+            }
+            else
+            {
+                return new Falha(response.Falha.Mensagem);
             }
         }
     }
 }
-        //public async Task<IEnumerable<Turma>> ListarTurmasAsync()
-        //{
-        //    List<Turma> turmas = new List<Turma>();
+//public async Task<IEnumerable<Turma>> ListarTurmasAsync()
+//{
+//    List<Turma> turmas = new List<Turma>();
 
-        //    using (var client = new HttpClient())
-        //    {
-        //        client.BaseAddress = new Uri(ConfigurationManager.AppSettings["ApiUri"]);
+//    using (var client = new HttpClient())
+//    {
+//        client.BaseAddress = new Uri(ConfigurationManager.AppSettings["ApiUri"]);
 
-        //        var responseTask = client.GetAsync("turma");
-        //        responseTask.Wait();
+//        var responseTask = client.GetAsync("turma");
+//        responseTask.Wait();
 
-        //        var result = responseTask.Result;
-        //        if (result.IsSuccessStatusCode)
-        //        {
-        //            var dados = await result.Content.ReadAsStringAsync();
+//        var result = responseTask.Result;
+//        if (result.IsSuccessStatusCode)
+//        {
+//            var dados = await result.Content.ReadAsStringAsync();
 
-        //            JavaScriptSerializer jsSerializer = new JavaScriptSerializer();
-        //            turmas = jsSerializer.Deserialize<List<Turma>>(dados);
-        //        }
-        //        return turmas;
-        //    }
-        //}
+//            JavaScriptSerializer jsSerializer = new JavaScriptSerializer();
+//            turmas = jsSerializer.Deserialize<List<Turma>>(dados);
+//        }
+//        return turmas;
+//    }
+//}
 
-        //Resultado<Inscricao, Helpers.Retornos.Validacao.Falha> ObterPeloAlunoId(int id)
-        //{
-        //    var response = JsonConvert.DeserializeObject<Retorno<Inscricao, Helpers.Retornos.API.Falha>>(RequisitarAPI($"turma/inscricao/{id}").Content);
-        //    if (response.Sucesso != null)
-        //    {
-        //        return new Resultado<Inscricao,
-        //            Helpers.Retornos.Validacao.Falha>(response.Sucesso.Objeto);
-        //    }
-        //    else
-        //    {
-        //        return new Resultado<Inscricao,
-        //            Helpers.Retornos.Validacao.Falha>(new Helpers.Retornos.Validacao.Falha(response.Falha.Mensagem));
-        //    }
-        //}
+//Resultado<Inscricao, Falha> ObterPeloAlunoId(int id)
+//{
+//    var response = JsonConvert.DeserializeObject<Retorno<Inscricao, Helpers.Retornos.API.Falha>>(RequisitarAPI($"turma/inscricao/{id}").Content);
+//    if (response.Sucesso != null)
+//    {
+//        return new Resultado<Inscricao,
+//            Falha>(response.Sucesso.Objeto);
+//    }
+//    else
+//    {
+//        return new Resultado<Inscricao,
+//            Falha>(new Falha(response.Falha.Mensagem));
+//    }
+//}

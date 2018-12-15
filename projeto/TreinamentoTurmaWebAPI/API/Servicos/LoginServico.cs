@@ -1,5 +1,6 @@
 ﻿using API.Modelos;
 using API.Servicos.Interfaces;
+using API.Uteis;
 using API.Uteis.Login;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
@@ -33,22 +34,25 @@ namespace API.Servicos
 
         public Uteis.Retornos.Validacao.Resultado< AutenticacaoUsuario, Uteis.Retornos.Validacao.Falha> Autenticar(int codigo, string senha)
         {
-            var usuario = _usuarioServico.ValidarUsuario(codigo, senha);
 
+            var senhaBase64 = Base64.ParaBase64(senha);
+            var usuario = _usuarioServico.ValidarUsuario(codigo, senhaBase64);
+            
             if (!usuario.EstaValido) return new Uteis.Retornos.Validacao.Falha("Codigo ou senha incorretos");
+
+            usuario.Sucesso.Senha = senha;
 
             var claim = new ClaimsIdentity(new Claim[]
             {
                 new Claim(ClaimTypes.Name, usuario.Sucesso.Id.ToString())
             });
-
-            // autenticação válida, prosseguir com a geração do token
+            
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(_configuracoes.ChaveSecreta);
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = claim,
-                Expires = DateTime.UtcNow.AddSeconds(30),
+                Expires = DateTime.UtcNow.AddMinutes(5),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };
             var token = tokenHandler.CreateToken(tokenDescriptor);

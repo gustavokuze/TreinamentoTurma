@@ -53,7 +53,7 @@ namespace API.Servicos
 
         public Resultado<Usuario, Falha> ValidarUsuario(int codigo, string senha)
         {
-            var usuario = _usuarioRepositorio.ValidarUsuario(codigo, senhaBase64);
+            var usuario = _usuarioRepositorio.ValidarUsuario(codigo, senha);
             if (usuario == null)  return new Falha("Senha ou Código inválido(s)");
             return usuario;
         }

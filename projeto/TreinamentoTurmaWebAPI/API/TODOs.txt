@@ -10,4 +10,4 @@ Trocar as interfaces que estão sendo injetadas nas controllers dos repositório
 
 //connectionStrings
 ConnString RCA: "Data Source=RCA179;Initial Catalog=treinamento;Integrated Security=True"
-ConnString RCA: "Data Source=DESKTOP-DPFR0A0;Initial Catalog=treinamento;User ID=sa"
+ConnString Casa: "Data Source=DESKTOP-DPFR0A0;Initial Catalog=treinamento;User ID=sa"
