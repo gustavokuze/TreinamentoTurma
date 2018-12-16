@@ -69,10 +69,10 @@ namespace TreinamentoTurma.Services
 
         public Resultado<IEnumerable<Professor>, Falha>  ListarProfessores()
         {
-            if (TokenValido == string.Empty) { return new Falha("O usuário precisa estar logado para efetuar esta tarefa"); }
+            //if (TokenValido == string.Empty) { return new Falha("O usuário precisa estar logado para efetuar esta tarefa"); }
             List<Professor> professores = new List<Professor>();
 
-            var response = JsonConvert.DeserializeObject<Retorno<List<Professor>, Falha> >( RequisitarAPI("professor", RestSharp.Method.GET, null, TokenValido).Content);
+            var response = JsonConvert.DeserializeObject<Retorno<List<Professor>, Falha> >( RequisitarAPI("professor", RestSharp.Method.GET, null/*, TokenValido*/).Content);
             if (response.Sucesso != null) professores = response.Sucesso.Objeto;
             return professores;
         }

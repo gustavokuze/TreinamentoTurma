@@ -25,6 +25,7 @@ namespace API.Controllers
             _professorService = professorService;
         }
 
+        [AllowAnonymous]
         [HttpGet]
         public Retorno<List<Professor>, Falha> Listar()
         {

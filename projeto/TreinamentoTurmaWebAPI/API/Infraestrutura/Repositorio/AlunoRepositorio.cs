@@ -81,7 +81,7 @@ namespace API.Infraestrutura.Repositorio
 
         public IEnumerable<Aluno> ListarAlunos()
         {
-            var query = "select aluno.IdUsuario as Id, aluno.Nome, aluno.Email, aluno.DataNascimento, aluno.Telefone, aluno.Endereco, usuario.Codigo from aluno inner join usuario on aluno.IdUsuario = usuario.Id;"; ;
+            var query = "select aluno.IdUsuario as Id, aluno.Nome, aluno.Email, aluno.DataNascimento, aluno.Telefone, aluno.Endereco, usuario.Codigo, usuario.Senha from aluno inner join usuario on aluno.IdUsuario = usuario.Id;"; ;
 
             using (var conexao = new SqlConnection(ConnectionString))
             {

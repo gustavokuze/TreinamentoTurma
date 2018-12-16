@@ -1,4 +1,5 @@
-﻿using System.Web.Mvc;
+﻿using System.Linq;
+using System.Web.Mvc;
 using TreinamentoTurma.Areas.Painel.ViewModel;
 using TreinamentoTurma.Helpers;
 using TreinamentoTurma.Models;
@@ -11,7 +12,13 @@ namespace TreinamentoTurma.Controllers
         // GET: Login
         public ActionResult Index()
         {
-            return View();
+            var alunoService = new AlunoService();
+            var professorService = new ProfessorService();
+            var viewModel = new UsuarioViewModel();
+            viewModel.AlunosLista = alunoService.ListarAlunos().Sucesso.ToList();
+            viewModel.ProfessoresLista = professorService.ListarProfessores().Sucesso.ToList();
+
+            return View(viewModel);
         }
 
         [HttpPost]
