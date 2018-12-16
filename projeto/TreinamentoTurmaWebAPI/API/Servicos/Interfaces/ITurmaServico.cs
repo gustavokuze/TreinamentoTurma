@@ -16,5 +16,6 @@ namespace API.Servicos.Interfaces
         void ExcluirInscricoesPeloAlunoId(int alunoId);
         Resultado<Inscricao, Falha> ObterIncricao(int alunoId, int turmaId);
         Resultado<Inscricao, Falha> ObterPeloAlunoId(int id);
+        IEnumerable<Inscricao> listarInscricoesPeloAlunoId(int id);
     }
 }

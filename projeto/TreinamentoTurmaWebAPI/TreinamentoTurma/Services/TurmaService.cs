@@ -90,7 +90,7 @@ namespace TreinamentoTurma.Services
             }
             else
             {
-                return new Falha(response.Falha.Mensagem);
+                return new Falha(response.Falha.Mensagem); //isso aqui talvez precise ser alterado como listar inscricoespeloAlunoId
             }
         }
 
@@ -134,6 +134,20 @@ namespace TreinamentoTurma.Services
             {
                 return new Falha(response.Falha.Mensagem);
             }
+        }
+
+        public Resultado<IEnumerable<Inscricao>, Falha> ListarInscricoesPeloAlunoId(int alunoId)
+        {
+            if (TokenValido == string.Empty) { return new Falha("O usuário precisa estar logado para efetuar esta tarefa"); }
+            var turmas = new List<Inscricao>();
+            var response = JsonConvert.DeserializeObject<Helpers.Retornos.API.Retorno<List<Inscricao>, Helpers.Retornos.API.Falha>>(RequisitarAPI($"turma/inscricao/listar/{alunoId}", Method.GET, null, TokenValido).Content);
+
+            if (response.Sucesso != null)
+            {
+                return response.Sucesso.Objeto;
+            }
+
+            return new List<Inscricao>();
         }
     }
 }

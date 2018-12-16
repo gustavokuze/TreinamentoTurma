@@ -14,5 +14,6 @@ namespace TreinamentoTurma.Services.Interfaces
         Resultado<Inscricao, Falha> CadastrarInscricao(Inscricao inscricao);
         Resultado<int, Falha> ExcluirInscricao(int id);
         Resultado<Inscricao, Falha> BuscarInscricao(int alunoId, int turmaId);
+        Resultado<IEnumerable<Inscricao>, Falha> ListarInscricoesPeloAlunoId(int alunoId);
     }
 }

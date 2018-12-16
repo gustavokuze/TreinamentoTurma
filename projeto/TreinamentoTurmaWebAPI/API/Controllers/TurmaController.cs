@@ -119,5 +119,11 @@ namespace API.Controllers
             }
             return FormataRetorno(resultado.Sucesso, "Inscrição não encontrada");
         }
+
+        [HttpGet("inscricao/listar/{AlunoId}")]
+        public Retorno<List<Inscricao>, Falha> ListarInscricoesPeloAlunoId(int alunoId)
+        {
+            return _turmaServico.listarInscricoesPeloAlunoId(alunoId).ToList();
+        }
     }
 }

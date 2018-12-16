@@ -15,6 +15,7 @@ namespace TreinamentoTurma.Areas.Painel.Controllers
     public class TurmaController : Controller
     {
         private TurmaService _turmaService { get; set; } = new TurmaService();
+        private AlunoService _alunoService { get; set; } = new AlunoService();
 
         // GET: Painel/Turma
         public ActionResult Index()
@@ -128,11 +129,30 @@ namespace TreinamentoTurma.Areas.Painel.Controllers
 
             if(turmas.Sucesso is var retorno && turmas.EstaValido)
             {
-                return turmas.Sucesso.Select(x => new SelectListItem
+
+                int alunoId = _alunoService.ObterPeloEmail((Login.ObterUsuarioAtual().Usuario as Aluno).Email).Sucesso.Id;
+
+                var turmasInscrito = _turmaService.ListarInscricoesPeloAlunoId(alunoId);
+                if(turmasInscrito.Sucesso.Count() > 0)
+                {
+                    turmas.Sucesso.ToList().ForEach(t =>
+                    {
+                        turmasInscrito.Sucesso.ToList().ForEach(tI => {
+                            if(tI.TurmaId == t.Id)
+                            {
+                                t.Descricao = t.Descricao + " - Inscrito";
+                            }
+                        });
+                    });
+                }
+
+                var turmasListItem = turmas.Sucesso.Select(x => new SelectListItem
                 {
                     Text = x.Descricao,
                     Value = x.Id.ToString()
                 }).ToList();
+
+                return turmasListItem;
             }
             else
             {
@@ -146,8 +166,11 @@ namespace TreinamentoTurma.Areas.Painel.Controllers
         {
             List<SelectListItem> turmas = new List<SelectListItem>();
             var listaDeTurmas = _turmaService.ListarTurmas();
-
             turmas = ListarTurmas();
+
+
+
+
 
             ViewBag.Turmas = turmas;
 
@@ -159,8 +182,6 @@ namespace TreinamentoTurma.Areas.Painel.Controllers
         [HttpPost]
         public ActionResult Inscricao(InscricaoViewModel inscricaoViewModel)
         {
-            UsuarioService usuarioService = new UsuarioService();
-
             Aluno alunoAtual = (Login.ObterUsuarioAtual() as AutenticacaoAluno).Aluno;
            
             inscricaoViewModel.AlunoId = alunoAtual.Id;
@@ -177,6 +198,7 @@ namespace TreinamentoTurma.Areas.Painel.Controllers
             else
             {
                 ModelState.AddModelError("", "Este aluno já está inscrito nesta turma");
+                //TempData["InscritoErro"] = "O aluno já está inscrito nesta turma ";
             }
 
             ViewBag.Turmas = ListarTurmas();
